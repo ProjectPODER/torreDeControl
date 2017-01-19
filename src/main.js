@@ -40,15 +40,15 @@ $(() => {
 		nodes.push(node);
 		for (let i in contractsByTypes) {
 			const contractByType = contractsByTypes[i];
-			const node = { id: contractByType.name, name: contractByType.name, activeSize: contractByType.amount / 100000000, inactiveSize: 10, type: 'contract_type', group: 2, color: '#8AC190' };
-			const link = { source: 'contracts', target: contractByType.name, type: 'contract_type', distance: 100, color: '#706F74' };
+			const node = { id: contractByType.name, name: contractByType.name, activeSize: contractByType.amount / 100000000, inactiveSize: 5, type: 'contract_type', group: 2, color: '#8AC190' };
+			const link = { source: 'contracts', target: contractByType.name, type: 'contract_type', distance: 200, color: '#706F74' };
 			slidesObjects[2].nodes.push(node);
 			slidesObjects[2].links.push(link);
 			nodes.push(node);
 			links.push(link);
 			for (let j in contractByType.contracts) {
 				const contract = contractByType.contracts[j];
-				const node = { id: contract.ocid, name: contract.amount, activeSize: Math.log(contract.amount) / 3, inactiveSize: 20, type: 'contract', group: 3, color: '#E086A9' };
+				const node = { id: contract.ocid, name: contract.amount, activeSize: Math.log(contract.amount) / 2, inactiveSize: 20, type: 'contract', group: 3, color: '#E086A9' };
 				const link = { source: contractByType.name, target: contract.ocid, type: 'contract', distance: 20, color: '#706F74' };
 				slidesObjects[3].nodes.push(node);
 				slidesObjects[3].links.push(link);
@@ -93,14 +93,15 @@ function getContracts(cb) {
 
 function setupD3() {
 	const svg = d3.select("svg");
-	const width = +svg.attr("width");
-	const height = +svg.attr("height");
+	const width = window.innerWidth;
+	const height = window.innerHeight;
 	const color = d3.scaleOrdinal(d3.schemeCategory20);
 
 	const simulation = d3.forceSimulation()
-	    .force("charge", d3.forceManyBody().strength(-30))
-	    .force("link", d3.forceLink().id(d => d.id).distance(d => d.distance).strength(1))
-	    // .force("center", d3.forceCenter(width / 2, height / 2))
+	    .force("charge", d3.forceManyBody().strength(-30).distanceMax(40))
+	    .force("link", d3.forceLink().id(d => d.id).distance(d => d.distance).strength(5))
+	    .force("center", d3.forceCenter(width / 2 - 300, height / 2 - 300))
+	    .force("collide", d3.forceCollide().radius(d => d.activeSize * 1.2).iterations(1))
 	    .on("tick", ticked);
 
 	 window.simulation = simulation;
@@ -126,6 +127,7 @@ function setupD3() {
 		    .attr("y1", d => d.source.y + 300)
 		    .attr("x2", d => d.target.x + 300)
 		    .attr("y2", d => d.target.y + 300);
+
 	}
 
 	function draw(graph) {
@@ -136,6 +138,15 @@ function setupD3() {
 			.attr("fill", d => d.color)
 			.attr("class", d => "nodes " + d.type)
 			.merge(node);
+
+		node.each(d => {
+			if (d.type === 'all') {
+				d.fx = width / 2 - 300;
+				d.fy = height / 2 - 300;
+			} else {
+				d.fx = null;
+				d.fy = null;
+			}})
 
 		link = link.data(graph.links);
 		link.exit().remove();
