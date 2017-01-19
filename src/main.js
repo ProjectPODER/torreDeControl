@@ -35,12 +35,12 @@ $(() => {
 			{nodes: [], links: []},
 			{nodes: [], links: []}
 		]; 
-		const node = { id: 'contracts', name: 'contracts', value: contractsAmount / 1000000000, type: 'all', group: 1 };
+		const node = { id: 'contracts', name: 'contracts', value: contractsAmount / 300000000, type: 'all', group: 1 };
 		slidesObjects[1].nodes.push(node);
 		nodes.push(node);
 		for (let i in contractsByTypes) {
 			const contractByType = contractsByTypes[i];
-			const node = { id: contractByType.name, name: contractByType.name, value: contractByType.amount / 1000000000, type: 'contract_type', group: 2 };
+			const node = { id: contractByType.name, name: contractByType.name, value: contractByType.amount / 300000000, type: 'contract_type', group: 2 };
 			const link = { source: 'contracts', target: contractByType.name, type: 'contract_type', distance: 100 };
 			slidesObjects[2].nodes.push(node);
 			slidesObjects[2].links.push(link);
@@ -98,10 +98,13 @@ function setupD3() {
 	const color = d3.scaleOrdinal(d3.schemeCategory20);
 
 	const simulation = d3.forceSimulation()
-	    .force("charge", d3.forceManyBody().strength(-20))
+	    .force("charge", d3.forceManyBody().strength(-30))
 	    .force("link", d3.forceLink().id(d => d.id).distance(d => d.distance).strength(1))
-	    .force("center", d3.forceCenter(width / 2, height / 2))
-	    .on("tick", ticked);;
+	    // .force("center", d3.forceCenter(width / 2, height / 2))
+	    .on("tick", ticked);
+
+	 window.simulation = simulation;
+	 window.d3 = d3;
 
 	const slide_1 = new Filter({property: 'type', operator: 'eq', expected: 'all'});
 	const slide_2 = new Filter({property: 'type', operator: 'eq', expected: 'contract_type'});
@@ -115,40 +118,31 @@ function setupD3() {
 
 	function ticked() {
 		node
-		    .attr("cx", d => d.x)
-		    .attr("cy", d => d.y);
+		    .attr("cx", d => d.x + 300)
+		    .attr("cy", d => d.y + 300);
 
 		link
-		    .attr("x1", d => d.source.x)
-		    .attr("y1", d => d.source.y)
-		    .attr("x2", d => d.target.x)
-		    .attr("y2", d => d.target.y);
+		    .attr("x1", d => d.source.x + 300)
+		    .attr("y1", d => d.source.y + 300)
+		    .attr("x2", d => d.target.x + 300)
+		    .attr("y2", d => d.target.y + 300);
 	}
 
 	function draw(graph) {
-		node = node.data(graph.nodes);
+		node = node.data(graph.nodes)
 		node.exit().remove();
 		node = node.enter().append("circle")
-			.attr("r", d => d.value * 3)
+			.attr("r", 0)
 			.attr("fill", d => color(d.group))
-			.attr("class", "nodes")
+			.attr("class", d => "nodes " + d.type)
 			.merge(node);
-
-		node.each(d => {
-			if (d.type == 'all') {
-				d.fx = d.x;
-				d.fy = d.y;
-			}
-		});
 
 		link = link.data(graph.links);
 		link.exit().remove();
 		link = link.enter().append("line")
-			.attr("class", "links")
+			.attr("class", d => "links " + d.type)
+			.attr("opacity", 0)
 			.merge(link);
-
-		// node.append("title")
-		// 	.text(d => d.name);
 
 		simulation.nodes(graph.nodes);
 		simulation.force("link").links(graph.links);
@@ -161,58 +155,35 @@ function setupD3() {
 		switch (a.key) {
 			case 'a':
 				graph = {
-					nodes: objectToArray((new MathSet(nodes)).filter(slide_1).toObject()),
+					nodes: setNodeSizeToType(objectToArray((new MathSet(nodes)).filter(slide_1).toObject()), 'all', 3),
 					links: objectToArray((new MathSet(links)).filter(slide_1).toObject())
 				};
-				node.each(d => {
-					d.fx = null;
-					d.fy = null;
-					if (d.type == 'all') {
-						d.fx = d.x;
-						d.fy = d.y;
-					} else {
-						d.x = 0;
-						d.y = 0;
-					}
-				});	
+				draw(graph);
+				d3.selectAll('.nodes.all').transition().attr('r', d => d.value * 3);
 				break;
 			case 's':
 				graph = {
-					nodes: objectToArray((new MathSet(nodes)).filter(slide_1, slide_2).toObject()),
+					nodes: setNodeSizeToType(objectToArray((new MathSet(nodes)).filter(slide_1, slide_2).toObject()), 'contract_type', 3),
 					links: objectToArray((new MathSet(links)).filter(slide_1, slide_2).toObject())
 				};
-				node.each(d => {
-					d.fx = null;
-					d.fy = null;
-					if (d.type == 'all' || d.type == 'contract_type') {
-						d.fx = d.x;
-						d.fy = d.y;
-					} else {
-						d.x = 0;
-						d.y = 0;
-					}
-				});	
+				draw(graph);
+				d3.selectAll('.nodes.contract_type').transition().attr('r', d => d.value * 3);
+				d3.selectAll('.all').transition().attr('r', 3);
+				d3.selectAll('.links.contract_type').transition().delay(100).attr('opacity', 1);
 				break;
 			case 'd':
 				graph = {
-					nodes: objectToArray((new MathSet(nodes)).filter(slide_1, slide_2, slide_3).toObject()),
+					nodes: setNodeSizeToType(objectToArray((new MathSet(nodes)).filter(slide_1, slide_2, slide_3).toObject()), 'contract', 3),
 					links: objectToArray((new MathSet(links)).filter(slide_1, slide_2, slide_3).toObject())
 				};
-				node.each(d => {
-					d.fx = null;
-					d.fy = null;
-					if (d.type == 'all' || d.type == 'contract_type' || d.type == 'contract') {
-						d.fx = d.x;
-						d.fy = d.y;
-					} else {
-						d.x = 0;
-						d.y = 0;
-					}
-				});	
+				draw(graph);
+				d3.selectAll('.nodes.contract').transition().attr('r', d => d.value * 3);
+				d3.selectAll('.contract_type').transition().attr('r', 3);
+				d3.selectAll('.links.contract').transition().delay(100).attr('opacity', 1);
 				break;
 		}
 		
-		draw(graph);
+		
 	}
 }
 
@@ -256,5 +227,7 @@ function objectToArray(obj) {
 	return Object.keys(obj).map(key => obj[key]);
 }
 
-
-
+function setNodeSizeToType(nodes, type, value) {
+	return nodes;
+	return nodes.map(node => node.type !== type ? {...node, value} : node);
+}
