@@ -35,21 +35,21 @@ $(() => {
 			{nodes: [], links: []},
 			{nodes: [], links: []}
 		]; 
-		const node = { id: 'contracts', name: 'contracts', value: contractsAmount / 300000000, type: 'all', group: 1 };
+		const node = { id: 'contracts', name: 'contracts', activeSize: contractsAmount / 100000000, inactiveSize: 15, type: 'all', group: 1, color: '#BEA288' };
 		slidesObjects[1].nodes.push(node);
 		nodes.push(node);
 		for (let i in contractsByTypes) {
 			const contractByType = contractsByTypes[i];
-			const node = { id: contractByType.name, name: contractByType.name, value: contractByType.amount / 300000000, type: 'contract_type', group: 2 };
-			const link = { source: 'contracts', target: contractByType.name, type: 'contract_type', distance: 100 };
+			const node = { id: contractByType.name, name: contractByType.name, activeSize: contractByType.amount / 100000000, inactiveSize: 10, type: 'contract_type', group: 2, color: '#8AC190' };
+			const link = { source: 'contracts', target: contractByType.name, type: 'contract_type', distance: 100, color: '#706F74' };
 			slidesObjects[2].nodes.push(node);
 			slidesObjects[2].links.push(link);
 			nodes.push(node);
 			links.push(link);
 			for (let j in contractByType.contracts) {
 				const contract = contractByType.contracts[j];
-				const node = { id: contract.ocid, name: contract.amount, value: Math.log(contract.amount) / 10, type: 'contract', group: 3 };
-				const link = { source: contractByType.name, target: contract.ocid, type: 'contract', distance: 20 };
+				const node = { id: contract.ocid, name: contract.amount, activeSize: Math.log(contract.amount) / 3, inactiveSize: 20, type: 'contract', group: 3, color: '#E086A9' };
+				const link = { source: contractByType.name, target: contract.ocid, type: 'contract', distance: 20, color: '#706F74' };
 				slidesObjects[3].nodes.push(node);
 				slidesObjects[3].links.push(link);
 				nodes.push(node);
@@ -133,7 +133,7 @@ function setupD3() {
 		node.exit().remove();
 		node = node.enter().append("circle")
 			.attr("r", 0)
-			.attr("fill", d => color(d.group))
+			.attr("fill", d => d.color)
 			.attr("class", d => "nodes " + d.type)
 			.merge(node);
 
@@ -141,6 +141,7 @@ function setupD3() {
 		link.exit().remove();
 		link = link.enter().append("line")
 			.attr("class", d => "links " + d.type)
+			.style("stroke", d=> d.color)
 			.attr("opacity", 0)
 			.merge(link);
 
@@ -159,7 +160,7 @@ function setupD3() {
 					links: objectToArray((new MathSet(links)).filter(slide_1).toObject())
 				};
 				draw(graph);
-				d3.selectAll('.nodes.all').transition().attr('r', d => d.value * 3);
+				d3.selectAll('.nodes.all').transition().attr('r', d => d.activeSize);
 				break;
 			case 's':
 				graph = {
@@ -167,8 +168,8 @@ function setupD3() {
 					links: objectToArray((new MathSet(links)).filter(slide_1, slide_2).toObject())
 				};
 				draw(graph);
-				d3.selectAll('.nodes.contract_type').transition().attr('r', d => d.value * 3);
-				d3.selectAll('.all').transition().attr('r', 3);
+				d3.selectAll('.nodes.contract_type').transition().attr('r', d => d.activeSize);
+				d3.selectAll('.all').transition().attr('r', d => d.inactiveSize);
 				d3.selectAll('.links.contract_type').transition().delay(100).attr('opacity', 1);
 				break;
 			case 'd':
@@ -177,8 +178,8 @@ function setupD3() {
 					links: objectToArray((new MathSet(links)).filter(slide_1, slide_2, slide_3).toObject())
 				};
 				draw(graph);
-				d3.selectAll('.nodes.contract').transition().attr('r', d => d.value * 3);
-				d3.selectAll('.contract_type').transition().attr('r', 3);
+				d3.selectAll('.nodes.contract').transition().attr('r', d => d.activeSize);
+				d3.selectAll('.contract_type').transition().attr('r', d => d.inactiveSize);
 				d3.selectAll('.links.contract').transition().delay(100).attr('opacity', 1);
 				break;
 		}
