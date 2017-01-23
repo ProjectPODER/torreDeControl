@@ -8,14 +8,8 @@ import MathSet from './sets.js';
 import Fullpage from 'fullpage.js';
 require('./css/main.scss');
 
-let nodes = [
-	// { id: 'desktop', name: 'Cytoscape', value: 100, href: 'http://cytoscape.org' },
- //    { id: 'js', name: 'Cytoscape.js', value: 50, href: 'http://js.cytoscape.org' }
-];
-
-let links = [
-	// { source: 'desktop', target: 'js' }
-];
+let nodes = [];
+let links = [];
 
 let node;
 let link;
@@ -36,21 +30,22 @@ $(() => {
 		AppData.contracts = data.contracts;
 		const contractsAmount = getContractsAmount(AppData.contracts);
 		const contractsByTypes = getContractsByTypes(AppData.contracts);
+		const organizations = AppData.organizations;
 		const slidesObjects = [	null,
+			{nodes: [], links: []},
 			{nodes: [], links: []},
 			{nodes: [], links: []},
 			{nodes: [], links: []}
 		]; 
 		$('#contracts_amount').text("$ " + (Math.round(contractsAmount/1000000)).toLocaleString() + " Millones");
-		console.log(contractsByTypes.length)
 		$('#contracts_type').text(Object.keys(contractsByTypes).length);
 		$('#contracts_total').text(objectToArray(contractsByTypes).reduce(function(total, actual) {return total + Object.keys(actual.contracts).length}, 0));
-		const node = { id: 'contracts', name: 'contracts', activeSize: contractsAmount / 100000000, inactiveSize: 15, type: 'all', group: 1, color: '#BEA288' };
+		const node = { id: 'contracts', name: 'contracts', activeSize: contractsAmount / 100000000, inactiveSize: 15, type: 'all', group: 1, color: '#BEA288', linksCount: 0 };
 		slidesObjects[1].nodes.push(node);
 		nodes.push(node);
 		for (let i in contractsByTypes) {
 			const contractByType = contractsByTypes[i];
-			const node = { id: contractByType.name, name: contractByType.name, activeSize: contractByType.amount / 100000000, inactiveSize: 5, type: 'contract_type', group: 2, color: '#8AC190' };
+			const node = { id: contractByType.name, name: contractByType.name, activeSize: contractByType.amount / 100000000, inactiveSize: 5, type: 'contract_type', group: 2, color: '#8AC190', linksCount: 0 };
 			const link = { source: 'contracts', target: contractByType.name, type: 'contract_type', distance: 200, color: '#706F74' };
 			slidesObjects[2].nodes.push(node);
 			slidesObjects[2].links.push(link);
@@ -58,7 +53,7 @@ $(() => {
 			links.push(link);
 			for (let j in contractByType.contracts) {
 				const contract = contractByType.contracts[j];
-				const node = { id: contract.ocid, name: contract.amount, activeSize: Math.log(contract.amount) / 2, inactiveSize: 20, type: 'contract', group: 3, color: '#E086A9' };
+				const node = { id: contract.ocid, name: contract.amount, activeSize: Math.log(contract.amount) / 2, inactiveSize: 20, type: 'contract', group: 3, color: '#E086A9', linksCount: 0 };
 				const link = { source: contractByType.name, target: contract.ocid, type: 'contract', distance: 20, color: '#706F74' };
 				slidesObjects[3].nodes.push(node);
 				slidesObjects[3].links.push(link);
@@ -66,8 +61,23 @@ $(() => {
 				links.push(link);
 			}
 		}
-		nodes = [...slidesObjects[1].nodes, ...slidesObjects[2].nodes, ...slidesObjects[3].nodes];
-		links = [...slidesObjects[1].links, ...slidesObjects[2].links, ...slidesObjects[3].links];
+		for (let k in organizations) {
+			const organization = organizations[k];
+			const node = { id: organization._id, name: organization.name, activeSize: 10, inactiveSize: 10, type: 'organization', group: 4, color: '#646464', linksCount: 0 };
+			for (let j in AppData.contracts) {
+				const contract = AppData.contracts[j];
+				if (contract.proveedor === organization.name) {
+					const link = { source: contract.ocid, target: organization._id, type: 'organization', distance: 40, color: '#706F74' };
+					slidesObjects[4].links.push(link);
+					links.push(link);
+					node.linksCount++;
+				}
+			}
+			slidesObjects[4].nodes.push(node);
+			nodes.push(node);
+		}
+		nodes = [...slidesObjects[1].nodes, ...slidesObjects[2].nodes, ...slidesObjects[3].nodes, ...slidesObjects[4].nodes];
+		links = [...slidesObjects[1].links, ...slidesObjects[2].links, ...slidesObjects[3].links, ...slidesObjects[4].links];
 		setupD3();
 	});
 	
@@ -75,15 +85,29 @@ $(() => {
 });
 
 function getData(cb) {
-	async.series([
+	async.waterfall([
 		getContracts,
 		getOrganizations
 	], (err, results) => {
 		cb({
-			contracts: results[0],
-			organizations: results[1]
+			contracts: results.contracts,
+			organizations: results.organizations
 		});
 	})
+}
+
+function getContracts(cb) {
+	$.get('https://www.quienesquien.wiki/api/v1/contracts?dependency=Grupo%20Aeroportuario%20De%20La%20Ciudad%20De%20M%C3%A9xico,%20S.A.%20de%20C.V.&limit=1000')
+	.done(response => {cb(null, {contracts:response.data});})
+	.fail(response => {cb(null, {contracts:[]});});
+}
+
+function getOrganizations(params, cb) {
+	const contractorNames = params.contracts.map((contract) => `name=${encodeURIComponent(contract.proveedor)}`);
+	const query = '?names=Bejar Galindo Lozano Y Compañia, S.C.';//`?${contractorNames.join('&')}`;
+	$.get(`https://www.quienesquien.wiki/api/v1/organizations${query}`)
+	.done(response => {cb(null, {...params, organizations: response.data});})
+	.fail(response => {cb(null, {...params, organizations: []});});
 }
 
 function getPersons(cb) {
@@ -91,15 +115,7 @@ function getPersons(cb) {
 	.done(response => {cb(null, response.data);});
 }
 
-function getOrganizations(cb) {
-	$.get('https://www.quienesquien.wiki/api/v1/organizations')
-	.done(response => {cb(null, response.data);});
-}
 
-function getContracts(cb) {
-	$.get('https://www.quienesquien.wiki/api/v1/contracts?dependency=Grupo%20Aeroportuario%20De%20La%20Ciudad%20De%20M%C3%A9xico,%20S.A.%20de%20C.V.&limit=1000')
-	.done(response => {cb(null, response.data);});
-}
 
 function setupD3() {
 	const svg = d3.select("svg");
@@ -108,10 +124,10 @@ function setupD3() {
 	const color = d3.scaleOrdinal(d3.schemeCategory20);
 
 	const simulation = d3.forceSimulation()
-	    .force("charge", d3.forceManyBody().strength(-10).distanceMax(40))
+	    .force("charge", d3.forceManyBody().strength(d => -1000 ^ (d.linksCount)))
 	    .force("link", d3.forceLink().id(d => d.id).distance(d => d.distance).strength(5))
 	    .force("center", d3.forceCenter(width / 2 - offset, height / 2 - offset))
-	    .force("collide", d3.forceCollide().radius(d => d.activeSize * 1.2).iterations(1))
+	    .force("collide", d3.forceCollide().radius(d => d.activeSize * (1.2+ d.linksCount)).iterations(1))
 	    .on("tick", ticked);
 
 	window.simulation = simulation;
@@ -139,6 +155,7 @@ function setupD3() {
 	const slide_1 = new Filter({property: 'type', operator: 'eq', expected: 'all'});
 	const slide_2 = new Filter({property: 'type', operator: 'eq', expected: 'contract_type'});
 	const slide_3 = new Filter({property: 'type', operator: 'eq', expected: 'contract'});
+	const slide_4 = new Filter({property: 'type', operator: 'eq', expected: 'organization'});
 	$('#fullpage').fullpage({
 		afterLoad: function(anchorLink, index){
 			switch (index - 1) {
@@ -170,6 +187,17 @@ function setupD3() {
 					d3.selectAll('.contract_type').transition().attr('r', d => d.inactiveSize);
 					d3.selectAll('.links.contract').transition().delay(100).attr('opacity', 1);
 					break;
+				case 3:
+					console.log('yep')
+					graph = {
+						nodes: setNodeSizeToType(objectToArray((new MathSet(nodes)).filter(slide_1, slide_2, slide_3, slide_4).toObject()), 'organization', 4),
+						links: objectToArray((new MathSet(links)).filter(slide_1, slide_2, slide_3, slide_4).toObject())
+					};
+					draw(graph);
+					d3.selectAll('.nodes.organization').transition().attr('r', d => d.activeSize);
+					d3.selectAll('.organization_type').transition().attr('r', d => d.inactiveSize);
+					d3.selectAll('.links.organization').transition().delay(100).attr('opacity', 1);
+					break;
 			}	
 		},
 	});
@@ -181,7 +209,7 @@ function setupD3() {
 		const width = container.width();
 		const height = container.height();
 
-	    var scaleMin = width / 1300;
+	    var scaleMin = width / 2000;
 		const resGWidth = width/2 * (1 - scaleMin);
 		const resGHeight = height/2 * (1 - scaleMin);
 		offset = 0;
@@ -193,7 +221,7 @@ function setupD3() {
 		node = node.data(graph.nodes)
 		node.exit().remove();
 		node = node.enter().append("circle")
-			.attr("r", 0)
+			.attr("r", d => d.activeSize)
 			.attr("fill", d => d.color)
 			.attr("class", d => "nodes " + d.type)
 			.merge(node);
