@@ -1,6 +1,9 @@
 @import "./normalize";
 @import "neat";
 
+$blue: #002f4d;
+$grey: #5b5b5f;
+
 body {
 	background-color:#E0E2E1;
 	background-image: linear-gradient(#D3D5D4 1px, transparent 1px),
@@ -32,39 +35,65 @@ p {
   stroke-width: 1.5px;
 }
 
+.fullpage {
+	opacity: 0;
+}
+
+.graph-container {
+	height: 100%;
+	width: 70%;
+	top: 0;
+	position: fixed;
+	right: 0;
+	svg {
+		width: 100%;
+		height: 100%;
+	}
+}
+
 .main-container {
 	height: 100%;
 	@include outer-container;
 	.info-container {
-		@include span-columns(4);
-		.info-data {
-			color: grey;
-			.top-text {
-				text-transform: uppercase;
-				font-size: 16px;
+		width: 100%;
+		position: relative;
+		.info-wrapper {
+			@include span-columns(4);
+			position: absolute;
+			top: 50%;
+			left: 0;
+			transform: translateY(-50%);
+			.info-data {
+				font-family: roboto;
+				font-weight: 300;
+				color: $grey;
+				margin-bottom: 80px;
+				.top-text {
+					text-transform: uppercase;
+					font-size: 14px;
+				}
+				.middle-text {
+					font-size: 65px;
+				}
+				.bottom-text {
+					font-size: 20px;
+					strong {
+						color: $blue;
+					}
+				}
 			}
-			.middle-text {
-				font-size: 30px;
+			.info-abstract {
+				font-family: Rajdhani;
+				font-weight: 400;
+				.abstract-title {
+					text-transform: uppercase;
+					font-size: 56px;
+					color: $blue;
+				}
+				.abstract-body {
+					font-size: 16px;
+				}
 			}
-			.bottom-text {
-				font-size: 18px;	
-			}
-		}
-		.info-abstract {
-			.abstract-title {
-				font-size: 50px;
-			}
-			.abstract-body {
-				font-size: 16px;
-			}
-		}
-	}
-	.graph-container {
-		height: 100%;
-		@include span-columns(8);
-		svg {
-			width: 100%;
-			height: 100%;
 		}
 	}
 }

@@ -4,22 +4,53 @@
 	<meta charset="UTF-8">
 	<title>Document</title>
 	<script src="./dist/bundle.js"></script>
+	<link href="https://fonts.googleapis.com/css?family=Rajdhani|Roboto:300,400" rel="stylesheet">
 </head>
 <body>
-	<div class="main-container">
-		<div class="info-container">
-			<div class="info-data">
-				<p class="top-text">Lorem <br>Loremipsum</p>
-				<p class="middle-text">147</p>
-				<p class="bottom-text">contratos del <br><strong>NACIM</strong></p>
+	<div class="graph-container">
+		<svg></svg>
+	</div>
+	<div id="fullpage" class="fullpage">
+		<div class="main-container">
+			<div class="section info-container">
+				<div class="info-wrapper">
+					<div class="info-data">
+						<p class="top-text">Un valor<br>total de</p>
+						<p class="middle-text" id="contracts_amount">147</p>
+						<p class="bottom-text">equivale a la suma <br>de los contratos</p>
+					</div>
+					<div class="info-abstract">
+						<h2 class="abstract-title">Total de contratos</h2>
+						<p class="abstract-body">Es un hecho establecido hace semasiado tiempo que un lector se distraera con el contenido del texto de un sitio mientras mira su diseño. El punto de usar Lorem ipsum.</p>
+					</div>
+				</div>
 			</div>
-			<div class="info-abstract">
-				<h2 class="abstract-title">Total de contratos</h2>
-				<p class="abstract-body">Es un hecho establecido hace semasiado tiempo que un lector se distraera con el contenido del texto de un sitio mientras mira su diseño. El punto de usar Lorem ipsum.</p>
+			<div class="section info-container">
+				<div class="info-wrapper">
+					<div class="info-data">
+						<p class="top-text">Los tipos <br>de contratos son</p>
+						<p class="middle-text" id="contracts_type">147</p>
+						<p class="bottom-text">Y cada contrato pertenece<br>a uno de estos tipos</p>
+					</div>
+					<div class="info-abstract">
+						<h2 class="abstract-title">Tipos de contratos</h2>
+						<p class="abstract-body">Es un hecho establecido hace semasiado tiempo que un lector se distraera con el contenido del texto de un sitio mientras mira su diseño. El punto de usar Lorem ipsum.</p>
+					</div>
+				</div>
 			</div>
-		</div>
-		<div class="graph-container">
-			<svg></svg>
+			<div class="section info-container">
+				<div class="info-wrapper">
+					<div class="info-data">
+						<p class="top-text">Lorem <br>Loremipsum</p>
+						<p class="middle-text" id="contracts_total">147</p>
+						<p class="bottom-text">contratos del <br><strong>NACIM</strong></p>
+					</div>
+					<div class="info-abstract">
+						<h2 class="abstract-title">Total de contratos</h2>
+						<p class="abstract-body">Es un hecho establecido hace semasiado tiempo que un lector se distraera con el contenido del texto de un sitio mientras mira su diseño. El punto de usar Lorem ipsum.</p>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </body>

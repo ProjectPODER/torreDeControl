@@ -5,7 +5,7 @@ import * as d3 from "d3";
 import async from 'async';
 import Filter from './filters.js';
 import MathSet from './sets.js';
-const SuperScrollorama = require('SuperScrollorama');
+import Fullpage from 'fullpage.js';
 require('./css/main.scss');
 
 let nodes = [
@@ -19,7 +19,7 @@ let links = [
 
 let node;
 let link;
-const offset = 0;
+let offset = 0;
 let graph;
 
 const AppData = {
@@ -30,6 +30,7 @@ const AppData = {
 
 $(() => {
 	window.jQuery = $;
+
 	getData(data => {
 		AppData.organizations = data.organizations,
 		AppData.contracts = data.contracts;
@@ -40,6 +41,10 @@ $(() => {
 			{nodes: [], links: []},
 			{nodes: [], links: []}
 		]; 
+		$('#contracts_amount').text("$ " + (Math.round(contractsAmount/1000000)).toLocaleString() + " Millones");
+		console.log(contractsByTypes.length)
+		$('#contracts_type').text(Object.keys(contractsByTypes).length);
+		$('#contracts_total').text(objectToArray(contractsByTypes).reduce(function(total, actual) {return total + Object.keys(actual.contracts).length}, 0));
 		const node = { id: 'contracts', name: 'contracts', activeSize: contractsAmount / 100000000, inactiveSize: 15, type: 'all', group: 1, color: '#BEA288' };
 		slidesObjects[1].nodes.push(node);
 		nodes.push(node);
@@ -109,14 +114,8 @@ function setupD3() {
 	    .force("collide", d3.forceCollide().radius(d => d.activeSize * 1.2).iterations(1))
 	    .on("tick", ticked);
 
-	 window.simulation = simulation;
-	 window.d3 = d3;
-
-	const slide_1 = new Filter({property: 'type', operator: 'eq', expected: 'all'});
-	const slide_2 = new Filter({property: 'type', operator: 'eq', expected: 'contract_type'});
-	const slide_3 = new Filter({property: 'type', operator: 'eq', expected: 'contract'});
-
-	document.addEventListener("keydown", keyboard);
+	window.simulation = simulation;
+	window.d3 = d3;
 
 	let g = svg.append("g").attr("class", 'resizable-g');
 	link = g.append("g").selectAll('link');
@@ -137,18 +136,58 @@ function setupD3() {
 
 	window.addEventListener("resize", function() {draw(graph);});
 
+	const slide_1 = new Filter({property: 'type', operator: 'eq', expected: 'all'});
+	const slide_2 = new Filter({property: 'type', operator: 'eq', expected: 'contract_type'});
+	const slide_3 = new Filter({property: 'type', operator: 'eq', expected: 'contract'});
+	$('#fullpage').fullpage({
+		afterLoad: function(anchorLink, index){
+			switch (index - 1) {
+				case 0:
+					graph = {
+						nodes: setNodeSizeToType(objectToArray((new MathSet(nodes)).filter(slide_1).toObject()), 'all', 3),
+						links: objectToArray((new MathSet(links)).filter(slide_1).toObject())
+					};
+					draw(graph);
+					d3.selectAll('.nodes.all').transition().attr('r', d => d.activeSize);
+					break;
+				case 1:
+					graph = {
+						nodes: setNodeSizeToType(objectToArray((new MathSet(nodes)).filter(slide_1, slide_2).toObject()), 'contract_type', 3),
+						links: objectToArray((new MathSet(links)).filter(slide_1, slide_2).toObject())
+					};
+					draw(graph);
+					d3.selectAll('.nodes.contract_type').transition().attr('r', d => d.activeSize);
+					d3.selectAll('.all').transition().attr('r', d => d.inactiveSize);
+					d3.selectAll('.links.contract_type').transition().delay(100).attr('opacity', 1);
+					break;
+				case 2:
+					graph = {
+						nodes: setNodeSizeToType(objectToArray((new MathSet(nodes)).filter(slide_1, slide_2, slide_3).toObject()), 'contract', 3),
+						links: objectToArray((new MathSet(links)).filter(slide_1, slide_2, slide_3).toObject())
+					};
+					draw(graph);
+					d3.selectAll('.nodes.contract').transition().attr('r', d => d.activeSize);
+					d3.selectAll('.contract_type').transition().attr('r', d => d.inactiveSize);
+					d3.selectAll('.links.contract').transition().delay(100).attr('opacity', 1);
+					break;
+			}	
+		},
+	});
+	$('.fullpage').animate({'opacity': 1});
 	function draw(graph) {
 		const container = $('.graph-container');
 		const svg = $('svg');
 		const resG = $('.resizable-g');
 		const width = container.width();
 		const height = container.height();
+
 	    var scaleMin = width / 800;
 		const resGWidth = width/2 * (1 - scaleMin);
 		const resGHeight = height/2 * (1 - scaleMin);
+		offset = 0;
 
 	    const positioning = 'translate(' + resGWidth + 'px, ' + resGHeight + 'px) scale(' + scaleMin + ')';
-	    console.log(positioning)
+
 		resG.css('transform', positioning);
 
 		node = node.data(graph.nodes)
@@ -178,42 +217,8 @@ function setupD3() {
 
 		simulation.nodes(graph.nodes);
 		simulation.force("link").links(graph.links);
+		simulation.force("center", d3.forceCenter(width / 2 - offset, height / 2 - offset))
 		simulation.alpha(0.1).restart();
-	}
-
-	function keyboard(a) {		
-		switch (a.key) {
-			case 'a':
-				graph = {
-					nodes: setNodeSizeToType(objectToArray((new MathSet(nodes)).filter(slide_1).toObject()), 'all', 3),
-					links: objectToArray((new MathSet(links)).filter(slide_1).toObject())
-				};
-				draw(graph);
-				d3.selectAll('.nodes.all').transition().attr('r', d => d.activeSize);
-				break;
-			case 's':
-				graph = {
-					nodes: setNodeSizeToType(objectToArray((new MathSet(nodes)).filter(slide_1, slide_2).toObject()), 'contract_type', 3),
-					links: objectToArray((new MathSet(links)).filter(slide_1, slide_2).toObject())
-				};
-				draw(graph);
-				d3.selectAll('.nodes.contract_type').transition().attr('r', d => d.activeSize);
-				d3.selectAll('.all').transition().attr('r', d => d.inactiveSize);
-				d3.selectAll('.links.contract_type').transition().delay(100).attr('opacity', 1);
-				break;
-			case 'd':
-				graph = {
-					nodes: setNodeSizeToType(objectToArray((new MathSet(nodes)).filter(slide_1, slide_2, slide_3).toObject()), 'contract', 3),
-					links: objectToArray((new MathSet(links)).filter(slide_1, slide_2, slide_3).toObject())
-				};
-				draw(graph);
-				d3.selectAll('.nodes.contract').transition().attr('r', d => d.activeSize);
-				d3.selectAll('.contract_type').transition().attr('r', d => d.inactiveSize);
-				d3.selectAll('.links.contract').transition().delay(100).attr('opacity', 1);
-				break;
-		}
-		
-		
 	}
 }
 

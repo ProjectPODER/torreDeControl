@@ -14,7 +14,5 @@
     "test",
     "tests"
   ],
-  "dependencies": {
-    "SuperScrollorama": "^1.0.3"
-  }
+  "dependencies": {}
 }
