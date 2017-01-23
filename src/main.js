@@ -181,7 +181,7 @@ function setupD3() {
 		const width = container.width();
 		const height = container.height();
 
-	    var scaleMin = width / 800;
+	    var scaleMin = width / 1300;
 		const resGWidth = width/2 * (1 - scaleMin);
 		const resGHeight = height/2 * (1 - scaleMin);
 		offset = 0;
