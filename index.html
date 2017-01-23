@@ -4,35 +4,23 @@
 	<meta charset="UTF-8">
 	<title>Document</title>
 	<script src="./dist/bundle.js"></script>
-	<style>
-
-		body {
-			background-color:#E0E2E1;
-			background-image: linear-gradient(#D3D5D4 1px, transparent 1px),
-			linear-gradient(90deg, #D3D5D4 1px, transparent 1px);
-			background-size:100px 100px, 100px 100px;
-			background-position:-2px -2px, -2px -2px;
-		}
-
-		html,
-		body,
-		svg {
-			width: 100%;
-			height: 100%;
-		}
-
-		.links {
-		  stroke: #999;
-		  stroke-opacity: 0.6;
-		}
-
-		.nodes {
-		  stroke: #f0f0f0;
-		  stroke-width: 1.5px;
-		}
-	</style>
 </head>
 <body>
-	<svg width="100%" height="100%"></svg>
+	<div class="main-container">
+		<div class="info-container">
+			<div class="info-data">
+				<p class="top-text">Lorem <br>Loremipsum</p>
+				<p class="middle-text">147</p>
+				<p class="bottom-text">contratos del <br><strong>NACIM</strong></p>
+			</div>
+			<div class="info-abstract">
+				<h2 class="abstract-title">Total de contratos</h2>
+				<p class="abstract-body">Es un hecho establecido hace semasiado tiempo que un lector se distraera con el contenido del texto de un sitio mientras mira su diseño. El punto de usar Lorem ipsum.</p>
+			</div>
+		</div>
+		<div class="graph-container">
+			<svg></svg>
+		</div>
+	</div>
 </body>
 </html>

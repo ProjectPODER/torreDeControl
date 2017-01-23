@@ -1,0 +1,20 @@
+{
+  "name": "webpack-project",
+  "description": "",
+  "main": "./src/main.js",
+  "authors": [
+    "Facundo Pérez Tomasek <facundopereztomasek@gmail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/Winguweb/torre_de_control",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "SuperScrollorama": "^1.0.3"
+  }
+}

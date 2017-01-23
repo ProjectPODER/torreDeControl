@@ -1,9 +1,11 @@
 import $ from 'jquery';
+window.jQuery = $;
 import Cytoscape from 'cytoscape';
 import * as d3 from "d3";
 import async from 'async';
 import Filter from './filters.js';
 import MathSet from './sets.js';
+const SuperScrollorama = require('SuperScrollorama');
 require('./css/main.scss');
 
 let nodes = [
@@ -17,6 +19,8 @@ let links = [
 
 let node;
 let link;
+const offset = 0;
+let graph;
 
 const AppData = {
 	persons: [],
@@ -25,6 +29,7 @@ const AppData = {
 };
 
 $(() => {
+	window.jQuery = $;
 	getData(data => {
 		AppData.organizations = data.organizations,
 		AppData.contracts = data.contracts;
@@ -93,14 +98,14 @@ function getContracts(cb) {
 
 function setupD3() {
 	const svg = d3.select("svg");
-	const width = window.innerWidth;
-	const height = window.innerHeight;
+	const width = $('svg').width();
+	const height = $('svg').height();
 	const color = d3.scaleOrdinal(d3.schemeCategory20);
 
 	const simulation = d3.forceSimulation()
-	    .force("charge", d3.forceManyBody().strength(-30).distanceMax(40))
+	    .force("charge", d3.forceManyBody().strength(-10).distanceMax(40))
 	    .force("link", d3.forceLink().id(d => d.id).distance(d => d.distance).strength(5))
-	    .force("center", d3.forceCenter(width / 2 - 300, height / 2 - 300))
+	    .force("center", d3.forceCenter(width / 2 - offset, height / 2 - offset))
 	    .force("collide", d3.forceCollide().radius(d => d.activeSize * 1.2).iterations(1))
 	    .on("tick", ticked);
 
@@ -113,24 +118,39 @@ function setupD3() {
 
 	document.addEventListener("keydown", keyboard);
 
-	let g = svg.append("g");
+	let g = svg.append("g").attr("class", 'resizable-g');
 	link = g.append("g").selectAll('link');
 	node = g.append("g").selectAll('node');
 
 	function ticked() {
 		node
-		    .attr("cx", d => d.x + 300)
-		    .attr("cy", d => d.y + 300);
+		    .attr("cx", d => d.x + offset)
+		    .attr("cy", d => d.y + offset);
 
 		link
-		    .attr("x1", d => d.source.x + 300)
-		    .attr("y1", d => d.source.y + 300)
-		    .attr("x2", d => d.target.x + 300)
-		    .attr("y2", d => d.target.y + 300);
+		    .attr("x1", d => d.source.x + offset)
+		    .attr("y1", d => d.source.y + offset)
+		    .attr("x2", d => d.target.x + offset)
+		    .attr("y2", d => d.target.y + offset);
 
 	}
 
+	window.addEventListener("resize", function() {draw(graph);});
+
 	function draw(graph) {
+		const container = $('.graph-container');
+		const svg = $('svg');
+		const resG = $('.resizable-g');
+		const width = container.width();
+		const height = container.height();
+	    var scaleMin = width / 800;
+		const resGWidth = width/2 * (1 - scaleMin);
+		const resGHeight = height/2 * (1 - scaleMin);
+
+	    const positioning = 'translate(' + resGWidth + 'px, ' + resGHeight + 'px) scale(' + scaleMin + ')';
+	    console.log(positioning)
+		resG.css('transform', positioning);
+
 		node = node.data(graph.nodes)
 		node.exit().remove();
 		node = node.enter().append("circle")
@@ -141,8 +161,8 @@ function setupD3() {
 
 		node.each(d => {
 			if (d.type === 'all') {
-				d.fx = width / 2 - 300;
-				d.fy = height / 2 - 300;
+				d.fx = width / 2 - offset;
+				d.fy = height / 2 - offset;
 			} else {
 				d.fx = null;
 				d.fy = null;
@@ -161,9 +181,7 @@ function setupD3() {
 		simulation.alpha(0.1).restart();
 	}
 
-	function keyboard(a) {
-		let graph;
-		
+	function keyboard(a) {		
 		switch (a.key) {
 			case 'a':
 				graph = {
