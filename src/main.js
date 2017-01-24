@@ -63,11 +63,11 @@ $(() => {
 		}
 		for (let k in organizations) {
 			const organization = organizations[k];
-			const node = { id: organization._id, name: organization.name, activeSize: 10, inactiveSize: 10, type: 'organization', group: 4, color: '#646464', linksCount: 0 };
+			const node = { id: organization._id, name: organization.name, activeSize: 20, inactiveSize: 10, type: 'organization', group: 4, color: '#646464', linksCount: 0 };
 			for (let j in AppData.contracts) {
 				const contract = AppData.contracts[j];
 				if (contract.proveedor === organization.name) {
-					const link = { source: contract.ocid, target: organization._id, type: 'organization', distance: 40, color: '#706F74' };
+					const link = { source: contract.ocid, target: organization._id, type: 'organization', distance: 20, color: '#706F74' };
 					slidesObjects[4].links.push(link);
 					links.push(link);
 					node.linksCount++;
@@ -97,14 +97,30 @@ function getData(cb) {
 }
 
 function getContracts(cb) {
-	$.get('https://www.quienesquien.wiki/api/v1/contracts?dependency=Grupo%20Aeroportuario%20De%20La%20Ciudad%20De%20M%C3%A9xico,%20S.A.%20de%20C.V.&limit=1000')
-	.done(response => {cb(null, {contracts:response.data});})
-	.fail(response => {cb(null, {contracts:[]});});
+	async.parallel(
+		[
+			(parallelCB) => {
+				$.get('https://www.quienesquien.wiki/api/v1/contracts?dependency=Grupo%20Aeroportuario%20De%20La%20Ciudad%20De%20M%C3%A9xico,%20S.A.%20de%20C.V.&limit=1000')
+				.done(response => {parallelCB(null, response.data);})
+				.fail(response => {parallelCB(null, []);});
+			},
+			(parallelCB) => {
+				$.get('https://www.quienesquien.wiki/api/v1/contracts?dependency=Aeropuertos%20Y%20Servicios%20Auxiliares&limit=1000')
+				.done(response => {parallelCB(null, response.data);})
+				.fail(response => {parallelCB(null, []);});
+			}
+		],
+		(err, results) => {
+			cb(null, {contracts: [...results[0], ...results[1]]})
+		}
+	);
+	
+	
 }
 
 function getOrganizations(params, cb) {
 	const contractorNames = params.contracts.map((contract) => `name=${encodeURIComponent(contract.proveedor)}`);
-	const query = '?names=Bejar Galindo Lozano Y Compañia, S.C.';//`?${contractorNames.join('&')}`;
+	const query = '?names=Especialistas Ambientales';//`?${contractorNames.join('&')}`;
 	$.get(`https://www.quienesquien.wiki/api/v1/organizations${query}`)
 	.done(response => {cb(null, {...params, organizations: response.data});})
 	.fail(response => {cb(null, {...params, organizations: []});});
@@ -124,8 +140,8 @@ function setupD3() {
 	const color = d3.scaleOrdinal(d3.schemeCategory20);
 
 	const simulation = d3.forceSimulation()
-	    .force("charge", d3.forceManyBody().strength(d => -1000 ^ (d.linksCount)))
-	    .force("link", d3.forceLink().id(d => d.id).distance(d => d.distance).strength(5))
+	    .force("charge", d3.forceManyBody().strength(d => -100 ^ (d.linksCount)).distanceMax(700).distanceMin(100) )
+	    .force("link", d3.forceLink().id(d => d.id).distance(d => d.distance / 100).strength(5))
 	    .force("center", d3.forceCenter(width / 2 - offset, height / 2 - offset))
 	    .force("collide", d3.forceCollide().radius(d => d.activeSize * (1.2+ d.linksCount)).iterations(1))
 	    .on("tick", ticked);
@@ -188,7 +204,6 @@ function setupD3() {
 					d3.selectAll('.links.contract').transition().delay(100).attr('opacity', 1);
 					break;
 				case 3:
-					console.log('yep')
 					graph = {
 						nodes: setNodeSizeToType(objectToArray((new MathSet(nodes)).filter(slide_1, slide_2, slide_3, slide_4).toObject()), 'organization', 4),
 						links: objectToArray((new MathSet(links)).filter(slide_1, slide_2, slide_3, slide_4).toObject())
