@@ -173,6 +173,8 @@ function setupD3() {
 	const slide_3 = new Filter({property: 'type', operator: 'eq', expected: 'contract'});
 	const slide_4 = new Filter({property: 'type', operator: 'eq', expected: 'organization'});
 	$('#fullpage').fullpage({
+		paddingBottom: '150px',
+		paddingTop: '60px',
 		afterLoad: function(anchorLink, index){
 			switch (index - 1) {
 				case 0:

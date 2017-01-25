@@ -1,5 +1,6 @@
 @import "./normalize";
 @import "neat";
+@import "header";
 
 $blue: #002f4d;
 $grey: #5b5b5f;
@@ -15,7 +16,8 @@ body {
 }
 
 html,
-body{
+body,
+.main-container {
 	width: 100%;
 	height: 100%;
 }
@@ -38,7 +40,13 @@ p {
 }
 
 .fullpage {
+	// height: calc(100% - 60px - 150px) !important;
+	// height: 100% !important;
+	position: absolute !important;
+	top: 0;
+	bottom: 0;
 	opacity: 0;
+	width: 100%;
 }
 
 .graph-container {
@@ -53,11 +61,16 @@ p {
 	}
 }
 
-.main-container {
+.visualization-container {
 	height: 100%;
 	@include outer-container;
+	.fp-tableCell {
+		height: 100% !important;
+		position: relative;
+	}
 	.info-container {
 		width: 100%;
+		height: 100% !important;
 		position: relative;
 		.info-wrapper {
 			@include span-columns(4);
@@ -104,4 +117,17 @@ p {
 			
 				
 			
-			
+.site-header {
+	@include header(60);
+	background-color: white;
+	position: relative;
+	z-index: 1;
+}
+
+.site-footer {
+	position: absolute;
+	bottom: 0;
+	height: 150px;
+	background-color: grey;
+	z-index: 1;
+}
