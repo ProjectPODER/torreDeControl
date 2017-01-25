@@ -19,10 +19,15 @@
     .wg-navbar-menu {
       padding: 0;
       margin: 0 20px;
+      float: right;
+      width: 100%;
       .wg-navbar-item {
         list-style: none;
         display: inline-block;
+        float: left;
         a {
+          width: 100%;
+          text-align: center;
           display: inline-block;
           padding: ($height / 3) + px 10px;
           font-size: 16px;

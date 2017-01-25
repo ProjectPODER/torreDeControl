@@ -1,9 +1,19 @@
+
 @import "./normalize";
 @import "neat";
 @import "header";
 
 $blue: #002f4d;
 $grey: #5b5b5f;
+$orange: red;
+$black: #333;
+$white: #fff;
+
+* {
+	box-sizing: border-box;
+	-webkit-font-smoothing: antialiased;
+	color: $black;
+}
 
 body {
 	background-color:#E0E2E1;
@@ -13,6 +23,7 @@ body {
 	linear-gradient(-45deg, transparent 70px, #D3D5D4 1px, transparent 71px);
 	background-size:100px 100px, 100px 100px, 200px 200px, 200px 200px;
 	background-position:-2px -2px, -2px -2px, -2px -2px, -102px -102px;
+	font-family: Rajdhani;
 }
 
 html,
@@ -119,15 +130,70 @@ p {
 			
 .site-header {
 	@include header(60);
-	background-color: white;
+	background-color: $white;
 	position: relative;
 	z-index: 1;
+	.wg-navbar {
+			width: 70%;
+			max-width: 1024px;
+			background-color: $white;
+		.wg-navbar-menu {
+			.wg-navbar-item {
+				width: 25%;
+				a {
+					position: relative;
+					text-transform: uppercase;
+					text-decoration: none;
+					font-size: 20px;
+					&:before {
+						content: '';
+						margin: 0 auto;
+						border-bottom: 2px solid $orange;
+						position: absolute;
+						bottom: 10px;
+						left: 35%;
+						right: 35%;
+						opacity: 0;
+					}
+					&:hover,
+					&.active {
+						background-color: transparent;
+						font-weight: 600;
+						&:before {
+							opacity: 1;
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
 .site-footer {
 	position: absolute;
+	width: 100%;
 	bottom: 0;
 	height: 150px;
-	background-color: grey;
+	background-color: $grey;
 	z-index: 1;
+	padding: 10px;
+	.site-legend {
+		.legend-title,
+		.legend-body {
+			color: $white;
+		}
+	}
+	.site-development {
+		p {
+			color: $white;
+		}
+		
+	}
+
+	.site-social {
+		span {
+			color: $white;
+		}
+		
+	}
 }
