@@ -175,8 +175,11 @@ function setupD3() {
 	$('#fullpage').fullpage({
 		paddingBottom: '150px',
 		paddingTop: '60px',
-		afterLoad: function(anchorLink, index){
-			switch (index - 1) {
+    scrollingSpeed: 300,
+    onLeave: (index, nextIndex) => {
+    	$(`.info-container`).removeClass('slide-active slide-leaving');
+			$(`.slide-${index}`).removeClass('slide-active').addClass('slide-leaving');
+			switch (nextIndex - 1) {
 				case 0:
 					graph = {
 						nodes: setNodeSizeToType(objectToArray((new MathSet(nodes)).filter(slide_1).toObject()), 'all', 3),
@@ -215,10 +218,19 @@ function setupD3() {
 					d3.selectAll('.organization_type').transition().attr('r', d => d.inactiveSize);
 					d3.selectAll('.links.organization').transition().delay(100).attr('opacity', 1);
 					break;
-			}	
+			}
+    },
+		afterLoad: function(anchorLink, index){
+			$(`.slide-${index}`).addClass('slide-active');
 		},
 	});
 	$('.fullpage').animate({'opacity': 1});
+	graph = {
+		nodes: setNodeSizeToType(objectToArray((new MathSet(nodes)).filter(slide_1).toObject()), 'all', 3),
+		links: objectToArray((new MathSet(links)).filter(slide_1).toObject())
+	};
+	draw(graph);
+	d3.selectAll('.nodes.all').transition().attr('r', d => d.activeSize);
 	function draw(graph) {
 		const container = $('.graph-container');
 		const svg = $('svg');
