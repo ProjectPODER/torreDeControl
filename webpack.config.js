@@ -1,4 +1,5 @@
 var BowerWebpackPlugin = require("bower-webpack-plugin");
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 /* includes bourbon neat paths */
 var sassPaths = require("bourbon-neat").includePaths.map(function(sassPath) {
@@ -27,5 +28,11 @@ module.exports = {
 			}
 		]
 	},
-	plugins: [new BowerWebpackPlugin()]
+	plugins: [
+		new BowerWebpackPlugin(),
+		new HtmlWebpackPlugin ({
+	      inject: true,
+	      template: 'index.html'
+	    })
+	]
 };
