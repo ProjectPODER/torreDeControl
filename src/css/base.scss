@@ -61,6 +61,7 @@ figure {
 
 .content-title {
 	@include set-font($font-lg);
+	COLOR: $blue;
 }
 
 .article-title {
