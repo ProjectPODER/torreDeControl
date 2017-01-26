@@ -4,9 +4,12 @@
 	<meta charset="UTF-8">
 	<title>Document</title>
 	<link href="https://fonts.googleapis.com/css?family=Rajdhani|Roboto:300,400" rel="stylesheet">
+	<script type="text/javascript" src="dist/bundle.js"></script></body>
 </head>
-<body>
+<body class="page-metodologia fixed-page">
 	<div class="main-container">
+
+		<!-- header: maybe i would be better to use handlebars -->
 		
 		<header class="site-header">
 			<div class="wg-navbar-logo"><img src="http://www.ucarecdn.com/22383eb7-fdce-4189-a144-74906d4bef19/-/preview/300x300/" alt=""></div>
@@ -17,13 +20,18 @@
 			</div>
 			<navbar class="wg-navbar">
 				<ul class="wg-navbar-menu">
-					<li class="wg-navbar-item"><a class="active" href="">Microstorytelling</a></li>
+					<li class="wg-navbar-item"><a class="active" href="index.html">Microstorytelling</a></li>
 					<li class="wg-navbar-item"><a href="">Contratos</a></li>
-					<li class="wg-navbar-item"><a href="">Metodología</a></li>
+					<li class="wg-navbar-item"><a href="metodologia.html">Metodología</a></li>
 					<li class="wg-navbar-item"><a href="">Investigación</a></li>
 				</ul>
 			</navbar>
 		</header>
+
+		<!-- end of header -->
+
+		<!-- body: microstorytelling -->		
+
 		<div class="graph-container">
 			<svg></svg>
 		</div>
@@ -83,6 +91,11 @@
 				</div>
 			</div>
 		</div>
+
+		<!-- end of body -->
+
+		<!-- footer: maybe i would be better to use handlebars -->
+
 		<footer class="site-footer">
 			<section class="site-legend">
 				<h1 class="legend-title">Torre de control</h1>
@@ -97,6 +110,8 @@
 				<span class="icon-fb">fb</span><span class="icon-tw">tw</span>
 			</div>
 		</footer>
+
+		<!-- end of footer -->
 	</div>
 </body>
 </html>

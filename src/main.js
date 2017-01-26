@@ -53,7 +53,7 @@ $(() => {
 			{nodes: [], links: []},
 			{nodes: [], links: []}
 		]; 
-		$('#contracts_amount').text("$ " + (Math.round(contractsAmount/1000000)).toLocaleString() + " Millones");
+		$('#contracts_amount').text("$ " + (Math.round(contractsAmount/1000000)).toLocaleString() + " M");
 		$('#contracts_type').text(Object.keys(contractsByTypes).length);
 		$('#contracts_total').text(objectToArray(contractsByTypes).reduce(function(total, actual) {return total + Object.keys(actual.contracts).length}, 0));
 		const node = { id: 'contracts', name: 'contracts', activeSize: contractsAmount / 100000000, inactiveSize: 15, type: 'all', group: 1, color: '#BEA288', linksCount: 0 };
@@ -270,7 +270,7 @@ function setupD3() {
 	d3.selectAll('.nodes.all').transition().attr('r', d => d.activeSize);
 
 	function draw(graph) {
-		const container = $('.graph-container');
+		const container = $('svg');
 		const svg = $('svg');
 		const resG = $('.resizable-g');
 		const width = container.width();

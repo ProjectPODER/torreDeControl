@@ -1,0 +1,150 @@
+$blue: #013E5C;
+$grey: #5b5b5f;
+$orange: #E9B9B5;
+$black: #333;
+$white: #fff;
+$light-grey: #D3D5D4;
+@mixin set-font($size) {
+	font-size: $size + px;
+	line-height: ceil($size * 1.0625) + px;
+}
+
+$font-xs: 14;
+$font-sm: 16;
+$font-md: 20;
+$font-lg: 48;
+$font-xl: 70;
+
+
+@keyframes example {
+    from {background-color: red;}
+    to {background-color: yellow;}
+}
+
+* {
+	box-sizing: border-box;
+	-webkit-font-smoothing: antialiased;
+	color: $black;
+}
+
+body {
+	background-color:#E0E2E1;
+	background-image: linear-gradient(#D3D5D4 1px, transparent 1px),
+	linear-gradient(90deg, #D3D5D4 1px, transparent 1px),
+	linear-gradient(-45deg, transparent 70px, #D3D5D4 1px, transparent 71px),
+	linear-gradient(-45deg, transparent 70px, #D3D5D4 1px, transparent 71px);
+	background-size:100px 100px, 100px 100px, 200px 200px, 200px 200px;
+	background-position:-2px -2px, -2px -2px, -2px -2px, -102px -102px;
+	font-family: Rajdhani;
+}
+
+html,
+body,
+.main-container {
+	width: 100%;
+	height: 100%;
+}
+
+h1,
+h2,
+h3,
+p,
+figure {
+	margin: 0 0 10px 0;
+}
+
+.row {
+	@include row();
+}
+
+.content-title {
+	@include set-font($font-lg);
+}
+
+.article-title {
+	@include set-font($font-sm);
+}
+
+.article-excerpt {
+	@include set-font($font-md);
+	font-weight: 300;
+	.excerpt-strong {
+		display: block;
+		font-weight: 600;
+	}
+}
+
+.article-paragraph {
+	@include set-font($font-sm);
+}
+
+.site-footer {
+	width: 100%;
+	height: 150px;
+	background-color: $grey;
+	z-index: 1;
+	padding: 10px;
+	.fixed-page & {
+		bottom: 0;
+		position: absolute;
+	}
+	.site-legend {
+		.legend-title,
+		.legend-body {
+			color: $white;
+		}
+	}
+	.site-development {
+		p {
+			color: $white;
+		}
+		
+	}
+	.site-social {
+		span {
+			color: $white;
+		}
+		
+	}
+}
+
+.site-header {
+	@include header(60);
+	background-color: $white;
+	position: relative;
+	z-index: 1;
+	.wg-navbar {
+			width: 70%;
+			max-width: 1024px;
+			background-color: $white;
+		.wg-navbar-menu {
+			.wg-navbar-item {
+				width: 25%;
+				a {
+					position: relative;
+					text-transform: uppercase;
+					text-decoration: none;
+					font-size: 20px;
+					&:before {
+						content: '';
+						margin: 0 auto;
+						border-bottom: 2px solid $orange;
+						position: absolute;
+						bottom: 10px;
+						left: 35%;
+						right: 35%;
+						opacity: 0;
+					}
+					&:hover,
+					&.active {
+						background-color: transparent;
+						font-weight: 600;
+						&:before {
+							opacity: 1;
+						}
+					}
+				}
+			}
+		}
+	}
+}
