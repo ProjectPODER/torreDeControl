@@ -45,12 +45,14 @@ body,
 	height: 100%;
 }
 
+p,
 h1,
 h2,
 h3,
-p,
+ul,
 figure {
 	margin: 0 0 10px 0;
+	padding: 0;
 }
 
 .row {
