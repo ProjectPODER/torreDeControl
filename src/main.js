@@ -10,7 +10,23 @@ require('./css/main.scss');
 
 let nodes = [];
 let links = [];
+// const fs = -100;
+// const ld = 13;
+// const ls = 1;
+// const mn = 0;
+// const mx = 312;
+// const cr = 20;
 
+const fs = -350;
+const ls = 0.6;
+const ld = 70;
+
+const mn = 0;
+const mx = 1000;
+const cr = 20;
+// const fs = -250;
+// const ls = 0.6;
+// const ld = 80;
 let node;
 let link;
 let offset = 0;
@@ -54,7 +70,7 @@ $(() => {
 			for (let j in contractByType.contracts) {
 				const contract = contractByType.contracts[j];
 				const node = { id: contract.ocid, name: contract.amount, activeSize: Math.log(contract.amount) / 2, inactiveSize: 20, type: 'contract', group: 3, color: '#E086A9', linksCount: 0 };
-				const link = { source: contractByType.name, target: contract.ocid, type: 'contract', distance: 20, color: '#706F74' };
+				const link = { source: 'contracts', target: contract.ocid, type: 'contract', distance: 20, color: '#706F74' };
 				slidesObjects[3].nodes.push(node);
 				slidesObjects[3].links.push(link);
 				nodes.push(node);
@@ -79,6 +95,7 @@ $(() => {
 		nodes = [...slidesObjects[1].nodes, ...slidesObjects[2].nodes, ...slidesObjects[3].nodes, ...slidesObjects[4].nodes];
 		links = [...slidesObjects[1].links, ...slidesObjects[2].links, ...slidesObjects[3].links, ...slidesObjects[4].links];
 		setupD3();
+		window.graph = {nodes, links};
 	});
 	
 	
@@ -106,7 +123,7 @@ function getContracts(cb) {
 			},
 			(parallelCB) => {
 				$.get('https://www.quienesquien.wiki/api/v1/contracts?dependency=Aeropuertos%20Y%20Servicios%20Auxiliares&limit=1000')
-				.done(response => {parallelCB(null, response.data);})
+				.done(response => {parallelCB(null, []);})
 				.fail(response => {parallelCB(null, []);});
 			}
 		],
@@ -119,8 +136,11 @@ function getContracts(cb) {
 }
 
 function getOrganizations(params, cb) {
-	const contractorNames = params.contracts.map((contract) => `name=${encodeURIComponent(contract.proveedor)}`);
-	const query = '?names=Especialistas Ambientales';//`?${contractorNames.join('&')}`;
+	const organizationFilter = new Filter({property: 'proveedor'});
+	const contractorsNamesSet = new MathSet(params.contracts);
+	const organizationsByNames = Object.keys(contractorsNamesSet.countByFilterProperty(organizationFilter));
+	const organizationsNames = organizationsByNames.map((provider) => `name=${encodeURIComponent(provider)}`);
+	const query = `?${organizationsNames.join('&')}`.substr(0,2000);
 	$.get(`https://www.quienesquien.wiki/api/v1/organizations${query}`)
 	.done(response => {cb(null, {...params, organizations: response.data});})
 	.fail(response => {cb(null, {...params, organizations: []});});
@@ -131,23 +151,38 @@ function getPersons(cb) {
 	.done(response => {cb(null, response.data);});
 }
 
-
-
 function setupD3() {
 	const svg = d3.select("svg");
 	const width = $('svg').width();
 	const height = $('svg').height();
 	const color = d3.scaleOrdinal(d3.schemeCategory20);
 
-	const simulation = d3.forceSimulation()
-	    .force("charge", d3.forceManyBody().strength(d => -100 ^ (d.linksCount)).distanceMax(700).distanceMin(100) )
-	    .force("link", d3.forceLink().id(d => d.id).distance(d => d.distance / 100).strength(5))
-	    .force("center", d3.forceCenter(width / 2 - offset, height / 2 - offset))
-	    .force("collide", d3.forceCollide().radius(d => d.activeSize * (1.2+ d.linksCount)).iterations(1))
-	    .on("tick", ticked);
+	/* ----- Force Setup ----- */
+	/* Charges */
+	const forceManyBody = d3.forceManyBody();
+		forceManyBody.strength(fs);
+		// forceManyBody.distanceMax(mx);
+		// forceManyBody.distanceMin(mn);
+	/* Links */
+	const forceLink = d3.forceLink();
+		forceLink.id(d => d.id);
+		forceLink.distance(ld);
+		forceLink.strength(ls);
+		forceLink.iterations(3);
+	/* Center force */
+	const forceCenter = d3.forceCenter(width / 2 - offset, height / 2 - offset);
+	/* Collides */
+	const forceCollide = d3.forceCollide();
+		forceCollide.radius(d => d.activeSize * (1.2+ d.linksCount));
+		forceCollide.iterations(1);
 
-	window.simulation = simulation;
-	window.d3 = d3;
+	/* Simulation Setup */
+	const simulation = d3.forceSimulation()
+		.force("charge", forceManyBody)
+		.force("link", forceLink)
+		.force("center", forceCenter)
+		.force("collide", forceCollide)
+	    .on("tick", ticked);
 
 	let g = svg.append("g").attr("class", 'resizable-g');
 	link = g.append("g").selectAll('link');
@@ -193,6 +228,7 @@ function setupD3() {
 						nodes: setNodeSizeToType(objectToArray((new MathSet(nodes)).filter(slide_1, slide_2).toObject()), 'contract_type', 3),
 						links: objectToArray((new MathSet(links)).filter(slide_1, slide_2).toObject())
 					};
+
 					draw(graph);
 					d3.selectAll('.nodes.contract_type').transition().attr('r', d => d.activeSize);
 					d3.selectAll('.all').transition().attr('r', d => d.inactiveSize);
@@ -225,12 +261,14 @@ function setupD3() {
 		},
 	});
 	$('.fullpage').animate({'opacity': 1});
+
 	graph = {
 		nodes: setNodeSizeToType(objectToArray((new MathSet(nodes)).filter(slide_1).toObject()), 'all', 3),
 		links: objectToArray((new MathSet(links)).filter(slide_1).toObject())
 	};
 	draw(graph);
 	d3.selectAll('.nodes.all').transition().attr('r', d => d.activeSize);
+
 	function draw(graph) {
 		const container = $('.graph-container');
 		const svg = $('svg');
@@ -272,10 +310,18 @@ function setupD3() {
 			.attr("opacity", 0)
 			.merge(link);
 
+		forceManyBody.strength(fs);
+		// forceManyBody.distanceMax(mx);
+		// forceManyBody.distanceMin(mn);
+		forceLink.distance(ld);
+		forceLink.strength(ls);
+		forceCollide.radius(d => d.activeSize * (1.2+ d.linksCount));
+
+
 		simulation.nodes(graph.nodes);
 		simulation.force("link").links(graph.links);
 		simulation.force("center", d3.forceCenter(width / 2 - offset, height / 2 - offset))
-		simulation.alpha(0.1).restart();
+		simulation.alpha(0.5).restart();
 	}
 }
 

@@ -1,5 +1,6 @@
 var BowerWebpackPlugin = require("bower-webpack-plugin");
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 /* includes bourbon neat paths */
 var sassPaths = require("bourbon-neat").includePaths.map(function(sassPath) {
@@ -30,6 +31,11 @@ module.exports = {
 	},
 	plugins: [
 		new BowerWebpackPlugin(),
-		new ExtractTextPlugin("[name].css")
+		new ExtractTextPlugin("[name].css"),
+		new HtmlWebpackPlugin ({
+	      inject: true,
+	      template: 'index.html'
+	    })
+
 	]
 };
