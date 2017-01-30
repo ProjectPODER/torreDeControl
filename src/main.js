@@ -6,6 +6,7 @@ import async from 'async';
 import Filter from './filters.js';
 import MathSet from './sets.js';
 import Fullpage from 'fullpage.js';
+import {reactInit} from './contracts.js';
 require('./css/main.scss');
 
 let nodes = [];
@@ -39,6 +40,7 @@ const AppData = {
 };
 
 $(() => {
+	reactInit();
 	window.jQuery = $;
 
 	getData(data => {
