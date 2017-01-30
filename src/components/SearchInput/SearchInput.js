@@ -2,28 +2,50 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {increment} from '../../redux/modules/contracts';
+import {keywordChange} from '../../redux/modules/contracts';
 import {PropTypes} from 'react';
 
 @connect(
-    state => ({count: state.contracts.count}),
-    dispatch => bindActionCreators({increment}, dispatch))
+    state => ({keyword: state.contracts.keyword}),
+    dispatch => bindActionCreators({keywordChange}, dispatch))
 class SearchInput extends React.Component {
 	static propTypes = {
-		count: PropTypes.number,
-		increment: PropTypes.func.isRequired
+		keyword: PropTypes.string,
+		keywordChange: PropTypes.func.isRequired
 	}
 
-	handleClick = () => {
-		this.props.increment();
+	debounce = function(func, wait, immediate) {
+		var timeout;
+		return function(evt) {
+			evt.persist();
+			var context = this, args = arguments;
+			var later = function() {
+				timeout = null;
+				if (!immediate) func.apply(context, args);
+			};
+			var callNow = immediate && !timeout;
+			clearTimeout(timeout);
+			timeout = setTimeout(later, wait);
+			if (callNow) func.apply(context, args);
+		};
+	};
+
+	changeKeywordDebounced = this.debounce(function(evt) {
+		const newKeyword = evt.target.value;
+		this.props.keywordChange(newKeyword);
+	}, 250);
+
+	handleChange = (evt) => {
+		this.changeKeywordDebounced(evt);
 	}
+
 	render() {
-		const count = this.props.count;
+		const keyword = this.props.keyword;
 		return (
 			<div className="contract-search">
-				<span className="search-title" onClick={this.handleClick}>Búsqueda {count}</span>
+				<span className="search-title">Búsqueda</span>
 				<label className="search-box">
-					<input type="text" className="search-input" placeholder="Introduce palábra clave a buscar" />
+					<input type="text" className="search-input" placeholder="Introduce palábra clave a buscar" onChange={this.handleChange} defaultValue={keyword} />
 				</label>
 			</div>
 		);
