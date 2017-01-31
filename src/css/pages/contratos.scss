@@ -4,6 +4,21 @@
 		.content-title {
 			@include span-columns(12);
 		}
+		.sort-bar {
+			@include span-columns(12);
+			.sort-options-list {
+				@include span-columns(12);
+				.sort-by-title {
+					@include span-columns(7);
+				}
+				.sort-by-count {
+					@include span-columns(3);
+				}
+				.sort-by-amount {
+					@include span-columns(2);
+				}
+			}
+		}
 		.organizations-list {
 			@include span-columns(12);
 			.organizations-item {
@@ -11,22 +26,14 @@
 				.organizations-header {
 					@include span-columns(12);
 					.organizations-title {
-						@include span-columns(9);
-						&:last-child {
-							@include omega();
-						}
+						@include span-columns(7);
 					}
 					.organizations-count {
-						@include span-columns(1);
-						&:last-child {
-							@include omega();
-						}
+						@include span-columns(3);
 					}
 					.organizations-amount {
 						@include span-columns(2);
-						&:last-child {
-							@include omega();
-						}
+						@include omega();
 					}
 				}
 				
@@ -41,20 +48,29 @@
 
 	.site-content {
 		padding: 30px 10%;
+		.sort-bar {
+			.sort-options-list {
+				.sort-options-item {
+					cursor: pointer;
+				}
+			}
+		}
 		.organizations-list {
 			list-style: none;
 			.organizations-item {
+				cursor: pointer;
 				position: relative;
 				overflow: hidden;
 				padding: 10px;
 				margin-bottom: 0;
-				max-height: 50px;
+				max-height: 64px;
 				transition: max-height 300ms ease-out;
 				&.opened {
 					max-height: 800px;
 				}
 
 				.organizations-header {
+					height: 64px;
 					padding: 10px;
 					margin-bottom: 4px;
 					background-color: $grey;
@@ -62,6 +78,9 @@
 					.organizations-count,
 					.organizations-amount {
 						color: $white;
+					}
+					.organizations-amount {
+						text-align: right;
 					}
 				}
 				

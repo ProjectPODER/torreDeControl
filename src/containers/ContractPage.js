@@ -78,6 +78,7 @@ class ContractPage extends React.Component {
 
 		const filtered = contracts.filter((contract) => {
 			const title = contract.title.toLowerCase();
+			const organization = contract.proveedor.toLowerCase();
 			const startDate = contract.start_date;
 			const endDate = contract.end_date;
 			const date = contract.title.toLowerCase();
@@ -86,12 +87,13 @@ class ContractPage extends React.Component {
 			const contractTypeField = contract.type;
 
 			const inTitle = keywordInString(keyword, title);
+			const inOrganization = keywordInString(keyword, organization);
 			const inAmount = betweenAmounts(fromAmount, toAmount, amount);
 			const inDate = betweenDates(fromDate, toDate, startDate, endDate);
 			const inProcedureType = procedureType === procedureTypeField;
 			const inContractType = contractType === contractTypeField;
 			
-			return inTitle && inAmount && inDate && inProcedureType && inContractType;
+			return (inOrganization || inTitle) && inAmount && inDate && inProcedureType && inContractType;
 		});
 
 		return filtered;

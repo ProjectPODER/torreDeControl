@@ -7,7 +7,10 @@ import classNames from 'classnames';
 class OrganizationItem extends React.Component {
 	static propTypes = {
 		contracts: PropTypes.array,
-		opened: PropTypes.bool
+		opened: PropTypes.bool,
+		organizationName: PropTypes.string,
+		organizationAmount: PropTypes.number,
+		organizationCount: PropTypes.number,
 	}
 
 	tabClick = (tab) => {
@@ -16,9 +19,9 @@ class OrganizationItem extends React.Component {
 
 	render() {
 		const contracts = this.props.contracts;
-		const organizationName = contracts[0].value.proveedor;
-		const organizationAmount = contracts.reduce((semitotal, amount) => {return semitotal + amount.value.amount}, 0);
-		const organizationCount = contracts.length;
+		const organizationName = this.props.organizationName;
+		const organizationAmount = Math.floor(this.props.organizationAmount).toLocaleString();
+		const organizationCount = this.props.organizationCount;
 		const opened = this.props.opened;
 		return (
 			<li className={classNames(['organizations-item', {opened: opened}])}>

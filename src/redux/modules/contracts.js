@@ -4,8 +4,9 @@ const IS_LOADED = 'IS_LOADED';
 const FILTER_CHANGE = 'FILTER_CHANGE';
 const KEYWORD_CHANGE = 'KEYWORD_CHANGE';
 const GET_CONTRACTS_LIST = 'GET_CONTRACTS_LIST';
-const GET_CONTRACTS_LIST_SUCCESS = 'GET_CONTRACTS_LIST_SUCCESS';
 const GET_CONTRACTS_LIST_FAIL = 'GET_CONTRACTS_LIST_FAIL';
+const GET_CONTRACTS_LIST_SUCCESS = 'GET_CONTRACTS_LIST_SUCCESS';
+const CHANGE_SORT_CRITERIA = 'CHANGE_SORT_CRITERIA';
 
 const initialState = {
   keyword: '',
@@ -16,7 +17,9 @@ const initialState = {
   fromDate: (new Date('2010')).toLocaleString(),
   toDate: (new Date()).toLocaleString(),
   contracts: [],
-  loaded: false
+  loaded: false,
+  sortBy: 'byTitle',
+  reverse: false,
 };
 
 export default function reducer(state = initialState, action = {}) {
@@ -52,6 +55,13 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         loaded: true
       };
+    case CHANGE_SORT_CRITERIA:
+      const reverse = state.sortBy === action.newCriteria ? !state.reverse : false;
+      return {
+        ...state,
+        sortBy: action.newCriteria,
+        reverse
+      };
     default:
       return state;
   }
@@ -69,6 +79,13 @@ export function keywordChange(newKeyword) {
   return {
     type: KEYWORD_CHANGE,
     newKeyword
+  };
+}
+
+export function changeSortCriteria(newCriteria) {
+  return {
+    type: CHANGE_SORT_CRITERIA,
+    newCriteria
   };
 }
 

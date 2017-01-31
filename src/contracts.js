@@ -16,7 +16,12 @@ const reactInit = () => {
       );
     }
   }
-  ReactDOM.render(<App />, document.getElementById('contracts_page'));
+  const container = document.getElementById('contracts_page');
+  if(container) {
+    ReactDOM.render(<App />, container);
+  }
 };
 
 module.exports = {reactInit};
+
+//TODO: resolver inicio de react
