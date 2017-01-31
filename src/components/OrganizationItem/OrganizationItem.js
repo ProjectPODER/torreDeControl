@@ -29,6 +29,7 @@ class OrganizationItem extends React.Component {
 					<span className="organizations-title">{organizationName}</span>
 					<span className="organizations-count">{organizationCount}</span>
 					<span className="organizations-amount">{organizationAmount}</span>
+					<a href="#" className="organizations-send-info">Enviar más información</a>
 				</div>
 				<ContractsList contracts={contracts}/>
 			</li>

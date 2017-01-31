@@ -104,7 +104,7 @@ class ContractPage extends React.Component {
 		const contractsByOrganizations = this.groupByOrganizations(filteredContracts);
 		
 		return (
-			<div>
+			<div className="contracts-content">
 				<h1 className="content-title">Contratos por empresas</h1>
 				<SearchInput />
 				<SearchFilters />

@@ -90,7 +90,6 @@ class OrganizationsList extends React.Component {
 		const contractsByOrganizations = this.sortCriteria[sortBy](this.props.contractsByOrganizations, reverse);
 		return (
 			<div>
-				{this.props.sortBy}
 				<div className="sort-bar">
 					<ul className="sort-options-list">
 						<li className="sort-by-title sort-options-item" onClick={() => {this.changeSortCriteria('byTitle')}}>Empresa</li>

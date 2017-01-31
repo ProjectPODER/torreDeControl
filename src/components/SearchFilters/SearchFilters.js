@@ -35,10 +35,12 @@ class SearchFilters extends React.Component {
 		return (
 			<div className="contract-filter">
 				<div className="filter-box filter-amount">
-					<input name="fromAmount" type="text" className="filter-input filter-input-from" placeholder="desde $" defaultValue={fromAmount} onChange={this.changeFieldHandler} />
-					<input name="toAmount" type="text" className="filter-input filter-input-to" placeholder="hasta $" defaultValue={toAmount} onChange={this.changeFieldHandler} />
+					<span className="filter-title">Monto total <i className="title-tip">(en pesos mexicanos)</i></span>
+					<input name="fromAmount" type="text" className="filter-input half-input filter-input-from" placeholder="desde $" defaultValue={fromAmount} onChange={this.changeFieldHandler} />
+					<input name="toAmount" type="text" className="filter-input half-input filter-input-to" placeholder="hasta $" defaultValue={toAmount} onChange={this.changeFieldHandler} />
 				</div>
 				<div className="filter-box filter-contract-type">
+					<span className="filter-title">Tipo de contratación</span>
 					<select name="contractType" id="" className="filter-input" defaultValue={contractType} onChange={this.changeFieldHandler}>
 						<option value="Servicios">Servicios</option>
 						<option value="Servicios Relacionados con la OP">Servicios Relacionados con la OP</option>
@@ -46,6 +48,7 @@ class SearchFilters extends React.Component {
 					</select>
 				</div>
 				<div className="filter-box filter-procedure-type">
+					<span className="filter-title">Tipo de procedimiento</span>
 					<select name="procedureType" id="" className="filter-input" defaultValue={procedureType} onChange={this.changeFieldHandler}>
 						<option value="Adjudicación Directa Federal">Adjudicación Directa Federal</option>
 						<option value="tipo2">tipo2</option>
@@ -53,8 +56,9 @@ class SearchFilters extends React.Component {
 					</select>
 				</div>
 				<div className="filter-box filter-date">
-					<input name="fromDate" type="text" className="filter-input filter-input-from" placeholder="desde" defaultValue={fromDate} onChange={this.changeFieldHandler} />
-					<input name="toDate" type="text" className="filter-input filter-input-to" placeholder="hasta" defaultValue={toDate} onChange={this.changeFieldHandler} />
+					<span className="filter-title">Rango de fechas</span>
+					<input name="fromDate" type="text" className="filter-input half-input filter-input-from" placeholder="desde" defaultValue={fromDate} onChange={this.changeFieldHandler} />
+					<input name="toDate" type="text" className="filter-input half-input filter-input-to" placeholder="hasta" defaultValue={toDate} onChange={this.changeFieldHandler} />
 				</div>
 			</div>
 		);
