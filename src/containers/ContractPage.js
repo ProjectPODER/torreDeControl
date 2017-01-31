@@ -7,6 +7,7 @@ import {connect} from 'react-redux';
 import {isLoaded, getContractsList} from '../redux/modules/contracts';
 import {bindActionCreators} from 'redux';
 import MathSet from '../sets.js';
+import OrganizationsList from '../components/OrganizationsList/OrganizationsList';
 
 @connect(
     state => ({
@@ -105,37 +106,7 @@ class ContractPage extends React.Component {
 				<h1 className="content-title">Contratos por empresas</h1>
 				<SearchInput />
 				<SearchFilters />
-				<ul className="organizations-list">
-					{contractsByOrganizations.map((contracts, key) => {
-						const showContractsByOrganizations = contracts
-							.map((_contract) => {
-								const contract = _contract.value;
-								const title = contract.title;
-								const id = contract._id;
-								return (<li key={contract._id} className="contracts-item">{contract.title}</li>);
-							});
-
-						const organizationTitle = contracts[0].value.proveedor;
-						const organizationCount = contracts.length;
-						const organizationAmount = contracts.reduce((subtotal, actual) => {return subtotal + actual.value.amount;}, 0);
-						const showContractsByOrganizationsView = (
-							<li key={key} className="organizations-item">
-								<div className="organizations-header">
-									<span className="organizations-title">{organizationTitle}</span>
-									<span className="organizations-count">{organizationCount}</span>
-									<span className="organizations-amount">{organizationAmount}</span>
-								</div>
-								<ul className="contracts-list">
-									{showContractsByOrganizations}
-								</ul>
-							</li>
-						);
-
-						return showContractsByOrganizations.length ? showContractsByOrganizationsView : null;
-						
-					})}
-
-				</ul>
+				<OrganizationsList contractsByOrganizations={contractsByOrganizations}/>
 			</div>
 		);
 	}

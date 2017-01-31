@@ -45,9 +45,14 @@
 			list-style: none;
 			.organizations-item {
 				position: relative;
-				overflow: auto;
+				overflow: hidden;
 				padding: 10px;
-				margin-bottom: 20px;
+				margin-bottom: 0;
+				max-height: 50px;
+				transition: max-height 300ms ease-out;
+				&.opened {
+					max-height: 800px;
+				}
 
 				.organizations-header {
 					padding: 10px;
