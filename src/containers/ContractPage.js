@@ -6,6 +6,7 @@ import {PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {isLoaded, getContractsList} from '../redux/modules/contracts';
 import {bindActionCreators} from 'redux';
+import MathSet from '../sets.js';
 
 @connect(
     state => ({
@@ -54,12 +55,18 @@ class ContractPage extends React.Component {
 		return str.indexOf(keyword) > -1;
 	}
 
-	render() {
+	groupByOrganizations(contracts) {
+		const contractsSet = new MathSet(contracts);
+		contractsSet.indexBy("proveedor");
+		const contractsByOrganizations = contractsSet.indexes.proveedor;
+		window.contracts = Object.keys(contractsByOrganizations).map(key => contractsByOrganizations[key]);
+		return Object.keys(contractsByOrganizations).map(key => contractsByOrganizations[key]);
+	}
+
+	filterContracts(contracts) {
 		const betweenAmounts = this.betweenAmounts;
 		const betweenDates = this.betweenDates;
 		const keywordInString = this.keywordInString;
-
-		const contracts = this.props.contracts;
 		const keyword = this.props.keyword.toLowerCase().trim();
 		const fromAmount = this.props.fromAmount;
 		const toAmount = this.props.toAmount;
@@ -67,35 +74,67 @@ class ContractPage extends React.Component {
 		const procedureType = this.props.procedureType;
 		const fromDate = this.props.fromDate;
 		const toDate = this.props.toDate;
+
+		const filtered = contracts.filter((contract) => {
+			const title = contract.title.toLowerCase();
+			const startDate = contract.start_date;
+			const endDate = contract.end_date;
+			const date = contract.title.toLowerCase();
+			const amount = parseInt(contract.amount);
+			const procedureTypeField = contract.procedure_type;
+			const contractTypeField = contract.type;
+
+			const inTitle = keywordInString(keyword, title);
+			const inAmount = betweenAmounts(fromAmount, toAmount, amount);
+			const inDate = betweenDates(fromDate, toDate, startDate, endDate);
+			const inProcedureType = procedureType === procedureTypeField;
+			const inContractType = contractType === contractTypeField;
+			
+			return inTitle && inAmount && inDate && inProcedureType && inContractType;
+		});
+
+		return filtered;
+	}
+
+	render() {
+		const filteredContracts = this.filterContracts(this.props.contracts)
+		const contractsByOrganizations = this.groupByOrganizations(filteredContracts);
+		
 		return (
 			<div>
-				<h1 className="content-title">Contatos por empresas</h1>
+				<h1 className="content-title">Contratos por empresas</h1>
 				<SearchInput />
 				<SearchFilters />
-				<ul>
-					{contracts
-						.filter((contract) => {
-							const title = contract.title.toLowerCase();
-							const startDate = contract.start_date;
-							const endDate = contract.end_date;
-							const date = contract.title.toLowerCase();
-							const amount = parseInt(contract.amount);
-							const procedureTypeField = contract.procedure_type;
-							const contractTypeField = contract.type;
+				<ul className="organizations-list">
+					{contractsByOrganizations.map((contracts, key) => {
+						const showContractsByOrganizations = contracts
+							.map((_contract) => {
+								const contract = _contract.value;
+								const title = contract.title;
+								const id = contract._id;
+								return (<li key={contract._id} className="contracts-item">{contract.title}</li>);
+							});
 
-							const inTitle = keywordInString(keyword, title);
-							const inAmount = betweenAmounts(fromAmount, toAmount, amount);
-							const inDate = betweenDates(fromDate, toDate, startDate, endDate);
-							const inProcedureType = procedureType === procedureTypeField;
-							const inContractType = contractType === contractTypeField;
-							return inTitle && inAmount && inDate && inProcedureType && inContractType;
-						})
-						.map((contract) => {
-							const title = contract.title;
-							const id = contract._id;
-							return (<li key={contract._id}>{contract.title}</li>);
-						})
-					}
+						const organizationTitle = contracts[0].value.proveedor;
+						const organizationCount = contracts.length;
+						const organizationAmount = contracts.reduce((subtotal, actual) => {return subtotal + actual.value.amount;}, 0);
+						const showContractsByOrganizationsView = (
+							<li key={key} className="organizations-item">
+								<div className="organizations-header">
+									<span className="organizations-title">{organizationTitle}</span>
+									<span className="organizations-count">{organizationCount}</span>
+									<span className="organizations-amount">{organizationAmount}</span>
+								</div>
+								<ul className="contracts-list">
+									{showContractsByOrganizations}
+								</ul>
+							</li>
+						);
+
+						return showContractsByOrganizations.length ? showContractsByOrganizationsView : null;
+						
+					})}
+
 				</ul>
 			</div>
 		);

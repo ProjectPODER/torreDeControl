@@ -41,7 +41,7 @@ class SearchFilters extends React.Component {
 				<div className="filter-box filter-contract-type">
 					<select name="contractType" id="" className="filter-input" defaultValue={contractType} onChange={this.changeFieldHandler}>
 						<option value="Servicios">Servicios</option>
-						<option value="tipo2">tipo2</option>
+						<option value="Servicios Relacionados con la OP">Servicios Relacionados con la OP</option>
 						<option value="tipo3">tipo3</option>
 					</select>
 				</div>

@@ -11,9 +11,9 @@ const initialState = {
   keyword: '',
   fromAmount: 0,
   toAmount: 100000000,
-  contractType: 'Servicios',
+  contractType: 'Servicios Relacionados con la OP',
   procedureType: 'Adjudicación Directa Federal',
-  fromDate: (new Date()).toLocaleString(),
+  fromDate: (new Date('2010')).toLocaleString(),
   toDate: (new Date()).toLocaleString(),
   contracts: [],
   loaded: false
