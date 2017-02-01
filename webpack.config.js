@@ -26,6 +26,10 @@ module.exports = {
 			{
 				test: /\.scss$/,
 				loader: 'style-loader!css-loader!sass-loader?' + sassPaths /* sassPaths adds bourbon neat paths */
+			},
+			{
+				test: /\.css$/,
+				loader: 'style-loader!css-loader?'
 			}
 		]
 	},

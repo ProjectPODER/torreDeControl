@@ -8,17 +8,18 @@ import {isLoaded, getContractsList} from '../redux/modules/contracts';
 import {bindActionCreators} from 'redux';
 import MathSet from '../sets.js';
 import OrganizationsList from '../components/OrganizationsList/OrganizationsList';
+import moment from 'moment';
 
 @connect(
     state => ({
     	contracts: state.contracts.contracts,
     	keyword: state.contracts.keyword,
     	fromAmount: state.contracts.fromAmount,
-		toAmount: state.contracts.toAmount,
-		contractType: state.contracts.contractType,
-		procedureType: state.contracts.procedureType,
-		fromDate: state.contracts.fromDate,
-		toDate: state.contracts.toDate,
+			toAmount: state.contracts.toAmount,
+			contractType: state.contracts.contractType,
+			procedureType: state.contracts.procedureType,
+			fromDate: state.contracts.fromDate,
+			toDate: state.contracts.toDate,
     	loaded: state.contracts.loaded
     }),
     dispatch => bindActionCreators({isLoaded, getContractsList}, dispatch))
@@ -35,8 +36,8 @@ class ContractPage extends React.Component {
 		toAmount: PropTypes.number,
 		contractType: PropTypes.string,
 		procedureType: PropTypes.string,
-		fromDate: PropTypes.string,
-		toDate: PropTypes.string,
+		fromDate: PropTypes.instanceOf(moment),
+		toDate: PropTypes.instanceOf(moment),
 		loaded: PropTypes.bool
 	}
 

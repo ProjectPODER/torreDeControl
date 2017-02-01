@@ -4,6 +4,9 @@ import {PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {filterChange} from '../../redux/modules/contracts';
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
+require('react-datepicker/dist/react-datepicker.css')
 
 @connect(
     state => ({...state.contracts}),
@@ -14,8 +17,8 @@ class SearchFilters extends React.Component {
 		toAmount: PropTypes.number,
 		contractType: PropTypes.string,
 		procedureType: PropTypes.string,
-		fromDate: PropTypes.string,
-		toDate: PropTypes.string,
+		fromDate: PropTypes.instanceOf(moment),
+		toDate: PropTypes.instanceOf(moment),
 		filterChange: PropTypes.func.isRequired
 	}
 
@@ -23,6 +26,14 @@ class SearchFilters extends React.Component {
 		const newValue = evt.target.value;
 		const fieldName = evt.target.name;
 		this.props.filterChange(fieldName, newValue);
+	};
+
+	changeFromDateHandler = (date) => {
+		this.props.filterChange('fromDate', date);
+	};
+
+	changeToDateHandler = (date) => {
+		this.props.filterChange('toDate', date);
 	};
 
 	render() {
@@ -57,8 +68,8 @@ class SearchFilters extends React.Component {
 				</div>
 				<div className="filter-box filter-date">
 					<span className="filter-title">Rango de fechas</span>
-					<input name="fromDate" type="text" className="filter-input half-input filter-input-from" placeholder="desde" defaultValue={fromDate} onChange={this.changeFieldHandler} />
-					<input name="toDate" type="text" className="filter-input half-input filter-input-to" placeholder="hasta" defaultValue={toDate} onChange={this.changeFieldHandler} />
+					<DatePicker selected={fromDate} onChange={this.changeFromDateHandler} className="filter-input filter-input-from" placeholder="desde" defaultValue={fromDate} />
+					<DatePicker selected={toDate} onChange={this.changeToDateHandler} className="filter-input filter-input-to" placeholder="hasta" defaultValue={toDate} />
 				</div>
 			</div>
 		);

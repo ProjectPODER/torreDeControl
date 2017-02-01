@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import moment from 'moment';
 
 const IS_LOADED = 'IS_LOADED';
 const FILTER_CHANGE = 'FILTER_CHANGE';
@@ -14,8 +15,8 @@ const initialState = {
   toAmount: 100000000,
   contractType: 'Servicios Relacionados con la OP',
   procedureType: 'Adjudicación Directa Federal',
-  fromDate: (new Date('2010')).toLocaleString(),
-  toDate: (new Date()).toLocaleString(),
+  fromDate: moment('1/1/2010'),
+  toDate: moment(),
   contracts: [],
   loaded: false,
   sortBy: 'byTitle',

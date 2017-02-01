@@ -22,7 +22,8 @@
 					.filter-input {
 						@include span-columns(12 of 12);
 					}
-					.half-input {
+					.half-input,
+					.react-datepicker__input-container {
 						@include span-columns(6 of 12);
 					}
 				}
