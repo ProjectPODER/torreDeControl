@@ -5,6 +5,7 @@ import OrgainzationItem from '../OrganizationItem/OrganizationItem';
 import { connect } from 'react-redux';
 import { changeSortCriteria } from '../../redux/modules/contracts';
 import { bindActionCreators } from 'redux';
+import classNames from 'classnames';
 
 @connect(
     state => ({
@@ -92,9 +93,9 @@ class OrganizationsList extends React.Component {
 			<div>
 				<div className="sort-bar">
 					<ul className="sort-options-list">
-						<li className="sort-by-title sort-options-item" onClick={() => {this.changeSortCriteria('byTitle')}}>Empresa</li>
-						<li className="sort-by-count sort-options-item" onClick={() => {this.changeSortCriteria('byCount')}}>Cant. de Contratos</li>
-						<li className="sort-by-amount sort-options-item" onClick={() => {this.changeSortCriteria('byAmount')}}>Monto Total</li>
+						<li className="sort-by-title sort-options-item" onClick={() => {this.changeSortCriteria('byTitle')}}>Empresa <span className="arrows"><i className={classNames(["arrow-top", {active: reverse && sortBy == 'byTitle'}])}>⟨</i><i className={classNames(["arrow-bottom", {active: !reverse && sortBy == 'byTitle'}])}>⟩</i></span></li>
+						<li className="sort-by-count sort-options-item" onClick={() => {this.changeSortCriteria('byCount')}}>Cant. de Contratos <span className="arrows"><i className={classNames(["arrow-top", {active: reverse && sortBy == 'byCount'}])}>⟨</i><i className={classNames(["arrow-bottom", {active: !reverse && sortBy == 'byCount'}])}>⟩</i></span></li>
+						<li className="sort-by-amount sort-options-item" onClick={() => {this.changeSortCriteria('byAmount')}}>Monto Total <span className="arrows"><i className={classNames(["arrow-top", {active: reverse && sortBy == 'byAmount'}])}>⟨</i><i className={classNames(["arrow-bottom", {active: !reverse && sortBy == 'byAmount'}])}>⟩</i></span></li>
 					</ul>
 				</div>
 				<ul className="organizations-list">

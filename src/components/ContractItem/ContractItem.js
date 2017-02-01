@@ -11,6 +11,7 @@ class ContractItem extends React.Component {
 		startDate: PropTypes.string,
 		endDate: PropTypes.string,
 		ocid: PropTypes.number,
+		contractLink: PropTypes.string,
 	}
 
 	render() {
@@ -21,6 +22,7 @@ class ContractItem extends React.Component {
 		const startDate = (new Date(this.props.startDate)).toLocaleDateString();
 		const endDate = (new Date(this.props.endDate)).toLocaleDateString();
 		const ocid = this.props.ocid;
+		const contractLink = this.props.contractLink;
 		
 		return (
 			<li className="contracts-item">
@@ -35,6 +37,7 @@ class ContractItem extends React.Component {
 						<span className="contract-start-date">Inicio: {startDate}</span>
 						<span className="contract-end-date">Finalización: {endDate}</span>
 						<span className="contract-ocid">OCID: {ocid}</span>
+						<a rel="noopener noreferrer" target="_blank" href={contractLink} className="contract-link">Enlace a contrato</a>
 					</div>
 				</div>
 			</li>

@@ -1,6 +1,7 @@
 $blue: #013E5C;
 $grey: #5b5b5f;
-$orange: #E9B9B5;
+$orange: #C1463A;
+$light-orange: #E9B9B5;
 $black: #333;
 $white: #fff;
 $light-grey: #D3D5D4;
@@ -9,6 +10,7 @@ $light-grey: #D3D5D4;
 	line-height: ceil($size * 1.0625) + px;
 }
 
+$font-xxs: 12;
 $font-xs: 14;
 $font-sm: 16;
 $font-md: 20;
@@ -54,6 +56,15 @@ figure {
 	margin: 0 0 10px 0;
 	padding: 0;
 }
+
+input,
+select {
+	font-family: Rajdhani;
+	@include set-font($font-sm);
+	line-height: 12px;
+	padding: 0 5px;
+}
+
 
 .row {
 	@include row();

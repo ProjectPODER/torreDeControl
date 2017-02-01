@@ -36,7 +36,7 @@
 						@include span-columns(5);
 					}
 					.sort-by-count {
-						@include span-columns(2);
+						@include span-columns(3);
 					}
 					.sort-by-amount {
 						@include span-columns(2);
@@ -53,13 +53,13 @@
 							@include span-columns(5);
 						}
 						.organizations-count {
-							@include span-columns(2);
+							@include span-columns(3);
 						}
 						.organizations-amount {
-							@include span-columns(1);
+							@include span-columns(2);
 						}
 						.organizations-send-info {
-							@include span-columns(3);
+							@include span-columns(2);
 							@include omega();	
 						}
 					}
@@ -107,11 +107,14 @@
 	.site-content {
 		padding: 30px 10%;
 		.contracts-content {
+			.search-title {
+				display: block;
+				color: $blue;
+				font-weight: 600;
+				margin-bottom: 5px;
+			}
 			.search-box {
-				margin-bottom: 10px;
-				.search-title {
-					display: block;
-				}
+				margin-bottom: 15px;
 				.contract-search {
 
 				}
@@ -120,7 +123,14 @@
 				margin-bottom: 40px;
 				.filter-box {
 					margin-bottom: 10px;
-					.filter-input {
+					.filter-title {
+						margin-bottom: 5px;
+						display: inline-block;
+						color: $blue;
+						font-weight: 600;
+						.title-tip {
+							@include set-font($font-xxs);
+						}
 					}
 					.half-input {
 						
@@ -134,6 +144,31 @@
 					margin-bottom: 5px;
 					.sort-options-item {
 						cursor: pointer;
+						.arrows {
+							margin-left: 15px;
+							position: relative;
+							.arrow-top,
+							.arrow-bottom {
+								position: absolute;
+								right: 0;
+								display: inline-block;
+								font-style: normal;
+								transform: rotate(90deg);
+								font-size: 10px;
+								font-weight: 600;
+								color: $black;
+								opacity: 0.4;
+								&.active {
+									opacity: 1;
+								}
+							}
+							.arrow-top {
+								top: 0px;
+							}
+							.arrow-bottom {
+								bottom: 0px;
+							}
+						}
 					}
 				}
 			}
@@ -155,13 +190,28 @@
 						padding: 25px 10px 10px;
 						margin-bottom: 4px;
 						background-color: #cccccc;
-						.organizations-title,
+						.organizations-title {
+							color: $blue;
+							font-weight: 600;
+						}
 						.organizations-count,
 						.organizations-amount {
 							color: $black;
 						}
 						.organizations-amount {
 							text-align: right;
+						}
+						.organizations-send-info {
+							@include set-font($font-xxs);
+							text-transform: uppercase;
+							background-color: $orange;
+							color: $white;
+							text-decoration: none;
+							padding: 4px 0;
+							text-align: center;
+							&:hover {
+								background-color: $light-orange;
+							}
 						}
 					}
 					
@@ -177,6 +227,7 @@
 							.contract-title{
 								margin-bottom: 10px;
 								color: $blue;
+								font-weight: 600;
 							}
 							.contract-details{
 
@@ -201,6 +252,17 @@
 								}
 								.contract-ocid{
 
+								}
+								.contract-link {
+									@include set-font($font-xxs);
+									text-transform: uppercase;
+									background-color: $orange;
+									color: $white;
+									text-decoration: none;
+									padding: 4px;
+									&:hover {
+										background-color: $light-orange;
+									}
 								}
 							}
 						}
