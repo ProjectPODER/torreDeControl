@@ -3,16 +3,17 @@ import ReactDOM from 'react-dom';
 import { PropTypes } from 'react';
 import OrgainzationItem from '../OrganizationItem/OrganizationItem';
 import { connect } from 'react-redux';
-import { changeSortCriteria } from '../../redux/modules/contracts';
+import { changeSortCriteria, paginationGoToNextPage, paginationGoToPreviousPage, paginationGoToPage, setFilteredResults } from '../../redux/modules/contracts';
 import { bindActionCreators } from 'redux';
 import classNames from 'classnames';
 
 @connect(
     state => ({
     	sortBy: state.contracts.sortBy,
-    	reverse: state.contracts.reverse
+    	reverse: state.contracts.reverse,
+    	pagination: state.contracts.pagination
     }),
-    dispatch => bindActionCreators({changeSortCriteria}, dispatch))
+    dispatch => bindActionCreators({changeSortCriteria, paginationGoToNextPage, paginationGoToPreviousPage, paginationGoToPage, setFilteredResults}, dispatch))
 class OrganizationsList extends React.Component {
 	constructor() {
 		super();
@@ -20,10 +21,21 @@ class OrganizationsList extends React.Component {
 			tabsOpened: []
 		};
 	}
+
+	componentWillReceiveProps(nextProps) {
+		this.props.setFilteredResults(nextProps.contractsByOrganizations.length);
+	}
+
 	static propTypes = {
 		contractsByOrganizations: PropTypes.array.isRequired,
 		sortBy: PropTypes.string,
-		reverse: PropTypes.bool
+		reverse: PropTypes.bool,
+		pagination: PropTypes.object,
+		changeSortCriteria: PropTypes.func,
+		paginationGoToNextPage: PropTypes.func,
+		paginationGoToPreviousPage: PropTypes.func,
+		paginationGoToPage: PropTypes.func,
+		setFilteredResults: PropTypes.func
 	}
 
 	tabClick = (tab) => {
@@ -89,6 +101,11 @@ class OrganizationsList extends React.Component {
 		const sortBy = this.props.sortBy;
 		const reverse = this.props.reverse;
 		const contractsByOrganizations = this.sortCriteria[sortBy](this.props.contractsByOrganizations, reverse);
+		const paginationResultsPerPage = this.props.pagination.resultsPerPage;
+		const paginationFrom = this.props.pagination.page * paginationResultsPerPage;
+		const paginationTo = paginationFrom + paginationResultsPerPage;
+		const paginatedContracts = contractsByOrganizations.slice(paginationFrom, paginationTo);
+
 		return (
 			<div>
 				<div className="sort-bar">
@@ -99,7 +116,7 @@ class OrganizationsList extends React.Component {
 					</ul>
 				</div>
 				<ul className="organizations-list">
-					{contractsByOrganizations.map((contracts) => {
+					{paginatedContracts.map((contracts) => {
 						const organizationTitle = contracts[0].value.proveedor;
 						const opened = this.state.tabsOpened[organizationTitle] === true;
 						const organizationName = contracts[0].value.proveedor;
@@ -108,6 +125,10 @@ class OrganizationsList extends React.Component {
 						return <OrgainzationItem organizationName={organizationName} organizationAmount={organizationAmount} organizationCount={organizationCount} opened={opened} key={organizationTitle} contracts={contracts} tabClick={this.tabClick}/>	
 					})}
 				</ul>
+				<div>
+					<button onClick={this.props.paginationGoToPreviousPage}>Previous</button>
+					<button onClick={this.props.paginationGoToNextPage}>Next</button>
+				</div>
 			</div>
 		);
 	}

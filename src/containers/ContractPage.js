@@ -2,10 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import SearchInput from '../components/SearchInput/SearchInput'
 import SearchFilters from '../components/SearchFilters/SearchFilters'
-import {PropTypes} from 'react';
-import {connect} from 'react-redux';
-import {isLoaded, getContractsList} from '../redux/modules/contracts';
-import {bindActionCreators} from 'redux';
+import { PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { isLoaded, getContractsList } from '../redux/modules/contracts';
+import { bindActionCreators } from 'redux';
 import MathSet from '../sets.js';
 import OrganizationsList from '../components/OrganizationsList/OrganizationsList';
 import moment from 'moment';
@@ -93,10 +93,10 @@ class ContractPage extends React.Component {
 			const inDate = betweenDates(fromDate, toDate, startDate, endDate);
 			const inProcedureType = procedureType === procedureTypeField;
 			const inContractType = contractType === contractTypeField;
+
 			
 			return (inOrganization || inTitle) && inAmount && inDate && inProcedureType && inContractType;
 		});
-
 		return filtered;
 	}
 

@@ -1,16 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {PropTypes} from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import {filterChange} from '../../redux/modules/contracts';
+import { PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { filterChange, paginationGoToPage } from '../../redux/modules/contracts';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 require('react-datepicker/dist/react-datepicker.css')
 
 @connect(
     state => ({...state.contracts}),
-    dispatch => bindActionCreators({filterChange}, dispatch))
+    dispatch => bindActionCreators({filterChange, paginationGoToPage}, dispatch))
 class SearchFilters extends React.Component {
 	static propTypes = {
 		fromAmount: PropTypes.number,
@@ -19,21 +19,25 @@ class SearchFilters extends React.Component {
 		procedureType: PropTypes.string,
 		fromDate: PropTypes.instanceOf(moment),
 		toDate: PropTypes.instanceOf(moment),
-		filterChange: PropTypes.func.isRequired
+		filterChange: PropTypes.func.isRequired,
+		paginationGoToPage: PropTypes.func
 	}
 
 	changeFieldHandler = (evt) => {
 		const newValue = evt.target.value;
 		const fieldName = evt.target.name;
 		this.props.filterChange(fieldName, newValue);
+		this.props.paginationGoToPage(0);
 	};
 
 	changeFromDateHandler = (date) => {
 		this.props.filterChange('fromDate', date);
+		this.props.paginationGoToPage(0);
 	};
 
 	changeToDateHandler = (date) => {
 		this.props.filterChange('toDate', date);
+		this.props.paginationGoToPage(0);
 	};
 
 	render() {
