@@ -29,7 +29,8 @@ const initialState = {
   pagination: {
     page: 0,
     resultsPerPage: 10
-  }
+  },
+  pages: 0
 };
 
 export default function reducer(state = initialState, action = {}) {
@@ -83,7 +84,8 @@ export default function reducer(state = initialState, action = {}) {
           ...state.pagination,
           page: newPage
         }
-      };}
+      };
+    }
     case PAGINATION_GO_TO_NEXT_PAGE: {
       const resultsCount = state.filteredResults;
       const resultsPerPage = state.pagination.resultsPerPage;
@@ -95,7 +97,8 @@ export default function reducer(state = initialState, action = {}) {
           ...state.pagination,
           page: newPage
         }
-      };}
+      };
+    }
     case PAGINATION_GO_TO_PREVIOUS_PAGE: {
       const newPage = Math.max(0, state.pagination.page - 1);
       return {
@@ -104,12 +107,18 @@ export default function reducer(state = initialState, action = {}) {
           ...state.pagination,
           page: newPage
         }
-      };}
-    case SET_FILTERED_RESULTS:
+      };
+    }
+    case SET_FILTERED_RESULTS: {
+      const resultsCount = action.filteredResults;
+      const resultsPerPage = state.pagination.resultsPerPage;
+      const pages = Math.ceil(resultsCount / resultsPerPage);
       return {
         ...state,
+        pages,
         filteredResults: action.filteredResults
       };
+    }
     default:
       return state;
   }

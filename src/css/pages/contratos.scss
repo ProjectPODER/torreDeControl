@@ -107,6 +107,31 @@
 	.site-content {
 		padding: 30px 10%;
 		.contracts-content {
+			.pagination-bar {
+				float: right;
+				display: none;
+				&.visible {
+					display: block;
+				}
+				.pagination-item {
+					background-color: transparent;
+					border: none;
+					display: inline-block;
+					margin: 4px;
+					cursor: pointer;
+					font-family: Rajdhani;
+					@include set-font($font-xs);
+					&.active {
+						font-weight: 600;
+					}
+					&:hover {
+						text-decoration: underline;
+					}
+					&:focus {
+						outline: none;
+					}
+				}
+			}
 			.search-title {
 				display: block;
 				color: $blue;

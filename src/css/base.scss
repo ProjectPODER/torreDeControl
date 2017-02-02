@@ -95,7 +95,7 @@ select {
 .site-footer {
 	width: 100%;
 	height: 150px;
-	background-color: $grey;
+	background-color: $light-grey;
 	z-index: 1;
 	padding: 10px;
 	.fixed-page & {
@@ -105,18 +105,18 @@ select {
 	.site-legend {
 		.legend-title,
 		.legend-body {
-			color: $white;
+			color: $black;
 		}
 	}
 	.site-development {
 		p {
-			color: $white;
+			color: $black;
 		}
 		
 	}
 	.site-social {
 		span {
-			color: $white;
+			color: $black;
 		}
 		
 	}

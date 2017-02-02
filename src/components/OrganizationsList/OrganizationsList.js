@@ -11,7 +11,8 @@ import classNames from 'classnames';
     state => ({
     	sortBy: state.contracts.sortBy,
     	reverse: state.contracts.reverse,
-    	pagination: state.contracts.pagination
+    	pagination: state.contracts.pagination,
+    	pages: state.contracts.pages,
     }),
     dispatch => bindActionCreators({changeSortCriteria, paginationGoToNextPage, paginationGoToPreviousPage, paginationGoToPage, setFilteredResults}, dispatch))
 class OrganizationsList extends React.Component {
@@ -102,9 +103,12 @@ class OrganizationsList extends React.Component {
 		const reverse = this.props.reverse;
 		const contractsByOrganizations = this.sortCriteria[sortBy](this.props.contractsByOrganizations, reverse);
 		const paginationResultsPerPage = this.props.pagination.resultsPerPage;
-		const paginationFrom = this.props.pagination.page * paginationResultsPerPage;
+		const page = this.props.pagination.page;
+		const paginationFrom = page * paginationResultsPerPage;
 		const paginationTo = paginationFrom + paginationResultsPerPage;
 		const paginatedContracts = contractsByOrganizations.slice(paginationFrom, paginationTo);
+		const pages = this.props.pages;
+		const paginationVisible = contractsByOrganizations.length > 0;
 
 		return (
 			<div>
@@ -125,9 +129,15 @@ class OrganizationsList extends React.Component {
 						return <OrgainzationItem organizationName={organizationName} organizationAmount={organizationAmount} organizationCount={organizationCount} opened={opened} key={organizationTitle} contracts={contracts} tabClick={this.tabClick}/>	
 					})}
 				</ul>
-				<div>
-					<button onClick={this.props.paginationGoToPreviousPage}>Previous</button>
-					<button onClick={this.props.paginationGoToNextPage}>Next</button>
+				<div className={classNames(['pagination-bar', {visible: paginationVisible}])}>
+					{page === 0 ? null : <button onClick={this.props.paginationGoToPreviousPage} className="pagination-item">Anterior</button>}
+					{pages === 0 ? null : 
+						[...Array(pages)].map((item, index) => {
+							const activePage = page === index;
+							return (<button key={index} className={classNames(['pagination-item', {active: activePage}])} onClick={() => {this.props.paginationGoToPage(index)}}>{index + 1}</button>);
+						})
+					}
+					{page === pages - 1 ? null : <button onClick={this.props.paginationGoToNextPage} className="pagination-item">Siguiente</button>}
 				</div>
 			</div>
 		);

@@ -22,7 +22,7 @@ class ContractsList extends React.Component {
 					const startDate = contract.value.start_date;
 					const endDate = contract.value.end_date;
 					const ocid = contract.value.ocid;
-					const contractLink = contract.value.references[0];
+					const contractLink = `https://www.quienesquien.wiki/contracts/${id}#read`;
 					return <ContractItem key={id} title={title} amount={amount} type={type} procedureType={procedureType} startDate={startDate} endDate={endDate} ocid={ocid} contractLink={contractLink} />;
 				})}
 			</ul>
