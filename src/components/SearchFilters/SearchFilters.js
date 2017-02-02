@@ -58,9 +58,12 @@ class SearchFilters extends React.Component {
 					<span className="filter-title">Tipo de contratación</span>
 					<select name="contractType" id="" className="filter-input" defaultValue={contractType} onChange={this.changeFieldHandler}>
 						<option value="todos">-Todos-</option>
+						<option value="Adquisiciones">Adquisiciones</option>
+						<option value="Arrendamientos">Arrendamientos</option>
+						<option value="Arrendamientos">Arrendamientos</option>
+						<option value="Obra Pública">Obra Pública</option>
 						<option value="Servicios">Servicios</option>
 						<option value="Servicios Relacionados con la OP">Servicios Relacionados con la OP</option>
-						<option value="tipo3">tipo3</option>
 					</select>
 				</div>
 				<div className="filter-box filter-procedure-type">
@@ -68,8 +71,8 @@ class SearchFilters extends React.Component {
 					<select name="procedureType" id="" className="filter-input" defaultValue={procedureType} onChange={this.changeFieldHandler}>
 						<option value="todos">-Todos-</option>
 						<option value="Adjudicación Directa Federal">Adjudicación Directa Federal</option>
-						<option value="tipo2">tipo2</option>
-						<option value="tipo3">tipo3</option>
+						<option value="Invitación a Cuando Menos 3 Personas">Invitación a Cuando Menos 3 Personas</option>
+						<option value="Licitación Pública">Licitación Pública</option>
 					</select>
 				</div>
 				<div className="filter-box filter-date">

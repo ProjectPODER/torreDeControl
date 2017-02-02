@@ -1,4 +1,4 @@
-.page-investigacion {
+.page-investigation {
 	.site-content {
 		@include outer-container;
 		.content-title {
@@ -49,6 +49,13 @@
 				padding: 10px;
 				margin-bottom: 10px;
 				background-color: $light-grey;
+				opacity: 0;
+				top: 10px;
+				transition: all 1000ms ease;
+				&.enter {
+					opacity: 1;
+					top: 0;
+				}
 				.investigation-media {
 					height: 100%;
 					margin-bottom: 0;

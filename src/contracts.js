@@ -4,7 +4,7 @@ import createStore from './redux/create';
 import {Provider} from 'react-redux';
 import ContractPage from './containers/ContractPage';
 
-const reactInit = () => {
+module.exports = () => {
   class App extends React.Component {
     render() {
       const store = createStore();
@@ -16,12 +16,11 @@ const reactInit = () => {
       );
     }
   }
+  
   const container = document.getElementById('contracts_page');
-  if(container) {
-    ReactDOM.render(<App />, container);
-  }
+  
+  ReactDOM.render(<App />, container);
+  
 };
-
-module.exports = {reactInit};
 
 //TODO: resolver inicio de react
