@@ -42,6 +42,9 @@ class ContractPage extends React.Component {
 	}
 
 	betweenAmounts(min, max, val) {
+		if (!min && !max) return true;
+		if (!min) return val <= max;
+		if (!max) return min <= val;
 		return min <= val && val <= max;
 	}
 
@@ -50,6 +53,10 @@ class ContractPage extends React.Component {
 		const after = (new Date(s_after)).getTime();
 		const start = (new Date(s_start)).getTime();
 		const end = (new Date(s_end)).getTime();
+
+		if (s_before == null && s_after == null) {return true};
+		if (s_before == null) {return start <= after};
+		if (s_after == null) {return before <= end};
 		return before <= end && start <= after;
 	}
 
@@ -91,8 +98,8 @@ class ContractPage extends React.Component {
 			const inOrganization = keywordInString(keyword, organization);
 			const inAmount = betweenAmounts(fromAmount, toAmount, amount);
 			const inDate = betweenDates(fromDate, toDate, startDate, endDate);
-			const inProcedureType = procedureType === procedureTypeField;
-			const inContractType = contractType === contractTypeField;
+			const inProcedureType = procedureType === 'todos' || procedureType === procedureTypeField;
+			const inContractType = contractType === 'todos' || contractType === contractTypeField;
 
 			
 			return (inOrganization || inTitle) && inAmount && inDate && inProcedureType && inContractType;

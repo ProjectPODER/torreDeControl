@@ -12,7 +12,7 @@ import classNames from 'classnames';
     	sortBy: state.contracts.sortBy,
     	reverse: state.contracts.reverse,
     	pagination: state.contracts.pagination,
-    	pages: state.contracts.pages,
+    	pages: state.contracts.pages
     }),
     dispatch => bindActionCreators({changeSortCriteria, paginationGoToNextPage, paginationGoToPreviousPage, paginationGoToPage, setFilteredResults}, dispatch))
 class OrganizationsList extends React.Component {
@@ -109,6 +109,7 @@ class OrganizationsList extends React.Component {
 		const paginatedContracts = contractsByOrganizations.slice(paginationFrom, paginationTo);
 		const pages = this.props.pages;
 		const paginationVisible = contractsByOrganizations.length > 0;
+		console.log({page,pages,paginationFrom,paginationTo,paginatedContracts})
 
 		return (
 			<div>

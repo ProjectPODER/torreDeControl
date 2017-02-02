@@ -1,17 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import {keywordChange} from '../../redux/modules/contracts';
-import {PropTypes} from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { keywordChange, paginationGoToPage } from '../../redux/modules/contracts';
+import { PropTypes } from 'react';
 
 @connect(
     state => ({keyword: state.contracts.keyword}),
-    dispatch => bindActionCreators({keywordChange}, dispatch))
+    dispatch => bindActionCreators({keywordChange, paginationGoToPage}, dispatch))
 class SearchInput extends React.Component {
 	static propTypes = {
 		keyword: PropTypes.string,
-		keywordChange: PropTypes.func.isRequired
+		keywordChange: PropTypes.func,
+		paginationGoToPage: PropTypes.func
 	}
 
 	debounce = function(func, wait, immediate) {
@@ -33,6 +34,7 @@ class SearchInput extends React.Component {
 	changeKeywordDebounced = this.debounce(function(evt) {
 		const newKeyword = evt.target.value;
 		this.props.keywordChange(newKeyword);
+		this.props.paginationGoToPage(0);
 	}, 250);
 
 	handleChange = (evt) => {

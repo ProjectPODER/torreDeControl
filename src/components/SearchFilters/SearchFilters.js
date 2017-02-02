@@ -3,14 +3,14 @@ import ReactDOM from 'react-dom';
 import { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { filterChange, paginationGoToPage } from '../../redux/modules/contracts';
+import { filterChange, paginationGoToStart } from '../../redux/modules/contracts';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 require('react-datepicker/dist/react-datepicker.css')
 
 @connect(
     state => ({...state.contracts}),
-    dispatch => bindActionCreators({filterChange, paginationGoToPage}, dispatch))
+    dispatch => bindActionCreators({filterChange, paginationGoToStart}, dispatch))
 class SearchFilters extends React.Component {
 	static propTypes = {
 		fromAmount: PropTypes.number,
@@ -20,24 +20,24 @@ class SearchFilters extends React.Component {
 		fromDate: PropTypes.instanceOf(moment),
 		toDate: PropTypes.instanceOf(moment),
 		filterChange: PropTypes.func.isRequired,
-		paginationGoToPage: PropTypes.func
+		paginationGoToStart: PropTypes.func
 	}
 
 	changeFieldHandler = (evt) => {
 		const newValue = evt.target.value;
 		const fieldName = evt.target.name;
 		this.props.filterChange(fieldName, newValue);
-		this.props.paginationGoToPage(0);
+		this.props.paginationGoToStart();
 	};
 
 	changeFromDateHandler = (date) => {
 		this.props.filterChange('fromDate', date);
-		this.props.paginationGoToPage(0);
+		this.props.paginationGoToStart();
 	};
 
 	changeToDateHandler = (date) => {
 		this.props.filterChange('toDate', date);
-		this.props.paginationGoToPage(0);
+		this.props.paginationGoToStart();
 	};
 
 	render() {
@@ -57,6 +57,7 @@ class SearchFilters extends React.Component {
 				<div className="filter-box filter-contract-type">
 					<span className="filter-title">Tipo de contratación</span>
 					<select name="contractType" id="" className="filter-input" defaultValue={contractType} onChange={this.changeFieldHandler}>
+						<option value="todos">-Todos-</option>
 						<option value="Servicios">Servicios</option>
 						<option value="Servicios Relacionados con la OP">Servicios Relacionados con la OP</option>
 						<option value="tipo3">tipo3</option>
@@ -65,6 +66,7 @@ class SearchFilters extends React.Component {
 				<div className="filter-box filter-procedure-type">
 					<span className="filter-title">Tipo de procedimiento</span>
 					<select name="procedureType" id="" className="filter-input" defaultValue={procedureType} onChange={this.changeFieldHandler}>
+						<option value="todos">-Todos-</option>
 						<option value="Adjudicación Directa Federal">Adjudicación Directa Federal</option>
 						<option value="tipo2">tipo2</option>
 						<option value="tipo3">tipo3</option>

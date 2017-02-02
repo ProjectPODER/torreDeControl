@@ -11,16 +11,17 @@ const CHANGE_SORT_CRITERIA = 'CHANGE_SORT_CRITERIA';
 const PAGINATION_GO_TO_NEXT_PAGE = 'PAGINATION_GO_TO_NEXT_PAGE';
 const PAGINATION_GO_TO_PREVIOUS_PAGE = 'PAGINATION_GO_TO_PREVIOUS_PAGE';
 const PAGINATION_GO_TO_PAGE = 'PAGINATION_GO_TO_PAGE';
+const PAGINATION_GO_TO_START = 'PAGINATION_GO_TO_START';
 const SET_FILTERED_RESULTS = 'SET_FILTERED_RESULTS';
 
 const initialState = {
   keyword: '',
-  fromAmount: 0,
-  toAmount: 100000000,
-  contractType: 'Servicios Relacionados con la OP',
-  procedureType: 'Adjudicación Directa Federal',
-  fromDate: moment('1/1/2010'),
-  toDate: moment(),
+  fromAmount: null,
+  toAmount: null,
+  contractType: 'todos',
+  procedureType: 'todos',
+  fromDate: null,
+  toDate: null,
   contracts: [],
   loaded: false,
   sortBy: 'byTitle',
@@ -78,11 +79,23 @@ export default function reducer(state = initialState, action = {}) {
       const resultsPerPage = state.pagination.resultsPerPage;
       const lastPage = Math.ceil(resultsCount / resultsPerPage) - 1;
       const newPage = Math.min(lastPage, action.page);
+      if(newPage == -1) {
+        console.log({resultsCount, resultsPerPage, lastPage, newPage})
+      }
       return {
         ...state,
         pagination: {
           ...state.pagination,
           page: newPage
+        }
+      };
+    }
+    case PAGINATION_GO_TO_START: {
+      return {
+        ...state,
+        pagination: {
+          ...state.pagination,
+          page: 0
         }
       };
     }
@@ -110,6 +123,7 @@ export default function reducer(state = initialState, action = {}) {
       };
     }
     case SET_FILTERED_RESULTS: {
+      console.log('set filtered')
       const resultsCount = action.filteredResults;
       const resultsPerPage = state.pagination.resultsPerPage;
       const pages = Math.ceil(resultsCount / resultsPerPage);
@@ -169,6 +183,12 @@ export function paginationGoToPage(page) {
   return {
     type: PAGINATION_GO_TO_PAGE,
     page
+  };
+}
+
+export function paginationGoToStart() {
+  return {
+    type: PAGINATION_GO_TO_START
   };
 }
 
