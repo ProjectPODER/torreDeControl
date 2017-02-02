@@ -35,7 +35,7 @@ module.exports = () => {
   function createInvestigationArticles(hunk) {
     return hunk.map((item) => {
       const {title, date, author, text, image, link} = item;
-      const parsedDate = (new Date(date)).toLocaleDateString().replace('/', '-');
+      const parsedDate = (new Date(date)).toLocaleDateString().replace('/\g', '-',);
       const DOMString = `
         <li class="investigation-item">
           <article class="investigation-article">
@@ -58,7 +58,7 @@ module.exports = () => {
                 </p>
               </div>
               <footer class="investigation-footer">
-                <a href="${link}" class="investigation-view-more">ver nota</a>
+                <a rel="noopener noreferrer" target="_blank" href="${link}" class="investigation-view-more">ver nota</a>
               </footer>
             </div>
           </article>
