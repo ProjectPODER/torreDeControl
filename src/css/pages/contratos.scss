@@ -1,3 +1,8 @@
+@keyframes empty-item {
+    from {background-position: 0;}
+    to {background-position: -4000px 0;}
+}
+
 .page-contracts {
   .site-content {
     @include outer-container;
@@ -109,7 +114,7 @@
   }
 
   .site-content {
-    padding: 30px 10%;
+    padding: 30px 10% 50px;
     .contracts-content {
       .pagination-bar {
         float: right;
@@ -298,6 +303,25 @@
           position: relative;
           // overflow: hidden;
           margin-bottom: 10px;
+          &.empty-item {
+            height: 64px;
+            background-color: #cccccc;
+            box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.3);
+            margin-bottom: 24px;
+            /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#cccccc+41,D9D9D9+49,cccccc+59 */
+            /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#cccccc+40,D9D9D9+50,cccccc+60 */
+            background: #cccccc; /* Old browsers */
+            background: -moz-linear-gradient(-45deg,  #cccccc 40%, #D9D9D9 50%, #cccccc 60%); /* FF3.6-15 */
+            background: -webkit-linear-gradient(-45deg,  #cccccc 40%,#D9D9D9 50%,#cccccc 60%); /* Chrome10-25,Safari5.1-6 */
+            background: linear-gradient(135deg,  #cccccc 40%,#D9D9D9 50%,#cccccc 60%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cccccc', endColorstr='#cccccc',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+
+            animation-name: empty-item;
+            animation-duration: 4s;
+            animation-iteration-count: infinite;
+            background-repeat: no-repeat;
+            background-size: 6000px;
+          }
 
           .organizations-header {
             box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.3);

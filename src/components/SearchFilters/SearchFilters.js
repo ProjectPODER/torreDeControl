@@ -47,17 +47,18 @@ class SearchFilters extends React.Component {
 		const procedureType = this.props.procedureType;
 		const fromDate = this.props.fromDate;
 		const toDate = this.props.toDate;
+		const disabledInputs = !this.props.contracts.length;
 		return (
 			<div className="contract-filter">
 				<div className="filter-box filter-amount">
 					<span className="filter-title">Monto total <i className="title-tip">(en pesos mexicanos)</i></span>
-					<input name="fromAmount" type="text" className="filter-input half-input filter-input-from" placeholder="desde $" defaultValue={fromAmount} onChange={this.changeFieldHandler} />
-					<input name="toAmount" type="text" className="filter-input half-input filter-input-to" placeholder="hasta $" defaultValue={toAmount} onChange={this.changeFieldHandler} />
+					<input disabled={disabledInputs} name="fromAmount" type="text" className="filter-input half-input filter-input-from" placeholder="desde $" defaultValue={fromAmount} onChange={this.changeFieldHandler} />
+					<input disabled={disabledInputs} name="toAmount" type="text" className="filter-input half-input filter-input-to" placeholder="hasta $" defaultValue={toAmount} onChange={this.changeFieldHandler} />
 				</div>
 				<div className="filter-box filter-contract-type">
 					<span className="filter-title">Tipo de contratación <i className="filter-tip"><span className="tooltip-info">Esta es la info del tooltip que pertenece al tipo de contratacion</span></i></span>
 					<div className="select-wrapper">
-						<select name="contractType" id="" className="filter-input" defaultValue={contractType} onChange={this.changeFieldHandler}>
+						<select disabled={disabledInputs} name="contractType" id="" className="filter-input" defaultValue={contractType} onChange={this.changeFieldHandler}>
 							<option value="todos">-Todos-</option>
 							<option value="Adquisiciones">Adquisiciones</option>
 							<option value="Arrendamientos">Arrendamientos</option>
@@ -71,7 +72,7 @@ class SearchFilters extends React.Component {
 				<div className="filter-box filter-procedure-type">
 					<span className="filter-title">Tipo de procedimiento <i className="filter-tip"><span className="tooltip-info">Esta es la info del tooltip que pertenece al tipo de procedimiento</span></i></span>
 					<div className="select-wrapper">
-						<select name="procedureType" id="" className="filter-input" defaultValue={procedureType} onChange={this.changeFieldHandler}>
+						<select disabled={disabledInputs} name="procedureType" id="" className="filter-input" defaultValue={procedureType} onChange={this.changeFieldHandler}>
 							<option value="todos">-Todos-</option>
 							<option value="Adjudicación Directa Federal">Adjudicación Directa Federal</option>
 							<option value="Invitación a Cuando Menos 3 Personas">Invitación a Cuando Menos 3 Personas</option>
@@ -81,8 +82,8 @@ class SearchFilters extends React.Component {
 				</div>
 				<div className="filter-box filter-date">
 					<span className="filter-title">Rango de fechas <i className="filter-tip"><span className="tooltip-info">Esta es la info del tooltip que pertenece al rango de fechas</span></i></span>
-					<DatePicker selected={fromDate} onChange={this.changeFromDateHandler} className="filter-input filter-input-from" placeholderText="desde" defaultValue={fromDate} />
-					<DatePicker selected={toDate} onChange={this.changeToDateHandler} className="filter-input filter-input-to" placeholderText="hasta" defaultValue={toDate} />
+					<DatePicker disabled={disabledInputs} selected={fromDate} onChange={this.changeFromDateHandler} className="filter-input filter-input-from" placeholderText="desde" defaultValue={fromDate} />
+					<DatePicker disabled={disabledInputs} selected={toDate} onChange={this.changeToDateHandler} className="filter-input filter-input-to" placeholderText="hasta" defaultValue={toDate} />
 				</div>
 			</div>
 		);

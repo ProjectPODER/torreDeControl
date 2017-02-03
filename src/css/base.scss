@@ -148,6 +148,12 @@ select {
 	background-color: $white;
 	position: relative;
 	z-index: 1;
+	.wg-navbar-logo {
+		margin-top: 4px;
+		.torre-logo {
+			width: 100%;
+		}
+	}
 	.wg-navbar {
 			width: 70%;
 			max-width: 1024px;

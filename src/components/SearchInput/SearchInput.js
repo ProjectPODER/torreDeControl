@@ -6,11 +6,15 @@ import { keywordChange, paginationGoToPage } from '../../redux/modules/contracts
 import { PropTypes } from 'react';
 
 @connect(
-    state => ({keyword: state.contracts.keyword}),
+    state => ({
+    	keyword: state.contracts.keyword,
+    	contracts: state.contracts.contracts
+    }),
     dispatch => bindActionCreators({keywordChange, paginationGoToPage}, dispatch))
 class SearchInput extends React.Component {
 	static propTypes = {
 		keyword: PropTypes.string,
+		contracts: PropTypes.array,
 		keywordChange: PropTypes.func,
 		paginationGoToPage: PropTypes.func
 	}
@@ -43,11 +47,12 @@ class SearchInput extends React.Component {
 
 	render() {
 		const keyword = this.props.keyword;
+		const disabledInputs = !this.props.contracts.length;
 		return (
 			<div className="contract-search">
 				<span className="search-title">Búsqueda</span>
 				<label className="search-box">
-					<input type="text" className="search-input" placeholder="Introduce palábra clave a buscar" onChange={this.handleChange} defaultValue={keyword} />
+					<input disabled={disabledInputs} type="text" className="search-input" placeholder="Introduce palábra clave a buscar" onChange={this.handleChange} defaultValue={keyword} />
 				</label>
 			</div>
 		);

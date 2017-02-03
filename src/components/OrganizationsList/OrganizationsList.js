@@ -109,7 +109,7 @@ class OrganizationsList extends React.Component {
 		const paginatedContracts = contractsByOrganizations.slice(paginationFrom, paginationTo);
 		const pages = this.props.pages;
 		const paginationVisible = contractsByOrganizations.length > 0;
-
+		const contractsLoaded = paginatedContracts.length !== 0;
 		return (
 			<div>
 				<div className="sort-bar">
@@ -119,16 +119,25 @@ class OrganizationsList extends React.Component {
 						<li className={classNames(["sort-by-amount sort-options-item", {active: sortBy == 'byAmount'}])} onClick={() => {this.changeSortCriteria('byAmount')}}>Monto Total <span className="arrows"><i className={classNames(["arrow-top", {active: reverse && sortBy == 'byAmount'}])}>▸</i><i className={classNames(["arrow-bottom", {active: !reverse && sortBy == 'byAmount'}])}>▸</i></span></li>
 					</ul>
 				</div>
-				<ul className="organizations-list">
-					{paginatedContracts.map((contracts) => {
-						const organizationTitle = contracts[0].value.proveedor;
-						const opened = this.state.tabsOpened[organizationTitle] === true;
-						const organizationName = contracts[0].value.proveedor;
-						const organizationAmount = contracts.reduce((semitotal, amount) => {return semitotal + amount.value.amount}, 0);
-						const organizationCount = contracts.length;
-						return <OrgainzationItem organizationName={organizationName} organizationAmount={organizationAmount} organizationCount={organizationCount} opened={opened} key={organizationTitle} contracts={contracts} tabClick={this.tabClick}/>	
-					})}
-				</ul>
+				{
+					contractsLoaded ? 
+						<ul className="organizations-list">
+							{paginatedContracts.map((contracts) => {
+								const organizationTitle = contracts[0].value.proveedor;
+								const opened = this.state.tabsOpened[organizationTitle] === true;
+								const organizationName = contracts[0].value.proveedor;
+								const organizationAmount = contracts.reduce((semitotal, amount) => {return semitotal + amount.value.amount}, 0);
+								const organizationCount = contracts.length;
+								return <OrgainzationItem organizationName={organizationName} organizationAmount={organizationAmount} organizationCount={organizationCount} opened={opened} key={organizationTitle} contracts={contracts} tabClick={this.tabClick}/>	
+							})}
+						</ul>
+					:
+						<ul className="organizations-list">
+							<li className="organizations-item empty-item"></li>
+							<li className="organizations-item empty-item"></li>
+							<li className="organizations-item empty-item"></li>
+						</ul>
+				}
 				<div className={classNames(['pagination-bar', {visible: paginationVisible}])}>
 					{page === 0 ? null : <button onClick={this.props.paginationGoToPreviousPage} className="pagination-item">Anterior</button>}
 					{pages === 0 ? null : 
