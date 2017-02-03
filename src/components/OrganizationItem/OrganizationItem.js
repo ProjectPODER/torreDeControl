@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { PropTypes } from 'react';
 import ContractsList from '../ContractsList/ContractsList';
-import classNames from 'classnames';
 
 class OrganizationItem extends React.Component {
 	static propTypes = {
@@ -24,14 +23,14 @@ class OrganizationItem extends React.Component {
 		const organizationCount = this.props.organizationCount;
 		const opened = this.props.opened;
 		return (
-			<li className={classNames(['organizations-item', {opened: opened}])}>
+			<li className="organizations-item">
 				<div className="organizations-header" onClick={() => {this.tabClick(organizationName)}}>
 					<span className="organizations-title">{organizationName}</span>
 					<span className="organizations-count">{organizationCount}</span>
 					<span className="organizations-amount">{organizationAmount}</span>
 					<a href="#" className="organizations-send-info">Enviar más información</a>
 				</div>
-				<ContractsList contracts={contracts}/>
+				<ContractsList opened={opened} contracts={contracts}/>
 			</li>
 		);
 	}

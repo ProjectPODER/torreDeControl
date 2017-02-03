@@ -4,7 +4,6 @@ export default function reduxMiddleware() {
       if (typeof action === 'function') {
         return action(dispatch, getState);
       }
-      console.log('middleware ok');
 
       const { promise, types, ...rest } = action; // eslint-disable-line no-redeclare
       if (!promise) {

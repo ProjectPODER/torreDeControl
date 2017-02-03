@@ -109,7 +109,6 @@ class OrganizationsList extends React.Component {
 		const paginatedContracts = contractsByOrganizations.slice(paginationFrom, paginationTo);
 		const pages = this.props.pages;
 		const paginationVisible = contractsByOrganizations.length > 0;
-		console.log({page,pages,paginationFrom,paginationTo,paginatedContracts})
 
 		return (
 			<div>

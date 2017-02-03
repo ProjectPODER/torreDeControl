@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 294.3691 37.1279">
+  <defs>
+    <style>
+      .cls-1 {
+        font-size: 33.5391px;
+        font-family: DevilBreezeBook, Devil Breeze;
+      }
+
+      .cls-1, .cls-7 {
+        fill: #5b5b5f;
+      }
+
+      .cls-2 {
+        letter-spacing: 0.02em;
+      }
+
+      .cls-3 {
+        letter-spacing: -0.06em;
+      }
+
+      .cls-4 {
+        letter-spacing: -0.32em;
+      }
+
+      .cls-5 {
+        letter-spacing: -0.36em;
+      }
+
+      .cls-6 {
+        font-family: DevilBreezeMedium, Devil Breeze;
+      }
+    </style>
+  </defs>
+  <title>Recurso 1</title>
+  <g id="Capa_2" data-name="Capa 2">
+    <g id="Capa_1-2" data-name="Capa 1">
+      <g>
+        <text class="cls-1" transform="translate(0 28.5078)"><tspan class="cls-2">t</tspan><tspan x="15.9976" y="0"> </tspan><tspan class="cls-3" x="32.7671" y="0"> </tspan><tspan x="47.5244" y="0">rre</tspan><tspan class="cls-4" x="102.0244" y="0"> </tspan><tspan x="108.061" y="0">de</tspan><tspan class="cls-5" x="147.7705" y="0"> </tspan><tspan class="cls-6" x="152.4663" y="0">control</tspan></text>
+        <g id="UTwNPI.tif">
+          <path class="cls-7" d="M37.1094,23.9631h1.1132a7.5774,7.5774,0,0,1-15.1549.0015h1.0886a6.4026,6.4026,0,0,0,2.4281,5.0269,6.2722,6.2722,0,0,0,4.4313,1.4175A6.4715,6.4715,0,0,0,37.1094,23.9631Z"/>
+        </g>
+        <path class="cls-7" d="M19.5771,9.3645l2.5957,1.4935a9.8416,9.8416,0,1,0,8.5658-4.92V2.9451a12.84,12.84,0,0,1,6.72,23.7918A12.851,12.851,0,0,1,19.5771,9.3645Z"/>
+        <path class="cls-7" d="M30.7015,9.68V15.762l4.2752-4.3329a6.09,6.09,0,0,1,1.0379,7.4229A6.133,6.133,0,0,1,24.723,14.4412,6.0652,6.0652,0,0,1,30.7015,9.68Z"/>
+      </g>
+    </g>
+  </g>
+</svg>

@@ -19,6 +19,9 @@
         @include span-columns(12);
         .filter-box {
           @include span-columns(3);
+          .select-wrapper {
+            @include span-columns(12 of 12);
+          }
           .filter-input {
             @include span-columns(12 of 12);
           }
@@ -65,6 +68,7 @@
           }
 
           .contracts-list {
+            @include span-columns(12);
             .contracts-item {
               .contract-title {
                 @include span-columns(8);
@@ -148,6 +152,17 @@
         margin-bottom: 40px;
         .filter-box {
           margin-bottom: 10px;
+          .select-wrapper {
+            position: relative;
+            &:before {
+              content: '▸';
+              position: absolute;
+              top: 50%;
+              right: 10px;
+              transform: translateY(-50%) rotate(90deg);
+              pointer-events: none;
+            }
+          }
           .filter-title {
             margin-bottom: 5px;
             display: inline-block;
@@ -237,6 +252,12 @@
         margin-bottom: 10px;
         .sort-options-list {
           margin-bottom: 5px;
+          .sort-by-count {
+            text-align: center;
+          }
+          .sort-by-amount {
+            text-align: center;
+          }
           .sort-options-item {
             cursor: pointer;
             &.active {
@@ -275,15 +296,11 @@
         list-style: none;
         .organizations-item {
           position: relative;
-          overflow: hidden;
+          // overflow: hidden;
           margin-bottom: 10px;
-          max-height: 64px;
-          transition: max-height 300ms ease-out;
-          &.opened {
-            max-height: 800px;
-          }
 
           .organizations-header {
+            box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.3);
             cursor: pointer;
             height: 64px;
             padding: 25px 10px 10px;
@@ -297,9 +314,7 @@
             .organizations-count,
             .organizations-amount {
               color: $black;
-            }
-            .organizations-amount {
-              text-align: right;
+              text-align: center;
             }
             .organizations-send-info {
               @include set-font($font-xxs);
@@ -317,13 +332,23 @@
 
           .contracts-list {
             list-style: none;
+            max-height: 0;
+            transition: max-height 300ms ease-out;
+            overflow: hidden;
+            width: calc(100% + 10px);
+            &.opened {
+              max-height: 2000px;
+            }
             .contracts-item {
+              border: 1px solid rgba(0, 0, 0, 0.03);
+              margin-right: 10px;
+              padding: 20px 10px 20px 10px;
+              box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
               position: relative;
               overflow: auto;
-              padding: 10px;
               margin-bottom: 4px;
               background-color: #E0E2E1;
-              border-bottom: 1px solid $orange;
+              // border-bottom: 1px solid $orange;
               .contract-title {
                 margin-bottom: 10px;
                 color: $blue;

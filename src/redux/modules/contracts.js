@@ -79,9 +79,7 @@ export default function reducer(state = initialState, action = {}) {
       const resultsPerPage = state.pagination.resultsPerPage;
       const lastPage = Math.ceil(resultsCount / resultsPerPage) - 1;
       const newPage = Math.min(lastPage, action.page);
-      if(newPage == -1) {
-        console.log({resultsCount, resultsPerPage, lastPage, newPage})
-      }
+
       return {
         ...state,
         pagination: {
@@ -123,7 +121,6 @@ export default function reducer(state = initialState, action = {}) {
       };
     }
     case SET_FILTERED_RESULTS: {
-      console.log('set filtered')
       const resultsCount = action.filteredResults;
       const resultsPerPage = state.pagination.resultsPerPage;
       const pages = Math.ceil(resultsCount / resultsPerPage);

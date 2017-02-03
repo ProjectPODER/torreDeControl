@@ -64,8 +64,15 @@ select {
 	@include set-font($font-sm);
 	line-height: 12px;
 	padding: 0 5px;
+	border: 1px solid #ccc;
+    background: transparent;
+    -webkit-appearance: none;
+    border-radius: 0;
+    height: 30px;
+	&:focus {
+		outline: none;
+	}
 }
-
 
 .row {
 	@include row();
@@ -98,7 +105,7 @@ select {
 	height: 150px;
 	background-color: $light-grey;
 	z-index: 1;
-	padding: 10px;
+	padding: 35px 50px;
 	.fixed-page & {
 		bottom: 0;
 		position: absolute;
@@ -110,8 +117,21 @@ select {
 		}
 	}
 	.site-development {
-		p {
+		.developed-by,
+		.sponsored-by {
 			color: $black;
+			.organization-link {
+				.organization-logo {
+					max-width: 80px;
+					max-height: 40px;
+					margin: 0 10px;
+					vertical-align: middle;
+				}
+			}
+		}
+
+		.developed-by {
+			margin-bottom: 30px;
 		}
 		
 	}

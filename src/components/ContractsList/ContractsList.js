@@ -2,17 +2,21 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { PropTypes } from 'react';
 import ContractItem from '../ContractItem/ContractItem';
+import classNames from 'classnames';
 
 class ContractsList extends React.Component {
 	/* TODO: VER REQUIRED */
 	static propTypes = {
-		contracts: PropTypes.array
+		contracts: PropTypes.array,
+		opened: PropTypes.bool,
 	}
 
 	render() {
 		const contracts = this.props.contracts;
+		const opened = this.props.opened;
+		
 		return (
-			<ul className="contracts-list">
+			<ul className={classNames(['contracts-list', {opened: opened}])}>
 				{contracts.map((contract) => {
 					const title = contract.value.title;
 					const id = contract.value._id;
