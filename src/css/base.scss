@@ -5,6 +5,7 @@ $light-orange: #E9B9B5;
 $black: #333;
 $white: #fff;
 $light-grey: #D3D5D4;
+$white-grey: #E0E2E1;
 @mixin set-font($size) {
 	font-size: $size + px;
 	line-height: ceil($size * 1.0625) + px;

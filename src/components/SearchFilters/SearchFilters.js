@@ -55,7 +55,7 @@ class SearchFilters extends React.Component {
 					<input name="toAmount" type="text" className="filter-input half-input filter-input-to" placeholder="hasta $" defaultValue={toAmount} onChange={this.changeFieldHandler} />
 				</div>
 				<div className="filter-box filter-contract-type">
-					<span className="filter-title">Tipo de contratación</span>
+					<span className="filter-title">Tipo de contratación <i className="filter-tip"><span className="tooltip-info">Esta es la info del tooltip que pertenece al tipo de contratacion</span></i></span>
 					<select name="contractType" id="" className="filter-input" defaultValue={contractType} onChange={this.changeFieldHandler}>
 						<option value="todos">-Todos-</option>
 						<option value="Adquisiciones">Adquisiciones</option>
@@ -67,7 +67,7 @@ class SearchFilters extends React.Component {
 					</select>
 				</div>
 				<div className="filter-box filter-procedure-type">
-					<span className="filter-title">Tipo de procedimiento</span>
+					<span className="filter-title">Tipo de procedimiento <i className="filter-tip"><span className="tooltip-info">Esta es la info del tooltip que pertenece al tipo de procedimiento</span></i></span>
 					<select name="procedureType" id="" className="filter-input" defaultValue={procedureType} onChange={this.changeFieldHandler}>
 						<option value="todos">-Todos-</option>
 						<option value="Adjudicación Directa Federal">Adjudicación Directa Federal</option>
@@ -76,7 +76,7 @@ class SearchFilters extends React.Component {
 					</select>
 				</div>
 				<div className="filter-box filter-date">
-					<span className="filter-title">Rango de fechas</span>
+					<span className="filter-title">Rango de fechas <i className="filter-tip"><span className="tooltip-info">Esta es la info del tooltip que pertenece al rango de fechas</span></i></span>
 					<DatePicker selected={fromDate} onChange={this.changeFromDateHandler} className="filter-input filter-input-from" placeholder="desde" defaultValue={fromDate} />
 					<DatePicker selected={toDate} onChange={this.changeToDateHandler} className="filter-input filter-input-to" placeholder="hasta" defaultValue={toDate} />
 				</div>
