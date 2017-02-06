@@ -8,17 +8,31 @@
 			@include span-columns(12);
 			.article-text {
 				@include span-columns(5);
+				@media screen and (min-width: 0) and (max-width: $desktop-size) {
+					@include span-columns(12);
+					@include omega();
+				}
 			}
 			.article-media {
 				@include span-columns(7);
 				@include omega();
+				@media screen and (min-width: 0) and (max-width: $desktop-size) {
+					@include span-columns(12);
+							
+				}
 			}
 		
 			&.article-theproject {
 				.article-text {
 					@include span-columns(9);
+					@media screen and (min-width: 0) and (max-width: $tablet-size) {
+						@include span-columns(12);
+					}
 					.article-header {
 						@include span-columns(4 of 8);
+						@media screen and (min-width: 0) and (max-width: $tablet-size) {
+							@include fill-parent();
+						}
 						.article-title {
 							
 						}
@@ -28,11 +42,22 @@
 					}
 					.article-body {
 						@include span-columns(4 of 8);
+						@media screen and (min-width: 0) and (max-width: $tablet-size) {
+							@include fill-parent();
+							@include omega();
+						}
+					}
+					@media screen and (min-width: 0) and (max-width: $desktop-size) {
+						@include span-columns(12);
+						@include omega();
 					}
 				}
 				.article-media {
 					@include span-columns(3);
 					@include omega();
+					@media screen and (min-width: 0) and (max-width: $desktop-size) {
+						@include span-columns(12);
+					}
 				}
 			}
 		}
@@ -65,24 +90,54 @@
 		.article-whoami {
 			.article-media {
 				top: -80px;
+				@media screen and (min-width: 0) and (max-width: $desktop-size) {
+					top: 0;
+					margin-bottom: 120px;
+				}
 				.article-image {
 					margin-right: 10%;
+					@media screen and (min-width: 0) and (max-width: $desktop-size) {
+
+						width: calc(90% - 100px);
+						margin-left: 100px;
+					}
 				}
 			}
 		}
 		.article-theproject {
 			position: relative;
+			.article-text {
+				@media screen and (min-width: 0) and (max-width: $desktop-size) {
+					margin-bottom: 50px;
+				}
+			}		
 			.article-body {
 				background-color: rgba(255, 255, 255, 0.3);
 				padding: 10px 20px;
+				@media screen and (min-width: $tablet-size) and (max-width: $desktop-size) {
+					min-height: 300px;
+				}
 			}
 			.article-media {
 				position: absolute;
 				top: 50%;
 				right: 0;
 				transform: translateY(-50%);
+				@media screen and (min-width: 0) and (max-width: $desktop-size) {
+					position: static;
+				}
+				@media screen and (min-width: 0) and (max-width: $tablet-size) {
+					position: absolute;
+					top: 40px;
+					right: 0;
+				}
 				.article-image {
 					border-radius: 100%;
+					@media screen and (min-width: $tablet-size) and (max-width: $desktop-size) {
+						position: absolute;
+						left: 100px;
+						bottom: 0;
+					}
 				}
 			}
 		}
@@ -110,8 +165,6 @@
 		&:before {
 			content: '';
 			position: absolute;
-			// top: 0;
-			// bottom: 0;
 			left: -98px;
 			width: 20px;
 			height: 20px;
@@ -159,6 +212,15 @@
 			width: $box-width + px;
 			height: $box-width + px;
 			background-color: $blue;
+			@media screen and (min-width: 0) and (max-width: $desktop-size) {
+				left: 80px;
+				$box-width: 40;
+				$half-width: $box-width / 2;
+				top: 80%;
+				right: calc(10% + 400px - #{$half-width + px});
+				width: $box-width + px;
+				height: $box-width + px;
+			}
 		}
 	}
 

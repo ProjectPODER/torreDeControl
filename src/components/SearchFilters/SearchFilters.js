@@ -52,12 +52,16 @@ class SearchFilters extends React.Component {
 			<div className="contract-filter">
 				<div className="filters-wrapper">
 					<div className="filter-box filter-amount">
-						<span className="filter-title">Monto total <i className="title-tip">(en pesos mexicanos)</i></span>
+						<div>
+							<span className="filter-title">Monto total <i className="title-tip">(en pesos mexicanos)</i></span>
+						</div>
 						<input disabled={disabledInputs} name="fromAmount" type="text" className="filter-input half-input filter-input-from" placeholder="desde $" defaultValue={fromAmount} onChange={this.changeFieldHandler} />
 						<input disabled={disabledInputs} name="toAmount" type="text" className="filter-input half-input filter-input-to" placeholder="hasta $" defaultValue={toAmount} onChange={this.changeFieldHandler} />
 					</div>
 					<div className="filter-box filter-contract-type">
-						<span className="filter-title">Tipo de contratación <i className="filter-tip"><span className="tooltip-info">La ley obliga a la Unidad Compradora a definir el tipo de contratación, ya que varían las normas en cada caso.</span></i></span>
+						<div>
+							<span className="filter-title">Tipo de contratación <i className="filter-tip"><span className="tooltip-info">La ley obliga a la Unidad Compradora a definir el tipo de contratación, ya que varían las normas en cada caso.</span></i></span>
+						</div>
 						<div className="select-wrapper">
 							<select disabled={disabledInputs} name="contractType" id="" className="filter-input" defaultValue={contractType} onChange={this.changeFieldHandler}>
 								<option value="todos">-Todos-</option>
@@ -71,7 +75,9 @@ class SearchFilters extends React.Component {
 						</div>
 					</div>
 					<div className="filter-box filter-procedure-type">
-						<span className="filter-title">Tipo de procedimiento <i className="filter-tip"><span className="tooltip-info">EstaLa licitación pública debería es según la ley mexicana el procedimiento adecuado para contratar obra publica. Excepcionalmente también se pueden realizar otro tipo de procedimientos como: adjudicación directa, convenio e invitación a cuando menos tres proveedores.</span></i></span>
+						<div>
+							<span className="filter-title">Tipo de procedimiento <i className="filter-tip"><span className="tooltip-info">EstaLa licitación pública debería es según la ley mexicana el procedimiento adecuado para contratar obra publica. Excepcionalmente también se pueden realizar otro tipo de procedimientos como: adjudicación directa, convenio e invitación a cuando menos tres proveedores.</span></i></span>
+						</div>
 						<div className="select-wrapper">
 							<select disabled={disabledInputs} name="procedureType" id="" className="filter-input" defaultValue={procedureType} onChange={this.changeFieldHandler}>
 								<option value="todos">-Todos-</option>
@@ -82,7 +88,9 @@ class SearchFilters extends React.Component {
 						</div>
 					</div>
 					<div className="filter-box filter-date">
-						<span className="filter-title">Rango de fechas <i className="filter-tip"><span className="tooltip-info">Encuentra los contratos activos entre dos fechas.</span></i></span>
+						<div>
+							<span className="filter-title">Rango de fechas <i className="filter-tip"><span className="tooltip-info">Encuentra los contratos activos entre dos fechas.</span></i></span>
+						</div>
 						<DatePicker disabled={disabledInputs} selected={fromDate} onChange={this.changeFromDateHandler} className="filter-input filter-input-from" placeholderText="desde" defaultValue={fromDate} />
 						<DatePicker disabled={disabledInputs} selected={toDate} onChange={this.changeToDateHandler} className="filter-input filter-input-to" placeholderText="hasta" defaultValue={toDate} />
 					</div>

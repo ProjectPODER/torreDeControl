@@ -19,6 +19,17 @@ $font-lg: 48;
 $font-xl: 70;
 
 
+$mobile-size:320px;
+$tablet-size:720px;
+$desktop-size:960px;
+$largedesktop-size:1050px;
+
+// Bourbon Neat Breakpoints
+$mobile: new-breakpoint(min-width 0 max-width $mobile-size, 12);
+$tablet: new-breakpoint(min-width $mobile-size max-width $tablet-size, 12);
+$desktop: new-breakpoint(min-width $tablet-size max-width $desktop-size, 12);
+$largedesktop: new-breakpoint(min-width $desktop-size max-width $largedesktop-size, 12);
+
 @keyframes example {
     from {background-color: red;}
     to {background-color: yellow;}
@@ -187,6 +198,24 @@ select {
 						&:before {
 							opacity: 1;
 						}
+					}
+				}
+			}
+		}
+	}
+}
+
+@media screen and (min-width: 0) and (max-width: $desktop-size) {
+    .site-header {
+		.wg-navbar-logo {
+			@include span-columns(1 of 12);
+		}
+		.wg-navbar {
+			@include span-columns(11 of 12);
+			.wg-navbar-menu {
+				.wg-navbar-item {
+					a {
+						@include set-font($font-sm);
 					}
 				}
 			}

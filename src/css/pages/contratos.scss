@@ -29,6 +29,12 @@
           @include span-columns(12);
           .filter-box {
             @include span-columns(3);
+            @media screen and (min-width: 0) and (max-width: $desktop-size) {
+              @include span-columns(6);
+              &.filter-contract-type {
+                @include omega();
+              }
+            }
             .select-wrapper {
               @include span-columns(12 of 12);
             }
@@ -424,5 +430,5 @@
         }
       }
     }
-  }
+  } 
 }
