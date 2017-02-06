@@ -208,8 +208,8 @@ function setupD3() {
 	const slide_3 = new Filter({property: 'type', operator: 'eq', expected: 'contract'});
 	const slide_4 = new Filter({property: 'type', operator: 'eq', expected: 'organization'});
 	$('#fullpage').fullpage({
-		paddingBottom: '150px',
-		paddingTop: '60px',
+		paddingBottom: '60px',
+		paddingTop: '110px',
     scrollingSpeed: 300,
     onLeave: (index, nextIndex) => {
     	$(`.info-container`).removeClass('slide-active slide-leaving');

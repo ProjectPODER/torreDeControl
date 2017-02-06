@@ -102,10 +102,10 @@ select {
 
 .site-footer {
 	width: 100%;
-	height: 150px;
+	height: 60px;
 	background-color: $light-grey;
 	z-index: 1;
-	padding: 35px 50px;
+	padding: 10px 50px;
 	.fixed-page & {
 		bottom: 0;
 		position: absolute;
@@ -119,6 +119,7 @@ select {
 	.site-development {
 		.developed-by,
 		.sponsored-by {
+			@include span-columns(6);
 			color: $black;
 			.organization-link {
 				.organization-logo {
@@ -131,7 +132,7 @@ select {
 		}
 
 		.developed-by {
-			margin-bottom: 30px;
+		    margin-top: 10px;
 		}
 		
 	}
@@ -145,17 +146,20 @@ select {
 
 .site-header {
 	@include header(60);
+	@include span-columns(12);
 	background-color: $white;
 	position: relative;
 	z-index: 1;
+	margin-bottom: 20px;
 	.wg-navbar-logo {
+		@include span-columns(4);
 		margin-top: 4px;
 		.torre-logo {
 			width: 100%;
 		}
 	}
 	.wg-navbar {
-			width: 70%;
+			@include span-columns(8);
 			max-width: 1024px;
 			background-color: $white;
 		.wg-navbar-menu {
@@ -187,5 +191,71 @@ select {
 				}
 			}
 		}
+	}
+}
+
+.site-top-ribbon {
+	@include span-columns(12);
+	.ribbon-item {
+		@include span-columns(6);
+		.ribbon-link {
+			@include span-columns(4);
+		}
+	}
+	.ribbon-right {
+		@include span-columns(5);
+		@include shift(1);
+		.ribbon-link {
+			@include span-columns(4 of 12);
+		}
+	}
+}
+
+.site-top-ribbon {
+	background-color: #0A314E;
+    border-bottom: solid 1px #fff;
+    margin-bottom: 0;
+    padding: 10px 0;
+    height: 50px;
+	
+	.ribbon-item {
+		height: 100%;
+		.ribbon-link {
+		    text-decoration: none;
+		    color: #006b8d;
+		    margin: 0 auto;
+		    text-align: center;
+		    position: relative;
+		    height: 100%;
+		    img {
+		    	width: 100%;
+		    	position: absolute;
+		    	left: 50%;
+		    	top: 50%;
+		    	transform: translate3d(-50%, -50%, 0);
+		    }
+		    .link-quienesquien {
+		    	max-width: 101px;
+		    }
+		    .link-colaboratorio {
+		    	max-width: 122px;
+		    }
+		    .link-colaboratorio {
+		    	max-width: 103px;
+		    }
+		    .link-rindecuentas {
+		    	max-width: 140px;
+		    }
+		    .link-mexicoleaks {
+		    	max-width: 118px;
+		    }
+		    .link-peruleaks {
+		    	max-width: 102px;
+		    }
+		}
+	}
+	.ribbon-right {
+		position: relative;
+		left: 10px;
 	}
 }
