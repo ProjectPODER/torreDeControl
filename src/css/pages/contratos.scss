@@ -22,17 +22,23 @@
       }
       .contract-filter {
         @include span-columns(12);
-        .filter-box {
-          @include span-columns(3);
-          .select-wrapper {
-            @include span-columns(12 of 12);
-          }
-          .filter-input {
-            @include span-columns(12 of 12);
-          }
-          .half-input,
-          .react-datepicker__input-container {
-            @include span-columns(6 of 12);
+        .filter-footnote {
+          @include span-columns(12);
+        }
+        .filters-wrapper {
+          @include span-columns(12);
+          .filter-box {
+            @include span-columns(3);
+            .select-wrapper {
+              @include span-columns(12 of 12);
+            }
+            .filter-input {
+              @include span-columns(12 of 12);
+            }
+            .half-input,
+            .react-datepicker__input-container {
+              @include span-columns(6 of 12);
+            }
           }
         }
       }
