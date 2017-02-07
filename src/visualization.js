@@ -1,6 +1,5 @@
 import $ from 'jquery';
 window.jQuery = $;
-import Cytoscape from 'cytoscape';
 import * as d3 from "d3";
 import async from 'async';
 import Filter from './filters.js';
