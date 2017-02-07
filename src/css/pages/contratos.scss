@@ -35,6 +35,10 @@
                 @include omega();
               }
             }
+            @media screen and (min-width: 0) and (max-width: $mobile-size) {
+              @include span-columns(12);
+              @include omega();
+            }
             .select-wrapper {
               @include span-columns(12 of 12);
             }
@@ -54,12 +58,22 @@
           @include span-columns(12);
           .sort-by-title {
             @include span-columns(5);
+            @media screen and (min-width: 0) and (max-width: $mobile-size) {
+              @include span-columns(3);
+            }
           }
           .sort-by-count {
             @include span-columns(3);
+            @media screen and (min-width: 0) and (max-width: $mobile-size) {
+              @include span-columns(5);
+            }
           }
           .sort-by-amount {
             @include span-columns(2);
+            @media screen and (min-width: 0) and (max-width: $mobile-size) {
+              @include span-columns(4);
+              @include omega();
+            }
           }
         }
       }
@@ -71,16 +85,31 @@
             @include span-columns(12);
             .organizations-title {
               @include span-columns(5);
+              @media screen and (min-width: 0) and (max-width: $mobile-size) {
+                @include span-columns(12);
+                @include omega();
+              }
             }
             .organizations-count {
               @include span-columns(3);
+              @media screen and (min-width: 0) and (max-width: $mobile-size) {
+                @include span-columns(12);
+                @include omega();
+              }
             }
             .organizations-amount {
               @include span-columns(2);
+              @media screen and (min-width: 0) and (max-width: $mobile-size) {
+                @include span-columns(12);
+                @include omega();
+              }
             }
             .organizations-send-info {
               @include span-columns(2);
               @include omega();
+              @media screen and (min-width: 0) and (max-width: $mobile-size) {
+                @include span-columns(12);
+              }
             }
           }
 
@@ -89,12 +118,20 @@
             .contracts-item {
               .contract-title {
                 @include span-columns(8);
+                @media screen and (min-width: 0) and (max-width: $mobile-size) {
+                  @include span-columns(12);
+                  @include omega();
+                }
               }
               .contract-details {
                 @include span-columns(12);
               }
               .details-left {
                 @include span-columns(9);
+                @media screen and (min-width: 0) and (max-width: $mobile-size) {
+                  @include span-columns(12);
+                  @include omega();
+                }
                 .contract-amount {
                   @include span-columns(12 of 12);
                 }
@@ -107,6 +144,10 @@
               }
               .details-right {
                 @include span-columns(3);
+                @media screen and (min-width: 0) and (max-width: $mobile-size) {
+                  @include span-columns(12);
+                  @include omega();
+                }
                 .contract-start-date {
                   @include span-columns(12 of 12);
                 }
@@ -127,6 +168,9 @@
 
   .site-content {
     padding: 30px 10% 50px;
+    @media screen and (min-width: 0) and (max-width: $mobile-size) {
+      padding: 30px 10px 50px;
+    }
     .contracts-content {
       .pagination-bar {
         float: right;
@@ -214,6 +258,9 @@
                 pointer-events: none;
                 @include set-font($font-xs);
                 z-index: 100;
+                @media screen and (min-width: 0) and (max-width: $mobile-size) {
+                  transform: translateX(-38%);
+                }
                 &:before {
                   content: '';
                   position: absolute;
@@ -227,6 +274,9 @@
                   border-style: solid;
                   border-width: 0 6px 6px 6px;
                   border-color: transparent transparent $light-orange transparent;
+                  @media screen and (min-width: 0) and (max-width: $mobile-size) {
+                    left: 38%;
+                  }
                 }
               }
               &:before {
@@ -269,6 +319,7 @@
         margin-bottom: 10px;
         .sort-options-list {
           margin-bottom: 5px;
+          @include set-font($font-xs);
           .sort-by-count {
             text-align: center;
           }
@@ -289,7 +340,7 @@
                 right: 0;
                 display: inline-block;
                 font-style: normal;
-                font-size: 15px;
+                font-size: 8px;
                 font-weight: 600;
                 color: $black;
                 opacity: 0.4;
@@ -298,12 +349,12 @@
                 }
               }
               .arrow-top {
-                top: -2px;
-                transform: rotate(-90deg);
+                top: -3px;
+                // transform: rotate(-90deg);
               }
               .arrow-bottom {
-                bottom: -2px;
-                transform: rotate(90deg);
+                bottom: -3px;
+                // transform: rotate(90deg);
               }
             }
           }
@@ -342,15 +393,40 @@
             padding: 25px 10px 10px;
             margin-bottom: 4px;
             background-color: #cccccc;
+            @media screen and (min-width: 0) and (max-width: $mobile-size) {
+              padding: 10px;
+              min-height: 64px;
+              height: auto;
+            }
             .organizations-title {
               color: $blue;
               font-weight: 600;
               text-transform: uppercase;
+              @media screen and (min-width: 0) and (max-width: $mobile-size) {
+                margin-bottom: 20px;
+              }
             }
             .organizations-count,
             .organizations-amount {
               color: $black;
               text-align: center;
+              @media screen and (min-width: 0) and (max-width: $mobile-size) {
+                text-align: left;
+              }
+            }
+            .organizations-amount {
+              @media screen and (min-width: 0) and (max-width: $mobile-size) {
+                &:before {
+                  content: 'Cantidad de contratos: ',
+                }
+              }
+            }
+            .organizations-count {
+              @media screen and (min-width: 0) and (max-width: $mobile-size) {
+                &:before {
+                  content: 'Monto total: ',
+                }
+              }
             }
             .organizations-send-info {
               @include set-font($font-xxs);

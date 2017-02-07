@@ -209,7 +209,7 @@ function setupD3() {
 	const slide_4 = new Filter({property: 'type', operator: 'eq', expected: 'organization'});
 	$('#fullpage').fullpage({
 		paddingBottom: '60px',
-		paddingTop: '110px',
+		paddingTop: ($('.site-top-ribbon').height() + 60) + 'px',
     scrollingSpeed: 300,
     onLeave: (index, nextIndex) => {
     	$(`.info-container`).removeClass('slide-active slide-leaving');
@@ -275,8 +275,13 @@ function setupD3() {
 		const resG = $('.resizable-g');
 		const width = container.width();
 		const height = container.height();
+		let scaleMin;
 
-	    var scaleMin = Math.min(width, height) / 2000;
+		if($(window).width() < 420) {
+	    scaleMin = Math.min(width, height) / (1800 - $(window).width());
+		} else {
+	    scaleMin = Math.min(width, height) / (2800 - $(window).width());
+		}
 		const resGWidth = width/2 * (1 - scaleMin);
 		const resGHeight = height/2 * (1 - scaleMin);
 		offset = 0;

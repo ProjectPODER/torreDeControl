@@ -73,6 +73,9 @@
 
 	.site-content {
 		padding: 30px 10%;
+		@media screen and (min-width: 0) and (max-width: $mobile-size) {
+      padding: 30px 10px 30px 10%;
+    }
 		.content-title {
 			margin-bottom: 40px;
 		}

@@ -85,6 +85,12 @@ select {
 	}
 }
 
+.site-content {
+	@media screen and (min-width: 0) and (max-width: $mobile-size) {
+		padding-top: 80px !important;
+	}
+}
+
 .row {
 	@include row();
 }
@@ -117,6 +123,9 @@ select {
 	background-color: $light-grey;
 	z-index: 1;
 	padding: 10px 50px;
+	@media screen and (min-width: 0) and (max-width: $mobile-size) {
+		padding: 10px;
+	}
 	.fixed-page & {
 		bottom: 0;
 		position: absolute;
@@ -132,18 +141,42 @@ select {
 		.sponsored-by {
 			@include span-columns(6);
 			color: $black;
+			@media screen and (min-width: 0) and (max-width: $mobile-size) {
+				@include set-font($font-xxs);
+			}
+			.developed-title ,
+			.sponsored-title {
+				@media screen and (min-width: 0) and (max-width: $mobile-size) {
+					display: block;
+					margin-bottom: 10px;
+				}
+			}
 			.organization-link {
 				.organization-logo {
 					max-width: 80px;
 					max-height: 40px;
 					margin: 0 10px;
 					vertical-align: middle;
+					@media screen and (min-width: 0) and (max-width: $mobile-size) {
+						max-width: 50px;
+						max-height: 20px;
+					}
+				}
+			}
+			.organization-link:first-of-type {
+				.organization-logo {
+					@media screen and (min-width: 0) and (max-width: $mobile-size) {
+						margin-left: 0;
+					}
 				}
 			}
 		}
 
 		.developed-by {
 		    margin-top: 10px;
+		    @media screen and (min-width: 0) and (max-width: $mobile-size) {
+			    margin-top: 0;
+		    }
 		}
 		
 	}
@@ -223,6 +256,31 @@ select {
 	}
 }
 
+@media screen and (min-width: 0) and (max-width: $mobile-size) {
+	.site-header {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		.wg-navbar-logo {
+			margin: 0;
+			@include span-columns(8 of 12);
+		}
+		.wg-navbar {
+			margin-top: 60px;
+			@include span-columns(12 of 12);
+			.wg-navbar-menu {
+				margin: 60px 0 0 0;
+				.wg-navbar-item {
+					display: block;
+					width: 100%;
+					margin-bottom: 10px;
+				}
+			}
+		}
+	}
+}
+
 .site-top-ribbon {
 	@include span-columns(12);
 	.ribbon-item {
@@ -242,10 +300,15 @@ select {
 
 .site-top-ribbon {
 	background-color: #0A314E;
-    border-bottom: solid 1px #fff;
-    margin-bottom: 0;
-    padding: 10px 0;
-    height: 50px;
+  border-bottom: solid 1px #fff;
+  margin: 0;
+  padding: 10px 0;
+  height: 50px;
+  overflow: hidden;
+  @media screen and (min-width: 0) and (max-width: $mobile-size) {
+  	display: none;
+  	height: 0;
+  }
 	
 	.ribbon-item {
 		height: 100%;
@@ -286,5 +349,33 @@ select {
 	.ribbon-right {
 		position: relative;
 		left: 10px;
+	}
+}
+
+	.react-datepicker__tether-element-attached-bottom.react-datepicker__tether-element {
+		margin: 5% auto !important;
+		width: 90%;
+		transform: initial !important;
+		top: 0 !important;
+		left: 0 !important;
+		bottom: 0;
+		right: 0;
+	}
+	.react-datepicker,
+	.react-datepicker__month-container,
+	.react-datepicker_month {
+		@media screen and (min-width: 0) and (max-width: $mobile-size) {
+			width: 100%;
+		}
+	}
+	.react-datepicker__triangle {
+		@media screen and (min-width: 0) and (max-width: $mobile-size) {
+			display: none;
+		}	
+	}
+	
+.react-datepicker_day {
+	@media screen and (min-width: 0) and (max-width: $mobile-size) {
+		padding: 5%;
 	}
 }
