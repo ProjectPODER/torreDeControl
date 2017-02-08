@@ -160,8 +160,8 @@ module.exports = {
             path.resolve(__dirname, 'investigacion.html'),
             path.resolve(__dirname, 'metodologia.html'),
         ]),
-        new webpack.optimize.UglifyJsPlugin({
-          compress: { warnings: false }
-        })
+        // new webpack.optimize.UglifyJsPlugin({
+        //   compress: { warnings: false }
+        // })
 	]
 };

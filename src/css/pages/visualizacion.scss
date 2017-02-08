@@ -126,3 +126,6 @@
 		}
 	}
 }
+.contact-modal {
+	@include modal();
+}

@@ -13,6 +13,12 @@ const PAGINATION_GO_TO_PREVIOUS_PAGE = 'PAGINATION_GO_TO_PREVIOUS_PAGE';
 const PAGINATION_GO_TO_PAGE = 'PAGINATION_GO_TO_PAGE';
 const PAGINATION_GO_TO_START = 'PAGINATION_GO_TO_START';
 const SET_FILTERED_RESULTS = 'SET_FILTERED_RESULTS';
+const SHOW_MODAL = 'SHOW_MODAL';
+const HIDE_MODAL = 'HIDE_MODAL';
+const SET_INFO_DATA = 'SET_INFO_DATA';
+const SEND_CONTACT_INFO = 'SEND_CONTACT_INFO';
+const SEND_CONTACT_INFO_FAIL = 'SEND_CONTACT_INFO_FAIL';
+const SEND_CONTACT_INFO_SUCCESS = 'SEND_CONTACT_INFO_SUCCESS';
 
 const initialState = {
   keyword: '',
@@ -27,6 +33,14 @@ const initialState = {
   sortBy: 'byTitle',
   reverse: false,
   filteredResults: 0,
+  modalStatus: 'closed',
+  contactMailStatus: 'empty',
+  sendInfoData: {
+    organization: null,
+    email: null,
+    subject: null,
+    text: null
+  },
   pagination: {
     page: 0,
     resultsPerPage: 10
@@ -130,6 +144,40 @@ export default function reducer(state = initialState, action = {}) {
         filteredResults: action.filteredResults
       };
     }
+    case SHOW_MODAL: {
+      return {
+        ...state,
+        modalStatus: 'opened'
+      };
+    }
+    case HIDE_MODAL: {
+      return {
+        ...state,
+        modalStatus: 'closed'
+      };
+    }
+    case SET_INFO_DATA: {
+      return {
+        ...state,
+        sendInfoData: {
+          ...state.sendInfoData,
+          ...action.data
+        }
+      };
+    }
+    case SEND_CONTACT_INFO_SUCCESS: {
+      return {
+        ...state,
+        sendInfoData: {
+          organization: null,
+          email: null,
+          subject: null,
+          text: null
+        },
+        modalStatus: 'closed',
+        contactMailStatus: 'sended'
+      };
+    }
     default:
       return state;
   }
@@ -199,5 +247,31 @@ export function setFilteredResults(filteredResults) {
 export function isLoaded() {
   return {
     type: IS_LOADED
+  };
+}
+
+export function showModal() {
+  return {
+    type: SHOW_MODAL
+  };
+}
+
+export function hideModal() {
+  return {
+    type: HIDE_MODAL
+  };
+}
+
+export function setInfoData(data) {
+  return {
+    type: SET_INFO_DATA,
+    data
+  };
+}
+
+export function sendContactMail(data) {
+  return {
+    types: [SEND_CONTACT_INFO, SEND_CONTACT_INFO_SUCCESS, SEND_CONTACT_INFO_FAIL],
+    promise: () => $.post('message.php', data)
   };
 }

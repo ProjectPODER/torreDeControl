@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import SearchInput from '../components/SearchInput/SearchInput'
 import SearchFilters from '../components/SearchFilters/SearchFilters'
+import ContactModal from '../components/ContactModal/ContactModal'
 import { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { isLoaded, getContractsList } from '../redux/modules/contracts';
@@ -117,6 +118,7 @@ class ContractPage extends React.Component {
 				<SearchInput />
 				<SearchFilters />
 				<OrganizationsList contractsByOrganizations={contractsByOrganizations}/>
+				<ContactModal />
 			</div>
 		);
 	}

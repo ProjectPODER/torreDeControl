@@ -2,18 +2,26 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { PropTypes } from 'react';
 import ContractsList from '../ContractsList/ContractsList';
+import { setInfoData, showModal } from '../../redux/modules/contracts';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
+@connect(
+    state => ({sendInfoData: state.contracts.sendInfoData}),
+    dispatch => bindActionCreators({setInfoData, showModal}, dispatch))
 
 class OrganizationItem extends React.Component {
 	static propTypes = {
-		contracts: PropTypes.array,
-		opened: PropTypes.bool,
-		organizationName: PropTypes.string,
-		organizationAmount: PropTypes.number,
-		organizationCount: PropTypes.number,
+		
 	}
 
 	tabClick = (tab) => {
 		this.props.tabClick(tab);
+	};
+
+	sendInfoHandler = (organization) => {
+		this.props.setInfoData({organization})
+		this.props.showModal();
 	};
 
 	render() {
@@ -28,7 +36,7 @@ class OrganizationItem extends React.Component {
 					<span className="organizations-title">{organizationName}</span>
 					<span className="organizations-count">{organizationCount}</span>
 					<span className="organizations-amount">{organizationAmount}</span>
-					<a href="#" className="organizations-send-info">Enviar más información</a>
+					<input type="button" onClick={() => {this.sendInfoHandler(organizationName)}} className="organizations-send-info" value="Enviar más información"/>
 				</div>
 				<ContractsList opened={opened} contracts={contracts}/>
 			</li>
