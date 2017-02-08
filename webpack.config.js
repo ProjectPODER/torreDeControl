@@ -14,7 +14,8 @@ module.exports = {
 	entry: './src/main.js',
 	output: {
 		path: 'dist',
-		filename: 'bundle.js'
+		filename: 'bundle.js',
+        sourceMapFilename: "bundle.js.map",
 	},
 	module: {
 		loaders: [

@@ -40,7 +40,7 @@ MathSet.prototype.indexBy = function(property) {
 
 MathSet.prototype.filter = function(paramFilters) {
   var filters = [];
-  for (var a in arguments) {
+  for (var a = 0; a < arguments.length; a++) {
     var paramFilters = arguments[a];
     filters = filters.concat(paramFilters instanceof Filter ? [paramFilters] : paramFilters);
   }
