@@ -91,8 +91,8 @@ class SearchFilters extends React.Component {
 						<div>
 							<span className="filter-title">Rango de fechas <i className="filter-tip"><span className="tooltip-info">Encuentra los contratos activos entre dos fechas.</span></i></span>
 						</div>
-						<DatePicker disabled={disabledInputs} selected={fromDate} onChange={this.changeFromDateHandler} className="filter-input filter-input-from" placeholderText="desde" defaultValue={fromDate} />
-						<DatePicker disabled={disabledInputs} selected={toDate} onChange={this.changeToDateHandler} className="filter-input filter-input-to" placeholderText="hasta" defaultValue={toDate} />
+						<DatePicker type="date" disabled={disabledInputs} selected={fromDate} onChange={this.changeFromDateHandler} className="filter-input filter-input-from" placeholderText="desde" defaultValue={fromDate} />
+						<DatePicker type="date" disabled={disabledInputs} selected={toDate} onChange={this.changeToDateHandler} className="filter-input filter-input-to" placeholderText="hasta" defaultValue={toDate} />
 					</div>
 				</div>
 				<p className="filter-footnote">Los filtros aplican sobre los contratos que tienen las empresas</p>

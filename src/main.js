@@ -20,4 +20,13 @@ $(() => {
 			break;
 		}
 	}
+
+	$('.wg-navbar-menu-button').click(() => {
+		const opened = $('.site-header').hasClass('state-active');
+		if (opened) {
+			$('.site-header').removeClass('state-active');
+		} else {
+			$('.site-header').addClass('state-active');
+		}
+	});
 });

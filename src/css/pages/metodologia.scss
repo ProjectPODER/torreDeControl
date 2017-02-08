@@ -38,6 +38,9 @@
 						}
 						.article-excerpt {
 							@include span-columns(1 of 2);
+							@media screen and (min-width: 0) and (max-width: $mobile-size) {
+								@include span-columns(2 of 2);
+							}
 						}
 					}
 					.article-body {
@@ -58,6 +61,11 @@
 					@media screen and (min-width: 0) and (max-width: $desktop-size) {
 						@include span-columns(12);
 					}
+					@media screen and (min-width: 0) and (max-width: $mobile-size) {
+						.article-image {
+							@include span-columns(12);
+						}
+					}
 				}
 			}
 		}
@@ -65,11 +73,17 @@
 
 	.site-content {
 		padding: 30px 10%;
+		@media screen and (min-width: 0) and (max-width: $mobile-size) {
+      padding: 30px 10px 30px 10%;
+    }
 		.content-title {
 			margin-bottom: 40px;
 		}
 		.article-text {
 			padding-left: 100px;
+			@media screen and (min-width: 0) and (max-width: $mobile-size) {
+				padding-left: 0;
+			}
 			.article-header {
 				.article-title {
 					color: $blue;
@@ -88,6 +102,11 @@
 			}
 		}
 		.article-whoami {
+			.article-text {
+				@media screen and (min-width: 0) and (max-width: $mobile-size) {
+					margin-bottom: 20px;
+				}
+			}
 			.article-media {
 				top: -80px;
 				@media screen and (min-width: 0) and (max-width: $desktop-size) {
@@ -101,6 +120,9 @@
 						width: calc(90% - 100px);
 						margin-left: 100px;
 					}
+					@media screen and (min-width: 0) and (max-width: $mobile-size) {
+						width: 90%;
+					}
 				}
 			}
 		}
@@ -110,12 +132,19 @@
 				@media screen and (min-width: 0) and (max-width: $desktop-size) {
 					margin-bottom: 50px;
 				}
+				@media screen and (min-width: 0) and (max-width: $mobile-size) {
+					margin-bottom: 20px;
+				}
 			}		
 			.article-body {
 				background-color: rgba(255, 255, 255, 0.3);
 				padding: 10px 20px;
 				@media screen and (min-width: $tablet-size) and (max-width: $desktop-size) {
 					min-height: 300px;
+				}
+				@media screen and (min-width: 0) and (max-width: $mobile-size) {
+					padding: 10px 0;
+					background-color: transparent;
 				}
 			}
 			.article-media {
@@ -130,6 +159,10 @@
 					position: absolute;
 					top: 40px;
 					right: 0;
+					transform: none;
+				}
+				@media screen and (min-width: 0) and (max-width: $mobile-size) {
+					position: static;
 				}
 				.article-image {
 					border-radius: 100%;
@@ -137,6 +170,13 @@
 						position: absolute;
 						left: 100px;
 						bottom: 0;
+					}
+					@media screen and (min-width: 0) and (max-width: $mobile-size) {
+						border-radius: 0;
+						position: static;
+						float: none;
+						height: auto;
+						width: 100%;
 					}
 				}
 			}
@@ -169,6 +209,9 @@
 			width: 20px;
 			height: 20px;
 			border: 2px solid $blue;
+			@media screen and (min-width: 0) and (max-width: $mobile-size) {
+				left: -30px;
+			}
 		}
 	}
 
@@ -183,6 +226,9 @@
 			height: 40px;
 			margin-left: 9px;
 			background-color: $blue;
+			@media screen and (min-width: 0) and (max-width: $mobile-size) {
+				left: -30px;
+			}
 		}
 	}
 
@@ -221,6 +267,9 @@
 				width: $box-width + px;
 				height: $box-width + px;
 			}
+			@media screen and (min-width: 0) and (max-width: $mobile-size) {
+				left: -20px;
+			}
 		}
 	}
 
@@ -240,6 +289,10 @@
 			background-size:20px 20px, 20px 20px;
 			background-position:-2px -2px, -2px -2px;
 			opacity: 0.2;
+			@media screen and (min-width: 0) and (max-width: $mobile-size) {
+				content: none;
+				display: none;
+			}
 		}
 	}
 }

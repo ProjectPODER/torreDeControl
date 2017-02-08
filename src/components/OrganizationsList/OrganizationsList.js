@@ -114,9 +114,9 @@ class OrganizationsList extends React.Component {
 			<div>
 				<div className="sort-bar">
 					<ul className="sort-options-list">
-						<li className={classNames(["sort-by-title sort-options-item", {active: sortBy == 'byTitle'}])} onClick={() => {this.changeSortCriteria('byTitle')}}>Empresa <span className="arrows"><i className={classNames(["arrow-top", {active: reverse && sortBy == 'byTitle'}])}>▸</i><i className={classNames(["arrow-bottom", {active: !reverse && sortBy == 'byTitle'}])}>▸</i></span></li>
-						<li className={classNames(["sort-by-count sort-options-item", {active: sortBy == 'byCount'}])} onClick={() => {this.changeSortCriteria('byCount')}}>Cant. de Contratos <span className="arrows"><i className={classNames(["arrow-top", {active: reverse && sortBy == 'byCount'}])}>▸</i><i className={classNames(["arrow-bottom", {active: !reverse && sortBy == 'byCount'}])}>▸</i></span></li>
-						<li className={classNames(["sort-by-amount sort-options-item", {active: sortBy == 'byAmount'}])} onClick={() => {this.changeSortCriteria('byAmount')}}>Monto Total <span className="arrows"><i className={classNames(["arrow-top", {active: reverse && sortBy == 'byAmount'}])}>▸</i><i className={classNames(["arrow-bottom", {active: !reverse && sortBy == 'byAmount'}])}>▸</i></span></li>
+						<li className={classNames(["sort-by-title sort-options-item", {active: sortBy == 'byTitle'}])} onClick={() => {this.changeSortCriteria('byTitle')}}>Empresa <span className="arrows"><i className={classNames(["arrow-top", {active: reverse && sortBy == 'byTitle'}])}>▲</i><i className={classNames(["arrow-bottom", {active: !reverse && sortBy == 'byTitle'}])}>▼</i></span></li>
+						<li className={classNames(["sort-by-count sort-options-item", {active: sortBy == 'byCount'}])} onClick={() => {this.changeSortCriteria('byCount')}}>Cant. de Contratos <span className="arrows"><i className={classNames(["arrow-top", {active: reverse && sortBy == 'byCount'}])}>▲</i><i className={classNames(["arrow-bottom", {active: !reverse && sortBy == 'byCount'}])}>▼</i></span></li>
+						<li className={classNames(["sort-by-amount sort-options-item", {active: sortBy == 'byAmount'}])} onClick={() => {this.changeSortCriteria('byAmount')}}>Monto Total <span className="arrows"><i className={classNames(["arrow-top", {active: reverse && sortBy == 'byAmount'}])}>▲</i><i className={classNames(["arrow-bottom", {active: !reverse && sortBy == 'byAmount'}])}>▼</i></span></li>
 					</ul>
 				</div>
 				{

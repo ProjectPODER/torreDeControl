@@ -11,6 +11,9 @@
 	opacity: 0;
 	width: 100%;
 	padding: 10px 20px;
+	@media screen and (min-width: 0) and (max-width: $mobile-size) {
+    padding: 10px;
+  }
 }
 
 .graph-container {
@@ -23,6 +26,10 @@
 		width: 100%;
 		margin-top: 110px;
 		height: calc(100% - 110px - 60px) !important;
+		@media screen and (min-width: 0) and (max-width: $mobile-size) {
+			margin-top: 60px;
+			height: calc(100% - 60px - 60px) !important;
+		}
 	}
 }
 
@@ -57,11 +64,17 @@
 			top: 50%;
 			left: 0;
 			transform: translate3d(-10px, -50%, 0);
+			@media screen and (min-width: 0) and (max-width: $mobile-size) {
+				@include span-columns(12);
+			}
 			.info-data {
 				font-family: roboto;
 				font-weight: 300;
 				color: $grey;
 				margin-bottom: 50px;
+				@media screen and (min-width: 0) and (max-width: $mobile-size) {
+					margin-bottom: 40%;
+				}
 				.top-text {
 					text-transform: uppercase;
 					font-size: 14px;
@@ -70,12 +83,21 @@
 				.middle-text {
 					font-size: 55px;
 					line-height: 57px;
+					@media screen and (min-width: 0) and (max-width: $mobile-size) {
+						font-size: 20px;
+						line-height: 22px;
+					}
 				}
 				.bottom-text {
 					font-size: 20px;
 					font-size: 22px;
+					font-family: Rajdhani;
 					strong {
 						color: $blue;
+					}
+					@media screen and (min-width: 0) and (max-width: $mobile-size) {
+						font-size: 12px;
+						font-size: 14px;
 					}
 				}
 			}
@@ -87,10 +109,18 @@
 					font-size: 46px;
 					line-height: 48px;
 					color: $blue;
+					@media screen and (min-width: 0) and (max-width: $mobile-size) {
+						font-size: 22px;
+						line-height: 24px;
+					}
 				}
 				.abstract-body {
 					font-size: 16px;
 					line-height: 18px;
+					@media screen and (min-width: 0) and (max-width: $mobile-size) {
+						font-size: 12px;
+						line-height: 14px;
+					}
 				}
 			}
 		}

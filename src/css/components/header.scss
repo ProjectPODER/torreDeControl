@@ -40,7 +40,7 @@
     }
   }
 
-  @media only screen and (max-device-width : 414px) {
+  @media only screen and (max-width : 420px) {
     .wg-navbar-menu-button {
       display: block;
       position: absolute;
@@ -48,6 +48,7 @@
       width: $height + px;
       height: $height + px;
       z-index: 1;
+      transform: scale(0.6);
       span {
         border-radius: $height / 3 * $menu-area * $menu-stroke / 3 + px;
         display: block;
@@ -87,7 +88,7 @@
       transform: translateX(0);
     }
 
-    @media only screen and (max-device-width : 414px) {
+    @media only screen and (max-width : 420px) {
       span {
         @for $i from 1 through 3 {
           &:nth-child(#{$i}) {
