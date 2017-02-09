@@ -60,23 +60,31 @@ class ContactModal extends React.Component {
 							<div onClick={this.closeHandler} className="wg-modal-close-button"/>
 							<span className="wg-modal-title">Enviar más información sobre {organization}</span>
 							<div className="wg-modal-info">
+								<p className="modal-legend">PODER y sus aliados están investigando todo el proceso de contratación y ejecución del Nuevo Aeropuerto Internacional de la Ciudad de México (NAICM).</p>
+								<p className="modal-legend">Si tienes documentos, fotografías o vídeos con más información sobre contratos, empresarios, obras o cualquier otro asunto referente al NAICM comunicalo a través del siguiente formulario o de forma anónima por Méxicoleaks.</p>
 								<label className="field-row">
-									<input className="field-row-input" 
-									ref={(subjectInput) => { this.subjectInput = subjectInput; }}
-									type="text" placeholder="asunto" name="subject" onChange={this.changeFieldHandler}/>
+									<div className="field-row-wrapper">
+										<input className="field-row-input" 
+										ref={(subjectInput) => { this.subjectInput = subjectInput; }}
+										type="text" placeholder="asunto" name="subject" onChange={this.changeFieldHandler}/>
+									</div>
 								</label>
 								<label className="field-row">
-									{errorEmail ? <span>{errorEmailLegend}</span> : null}
-									<input className="field-row-input"
-									ref={(emailInput) => { this.emailInput = emailInput; }}
-									type="text" placeholder="email" name="email" onChange={this.changeFieldHandler}/>
+									<div className="field-row-wrapper">
+										{errorEmail ? <span className="input-error-legend">{errorEmailLegend}</span> : null}
+										<input className="field-row-input"
+										ref={(emailInput) => { this.emailInput = emailInput; }}
+										type="text" placeholder="email" name="email" onChange={this.changeFieldHandler}/>
+									</div>
 								</label>
 								<label className="field-row">
-									{errorText ? <span>{errorTextLegend}</span> : null}
-									<textarea className="field-row-input"
-									placeholder="mensaje"
-									ref={(textInput) => { this.textInput = textInput; }}
-									name="text" id="" cols="30" rows="10" onChange={this.changeFieldHandler}></textarea>
+									<div className="field-row-wrapper">
+										{errorText ? <span className="input-error-legend">{errorTextLegend}</span> : null}
+										<textarea className="field-row-input field-textarea"
+										placeholder="mensaje"
+										ref={(textInput) => { this.textInput = textInput; }}
+										name="text" id="" cols="30" rows="10" onChange={this.changeFieldHandler}></textarea>
+									</div>
 								</label>
 							</div>
 							<div className="wg-modal-actions">

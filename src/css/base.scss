@@ -88,6 +88,7 @@ select {
 }
 
 textarea {
+	background: transparent;
 	font-family: Rajdhani;
 	@include set-font($font-sm);
 	border: 1px solid #ccc;

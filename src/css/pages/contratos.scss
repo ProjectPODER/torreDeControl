@@ -164,33 +164,46 @@
       }
       .contact-modal {
         @include span-columns(12);
-        .wg-modal-body {
-          @include span-columns(8);
-          @include shift(2);
-          .info-form {
-            @include fill-parent();
-            .wg-modal-close-button {
-
-            }
-            .wg-modal-title {
-              @include fill-parent();
-            }
-            .wg-modal-info {
-              @include fill-parent();
-              .field-row {
+        .wg-modal-backdrop {
+          .wg-modal-body {
+            @include span-columns(8);
+            @include shift(2);
+            .info-form {
+              @include span-columns(8 of 8);
+              .wg-modal-close-button {
+              }
+              .wg-modal-title {
                 @include fill-parent();
-                .field-row-input {
+              }
+              .wg-modal-info {
+                @include fill-parent();
+                .modal-legend {
                   @include span-columns(6 of 8);
                   @include shift(1);
                 }
-              }  
-            }
-            .wg-modal-actions {
-              @include fill-parent();
-              .send-info-button {
-                @include span-columns(2 of 8);
-                &.button-cancel {
-                  @include shift(4);
+                .field-row {
+                  @include fill-parent();
+                  .field-row-wrapper {
+                    @include span-columns(6 of 8);
+                    @include shift(1);
+                    .field-row-input {
+                      @include fill-parent();
+                    }
+                    .input-error-legend {
+                      @include fill-parent();
+                    }
+                  }
+                }  
+              }
+              .wg-modal-actions {
+                .send-info-button {
+                  @include span-columns(2 of 8);
+                  &.button-cancel {
+                    @include shift(4);
+                  }
+                  &.button-send {
+                    @include omega(4);
+                  }
                 }
               }
             }
@@ -544,39 +557,70 @@
         .wg-modal-body {
           transform: translate3d(0, -50%, 0);
           left: auto;
-          .wg-modal-close-button {
-
-          }
-          .wg-modal-title {
-
-          }
-          .wg-modal-info {
-            .field-row {
-              .field-row-input {
-                margin-bottom: 10px;
+          background-color: $white;
+          .info-form {
+            overflow-y: scroll;
+            height: 100%;
+            .wg-modal-close-button {
+              &:before {
+                content: '✕';
               }
+              right: 5px;
+              top: 5px;
+              background-color: transparent;
+              cursor: pointer;
             }
-          }
-          .wg-modal-actions {
-            .send-info-button {
-              @include set-font($font-xxs);
-              text-transform: uppercase;
-              color: $white;
-              text-decoration: none;
-              padding: 4px 0;
-              text-align: center;
-              border: none;
-              padding: 10px;
-              &.button-send {
-                background-color: $green;
-                &:hover {
-                  background-color: $light-green;
+            .wg-modal-title {
+              margin-bottom: 40px;
+            }
+            .wg-modal-info {
+              .modal-legend {
+                color: $blue;
+                @include set-font($font-xs);
+                &:last-of-type {
+                  margin-bottom: 40px;
                 }
               }
-              &.button-cancel {
-                background-color: $orange;
-                &:hover {
-                  background-color: $light-orange;
+              .field-row {
+                .field-row-wrapper {
+                  position: relative;
+                  .field-row-input {
+                    margin-bottom: 30px;
+                    &.field-textarea {
+                      height: 100px;
+                    }
+                  }
+                  .input-error-legend {
+                    @include set-font($font-xs);
+                    color: $orange;
+                    position: absolute;
+                    bottom: 10px;
+                  }
+                }
+              }
+            }
+            .wg-modal-actions {
+              position: static;
+              .send-info-button {
+                @include set-font($font-xxs);
+                text-transform: uppercase;
+                color: $white;
+                text-decoration: none;
+                padding: 4px 0;
+                text-align: center;
+                border: none;
+                padding: 10px;
+                &.button-send {
+                  background-color: $green;
+                  &:hover {
+                    background-color: $light-green;
+                  }
+                }
+                &.button-cancel {
+                  background-color: $orange;
+                  &:hover {
+                    background-color: $light-orange;
+                  }
                 }
               }
             }
