@@ -2,6 +2,8 @@ $blue: #013E5C;
 $grey: #5b5b5f;
 $orange: #C1463A;
 $light-orange: #E9B9B5;
+$green: #2C9243;
+$light-green: #83B236;
 $black: #333;
 $white: #fff;
 $light-grey: #D3D5D4;
@@ -80,6 +82,25 @@ select {
     -webkit-appearance: none;
     border-radius: 0;
     height: 30px;
+	&:focus {
+		outline: none;
+	}
+}
+
+textarea {
+	font-family: Rajdhani;
+	@include set-font($font-sm);
+	border: 1px solid #ccc;
+	resize: none;
+	&:focus {
+		outline: none;
+	}
+}
+
+button {
+	font-family: Rajdhani;
+	@include set-font($font-xs);
+	cursor: pointer;
 	&:focus {
 		outline: none;
 	}
@@ -200,6 +221,7 @@ select {
 		margin-top: 4px;
 		.torre-logo {
 			width: 100%;
+			max-height: 30px;
 		}
 	}
 	.wg-navbar {

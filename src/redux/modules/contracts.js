@@ -41,6 +41,12 @@ const initialState = {
     subject: null,
     text: null
   },
+  sendInfoErrors: {
+    errorEmail: false,
+    errorEmailLegend: null,
+    errorText: false,
+    errorTextLegend: null
+  },
   pagination: {
     page: 0,
     resultsPerPage: 10
@@ -166,6 +172,7 @@ export default function reducer(state = initialState, action = {}) {
       };
     }
     case SEND_CONTACT_INFO_SUCCESS: {
+      console.log(action)
       return {
         ...state,
         sendInfoData: {
@@ -176,6 +183,19 @@ export default function reducer(state = initialState, action = {}) {
         },
         modalStatus: 'closed',
         contactMailStatus: 'sended'
+      };
+    }
+    case SEND_CONTACT_INFO_FAIL: {
+      const response = JSON.parse(action.error.responseText);
+      return {
+        ...state,
+        sendInfoErrors: {
+          errorEmail: Object.keys(response.messages).indexOf('email'),
+          errorEmailLegend: response.messages.email,
+          errorText: Object.keys(response.messages).indexOf('text'),
+          errorTextLegend: response.messages.text
+        },
+        contactMailStatus: 'error'
       };
     }
     default:

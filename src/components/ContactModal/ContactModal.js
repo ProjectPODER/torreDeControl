@@ -7,7 +7,7 @@ import { setInfoData, sendContactMail, hideModal } from '../../redux/modules/con
 import classNames from 'classnames';
 
 @connect(
-    state => ({contactMailStatus: state.contracts.contactMailStatus, modalStatus: state.contracts.modalStatus, sendInfoData: state.contracts.sendInfoData}),
+    state => ({contactMailStatus: state.contracts.contactMailStatus, modalStatus: state.contracts.modalStatus, sendInfoData: state.contracts.sendInfoData, sendInfoErrors: state.contracts.sendInfoErrors}),
     dispatch => bindActionCreators({setInfoData, sendContactMail, hideModal}, dispatch))
 class ContactModal extends React.Component {
 	static propTypes = {
@@ -48,36 +48,40 @@ class ContactModal extends React.Component {
 	render() {
 		const hideModal = this.props.modalStatus === 'closed';
 		const organization = this.props.sendInfoData.organization;
+		const errorEmail = this.props.sendInfoErrors.errorEmail;
+		const errorEmailLegend = this.props.sendInfoErrors.errorEmailLegend;
+		const errorText = this.props.sendInfoErrors.errorText;
+		const errorTextLegend = this.props.sendInfoErrors.errorTextLegend;
 		return (
 			<div className={classNames(["contact-modal",  {"wg-hide": hideModal}])}>
 				<div className="wg-modal-backdrop">
 					<div className="wg-modal-body">
-						<form action="#" onSubmit={this.sendHandler}>
+						<form action="#" onSubmit={this.sendHandler} className="info-form">
 							<div onClick={this.closeHandler} className="wg-modal-close-button"/>
 							<span className="wg-modal-title">Enviar más información sobre {organization}</span>
 							<div className="wg-modal-info">
-								<label>
-									<span>Asunto</span>
-									<input 
+								<label className="field-row">
+									<input className="field-row-input" 
 									ref={(subjectInput) => { this.subjectInput = subjectInput; }}
-									type="text" name="subject" onChange={this.changeFieldHandler}/>
+									type="text" placeholder="asunto" name="subject" onChange={this.changeFieldHandler}/>
 								</label>
-								<label>
-									<span>Mail</span>
-									<input
+								<label className="field-row">
+									{errorEmail ? <span>{errorEmailLegend}</span> : null}
+									<input className="field-row-input"
 									ref={(emailInput) => { this.emailInput = emailInput; }}
-									type="text" name="email" onChange={this.changeFieldHandler}/>
+									type="text" placeholder="email" name="email" onChange={this.changeFieldHandler}/>
 								</label>
-								<label>
-									<span>Mensaje</span>
-									<textarea
+								<label className="field-row">
+									{errorText ? <span>{errorTextLegend}</span> : null}
+									<textarea className="field-row-input"
+									placeholder="mensaje"
 									ref={(textInput) => { this.textInput = textInput; }}
 									name="text" id="" cols="30" rows="10" onChange={this.changeFieldHandler}></textarea>
 								</label>
 							</div>
 							<div className="wg-modal-actions">
-								<button type="button" className="my-simple-button" onClick={this.closeHandler}>Cancel</button>
-								<button type="submit" className="my-simple-button">Enviar</button>
+								<button type="button" className="send-info-button button-cancel" onClick={this.closeHandler}>Cancel</button>
+								<button type="submit" className="send-info-button button-send">Enviar</button>
 							</div>
 						</form>
 					</div>

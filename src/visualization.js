@@ -55,12 +55,12 @@ module.exports = () => {
 		$('#contracts_amount').text("$ " + (Math.round(contractsAmount/1000000)).toLocaleString() + " M");
 		$('#contracts_type').text(Object.keys(contractsByTypes).length);
 		$('#contracts_total').text(objectToArray(contractsByTypes).reduce(function(total, actual) {return total + Object.keys(actual.contracts).length}, 0));
-		const node = { id: 'contracts', name: 'contracts', activeSize: contractsAmount / 100000000, inactiveSize: 15, type: 'all', group: 1, color: '#BEA288', linksCount: 0 };
+		const node = { id: 'contracts', name: 'contracts', activeSize: contractsAmount / 10000000, inactiveSize: 35, type: 'all', group: 1, color: '#BEA288', linksCount: 0 };
 		slidesObjects[1].nodes.push(node);
 		nodes.push(node);
 		for (let i in contractsByTypes) {
 			const contractByType = contractsByTypes[i];
-			const node = { id: contractByType.name, name: contractByType.name, activeSize: contractByType.amount / 100000000, inactiveSize: 5, type: 'contract_type', group: 2, color: '#8AC190', linksCount: 0 };
+			const node = { id: contractByType.name, name: contractByType.name, activeSize: contractByType.amount / 20000000, inactiveSize: 15, type: 'contract_type', group: 2, color: '#8AC190', linksCount: 0 };
 			const link = { source: 'contracts', target: contractByType.name, type: 'contract_type', distance: 200, color: '#706F74' };
 			slidesObjects[2].nodes.push(node);
 			slidesObjects[2].links.push(link);
@@ -68,7 +68,7 @@ module.exports = () => {
 			links.push(link);
 			for (let j in contractByType.contracts) {
 				const contract = contractByType.contracts[j];
-				const node = { id: contract.ocid, name: contract.amount, activeSize: Math.log(contract.amount) / 2, inactiveSize: 20, type: 'contract', group: 3, color: '#E086A9', linksCount: 0 };
+				const node = { id: contract.ocid, name: contract.amount, activeSize: Math.log(contract.amount), inactiveSize: 30, type: 'contract', group: 3, color: '#E086A9', linksCount: 0 };
 				const link = { source: 'contracts', target: contract.ocid, type: 'contract', distance: 20, color: '#706F74' };
 				slidesObjects[3].nodes.push(node);
 				slidesObjects[3].links.push(link);
@@ -277,9 +277,9 @@ function setupD3() {
 		let scaleMin;
 
 		if($(window).width() < 420) {
-	    scaleMin = Math.min(width, height) / (1800 - $(window).width());
+	    scaleMin = Math.min(width, height) / (2200 - $(window).width());
 		} else {
-	    scaleMin = Math.min(width, height) / (2800 - $(window).width());
+	    scaleMin = Math.min(width, height) / (3200 - $(window).width());
 		}
 		const resGWidth = width/2 * (1 - scaleMin);
 		const resGHeight = height/2 * (1 - scaleMin);

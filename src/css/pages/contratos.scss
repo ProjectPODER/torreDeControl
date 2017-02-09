@@ -162,6 +162,41 @@
           }
         }
       }
+      .contact-modal {
+        @include span-columns(12);
+        .wg-modal-body {
+          @include span-columns(8);
+          @include shift(2);
+          .info-form {
+            @include fill-parent();
+            .wg-modal-close-button {
+
+            }
+            .wg-modal-title {
+              @include fill-parent();
+            }
+            .wg-modal-info {
+              @include fill-parent();
+              .field-row {
+                @include fill-parent();
+                .field-row-input {
+                  @include span-columns(6 of 8);
+                  @include shift(1);
+                }
+              }  
+            }
+            .wg-modal-actions {
+              @include fill-parent();
+              .send-info-button {
+                @include span-columns(2 of 8);
+                &.button-cancel {
+                  @include shift(4);
+                }
+              }
+            }
+          }
+        }
+      }
     }
 
   }
@@ -505,6 +540,50 @@
           }
         }
       }
+      .contact-modal {
+        .wg-modal-body {
+          transform: translate3d(0, -50%, 0);
+          left: auto;
+          .wg-modal-close-button {
+
+          }
+          .wg-modal-title {
+
+          }
+          .wg-modal-info {
+            .field-row {
+              .field-row-input {
+                margin-bottom: 10px;
+              }
+            }
+          }
+          .wg-modal-actions {
+            .send-info-button {
+              @include set-font($font-xxs);
+              text-transform: uppercase;
+              color: $white;
+              text-decoration: none;
+              padding: 4px 0;
+              text-align: center;
+              border: none;
+              padding: 10px;
+              &.button-send {
+                background-color: $green;
+                &:hover {
+                  background-color: $light-green;
+                }
+              }
+              &.button-cancel {
+                background-color: $orange;
+                &:hover {
+                  background-color: $light-orange;
+                }
+              }
+            }
+          }
+        }
+      }
+      
     }
   } 
 }

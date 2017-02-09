@@ -76,7 +76,7 @@ class SearchFilters extends React.Component {
 					</div>
 					<div className="filter-box filter-procedure-type">
 						<div>
-							<span className="filter-title">Tipo de procedimiento <i className="filter-tip"><span className="tooltip-info">EstaLa licitación pública debería es según la ley mexicana el procedimiento adecuado para contratar obra publica. Excepcionalmente también se pueden realizar otro tipo de procedimientos como: adjudicación directa, convenio e invitación a cuando menos tres proveedores.</span></i></span>
+							<span className="filter-title">Tipo de procedimiento <i className="filter-tip"><span className="tooltip-info">La licitación pública es según la ley mexicana el procedimiento adecuado para contratar obra publica. Excepcionalmente también se pueden realizar otro tipo de procedimientos como: adjudicación directa, convenio e invitación a cuando menos tres proveedores.</span></i></span>
 						</div>
 						<div className="select-wrapper">
 							<select disabled={disabledInputs} name="procedureType" id="" className="filter-input" defaultValue={procedureType} onChange={this.changeFieldHandler}>
