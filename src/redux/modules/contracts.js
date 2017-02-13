@@ -153,13 +153,20 @@ export default function reducer(state = initialState, action = {}) {
     case SHOW_MODAL: {
       return {
         ...state,
-        modalStatus: 'opened'
+        modalStatus: 'opened',
+        sendInfoErrors: {
+          errorEmail: false,
+          errorEmailLegend: null,
+          errorText: false,
+          errorTextLegend: null
+        }
       };
     }
     case HIDE_MODAL: {
       return {
         ...state,
-        modalStatus: 'closed'
+        modalStatus: 'closed',
+        contactMailStatus: 'empty'
       };
     }
     case SET_INFO_DATA: {
@@ -169,6 +176,12 @@ export default function reducer(state = initialState, action = {}) {
           ...state.sendInfoData,
           ...action.data
         }
+      };
+    }
+    case SEND_CONTACT_INFO: {
+      return {
+        ...state,
+        contactMailStatus: 'sending'
       };
     }
     case SEND_CONTACT_INFO_SUCCESS: {
@@ -181,8 +194,8 @@ export default function reducer(state = initialState, action = {}) {
           subject: null,
           text: null
         },
-        modalStatus: 'closed',
-        contactMailStatus: 'sended'
+        // modalStatus: 'closed',
+        contactMailStatus: 'sent'
       };
     }
     case SEND_CONTACT_INFO_FAIL: {
@@ -195,7 +208,7 @@ export default function reducer(state = initialState, action = {}) {
           errorText: Object.keys(response.messages).indexOf('text'),
           errorTextLegend: response.messages.text
         },
-        contactMailStatus: 'error'
+        contactMailStatus: response.messages.message_service ? 'error' : 'wrongfields'
       };
     }
     default:

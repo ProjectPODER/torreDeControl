@@ -21,6 +21,9 @@ class ContactModal extends React.Component {
 
 	closeHandler = () => {
 		this.props.hideModal();
+		this.subjectInput.value = '';
+		this.emailInput.value = '';
+		this.textInput.value = '';
 	};
 
 	changeFieldHandler = (evt) => {
@@ -52,6 +55,12 @@ class ContactModal extends React.Component {
 		const errorEmailLegend = this.props.sendInfoErrors.errorEmailLegend;
 		const errorText = this.props.sendInfoErrors.errorText;
 		const errorTextLegend = this.props.sendInfoErrors.errorTextLegend;
+		const disabledForm = this.props.contactMailStatus === 'sending';
+		const messageSent = this.props.contactMailStatus === 'sent';
+		const messageError = this.props.contactMailStatus === 'error';
+		const infoStatus =	this.props.contactMailStatus === 'sending' ||
+							this.props.contactMailStatus === 'sent' ||
+							this.props.contactMailStatus === 'error';
 		return (
 			<div className={classNames(["contact-modal",  {"wg-hide": hideModal}])}>
 				<div className="wg-modal-backdrop">
@@ -64,7 +73,7 @@ class ContactModal extends React.Component {
 								<p className="modal-legend">Si tienes documentos, fotografías o vídeos con más información sobre contratos, empresarios, obras o cualquier otro asunto referente al NAICM comunicalo a través del siguiente formulario o de forma anónima por Méxicoleaks.</p>
 								<label className="field-row">
 									<div className="field-row-wrapper">
-										<input className="field-row-input" 
+										<input disabled={disabledForm} className="field-row-input" 
 										ref={(subjectInput) => { this.subjectInput = subjectInput; }}
 										type="text" placeholder="asunto" name="subject" onChange={this.changeFieldHandler}/>
 									</div>
@@ -72,7 +81,7 @@ class ContactModal extends React.Component {
 								<label className="field-row">
 									<div className="field-row-wrapper">
 										{errorEmail ? <span className="input-error-legend">{errorEmailLegend}</span> : null}
-										<input className="field-row-input"
+										<input disabled={disabledForm} className="field-row-input"
 										ref={(emailInput) => { this.emailInput = emailInput; }}
 										type="text" placeholder="email" name="email" onChange={this.changeFieldHandler}/>
 									</div>
@@ -80,7 +89,7 @@ class ContactModal extends React.Component {
 								<label className="field-row">
 									<div className="field-row-wrapper">
 										{errorText ? <span className="input-error-legend">{errorTextLegend}</span> : null}
-										<textarea className="field-row-input field-textarea"
+										<textarea disabled={disabledForm} className="field-row-input field-textarea"
 										placeholder="mensaje"
 										ref={(textInput) => { this.textInput = textInput; }}
 										name="text" id="" cols="30" rows="10" onChange={this.changeFieldHandler}></textarea>
@@ -88,10 +97,16 @@ class ContactModal extends React.Component {
 								</label>
 							</div>
 							<div className="wg-modal-actions">
-								<button type="button" className="send-info-button button-cancel" onClick={this.closeHandler}>Cancel</button>
-								<button type="submit" className="send-info-button button-send">Enviar</button>
+								<button disabled={disabledForm} type="button" className="send-info-button button-cancel" onClick={this.closeHandler}>Cancel</button>
+								<button disabled={disabledForm} type="submit" className="send-info-button button-send">Enviar</button>
 							</div>
 						</form>
+						<div className={classNames(["sending-legend",  {"active": infoStatus}])}>
+							{ disabledForm ? <p className="sending-legend-text">Enviando mensaje ...</p> : null }
+							{ messageSent ? <p className="sending-legend-text">Mensaje enviado!</p> : null }
+							{ messageError ? <p className="sending-legend-text">En este momento no podemos recibir su mensaje. Inténtelo más tarde.</p> : null }
+							{ messageSent || messageError ? <button type="button" className="send-info-button" onClick={this.closeHandler}>Cerrar</button> : null }
+						</div>
 					</div>
 				</div>
 			</div>
