@@ -484,6 +484,10 @@
               text-decoration: none;
               padding: 4px 0;
               text-align: center;
+              @media screen and (min-width: 0) and (max-width: $desktop-size) {
+                padding: 0;
+                white-space: normal;
+              }
               &:hover {
                 background-color: $light-orange;
               }
