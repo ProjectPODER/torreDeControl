@@ -168,6 +168,10 @@
           .wg-modal-body {
             @include span-columns(8);
             @include shift(2);
+              @media screen and (min-width: 0) and (max-width: $mobile-size) {
+                @include span-columns(12);
+                @include shift(0);
+              }
             .info-form {
               @include span-columns(8 of 8);
               .wg-modal-close-button {
@@ -562,6 +566,16 @@
           transform: translate3d(0, -50%, 0);
           left: auto;
           background-color: $white;
+          border-radius: 0;
+          @media screen and (min-width: 0) and (max-width: $mobile-size) {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            transform: none;
+            height: auto;
+          }
           .info-form {
             overflow-y: scroll;
             height: 100%;

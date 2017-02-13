@@ -220,9 +220,31 @@ button {
 	.wg-navbar-logo {
 		@include span-columns(4);
 		margin-top: 4px;
+		.navbar-logo-link {
+			display: inline-block;
+			@include fill-parent;
+			height: 100%;
+		}
+		
 		.torre-logo {
 			width: 100%;
 			max-height: 30px;
+			@media screen and (min-width: 0) and (max-width: $desktop-size) {
+			    display: none;
+		    }
+		}
+		.torre-logo-small {
+			width: 100%;
+			max-height: 30px;
+			display: none;
+			max-width: 28px;
+			margin-left: 10px;
+			@media screen and (min-width: 0) and (max-width: $desktop-size) {
+			    display: block;
+		    }
+		    @media screen and (min-width: 0) and (max-width: $mobile-size) {
+				margin-top: 4px;
+		    }
 		}
 	}
 	.wg-navbar {
@@ -230,6 +252,7 @@ button {
 			max-width: 1024px;
 			background-color: $white;
 		.wg-navbar-menu {
+			margin: 0;
 			.wg-navbar-item {
 				width: 25%;
 				a {
