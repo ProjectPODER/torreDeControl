@@ -32,6 +32,7 @@ const initialState = {
   loaded: false,
   sortBy: 'byTitle',
   reverse: false,
+  loadingResults: false,
   filteredResults: 0,
   modalStatus: 'closed',
   contactMailStatus: 'empty',
@@ -70,17 +71,20 @@ export default function reducer(state = initialState, action = {}) {
       };
     case GET_CONTRACTS_LIST:
       return {
-        ...state
+        ...state,
+        loadingResults: true
       };
     case GET_CONTRACTS_LIST_SUCCESS:
       const contracts = action.result.data;
       return {
         ...state,
-        contracts: [...state.contracts, ...contracts] 
+        contracts: [...state.contracts, ...contracts],
+        loadingResults: false
       };
     case GET_CONTRACTS_LIST_FAIL:
       return {
-        ...state
+        ...state,
+        loadingResults: false
       };
     case IS_LOADED:
       return {
