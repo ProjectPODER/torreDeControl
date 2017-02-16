@@ -29,14 +29,19 @@ module.exports = {
 					presets: ['es2015', 'react', 'stage-0']
 				}
 			},
-			{
-				test: /\.scss$/,
-				loader: 'style-loader!css-loader!sass-loader?' + sassPaths /* sassPaths adds bourbon neat paths */
-			},
-			{
-				test: /\.css$/,
-				loader: 'style-loader!css-loader?'
-			}
+            {
+                test: /\.scss$/,
+                loader: 'style-loader!css-loader!sass-loader?' + sassPaths /* sassPaths adds bourbon neat paths */
+            },
+            {
+                test: /\.css$/,
+                loader: 'style-loader!css-loader?'
+            },
+            {
+                test: /\.(jpg|png)$/,
+                loader: 'file-loader?name=[path][name].[ext]?[hash]',
+            }
+
 		]
 	},
 	plugins: [
