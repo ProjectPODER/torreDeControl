@@ -141,6 +141,336 @@ button {
 	@include set-font($font-sm);
 }
 
+.site-top-ribbon {
+	@include span-columns(12);
+	.ribbon-item {
+		@include span-columns(6);
+		.ribbon-link {
+			@include span-columns(4);
+		}
+	}
+	.ribbon-right {
+		@include span-columns(5);
+		@include shift(1);
+		.ribbon-link {
+			@include span-columns(4 of 12);
+		}
+	}
+}
+
+.site-top-ribbon {
+	background-color: #0A314E;
+	border-bottom: solid 1px #fff;
+	margin: 0;
+	padding: 10px 0;
+	height: 50px;
+	overflow: hidden;
+	@media screen and (min-width: 0) and (max-width: $mobile-size) {
+		display: none;
+		height: 0;
+	}
+
+	.ribbon-item {
+		height: 100%;
+		.ribbon-link {
+		    text-decoration: none;
+		    color: #006b8d;
+		    margin: 0 auto;
+		    text-align: center;
+		    position: relative;
+		    height: 100%;
+		    img {
+		    	width: 100%;
+		    	position: absolute;
+		    	left: 50%;
+		    	top: 50%;
+		    	transform: translate3d(-50%, -50%, 0);
+		    }
+		    .link-quienesquien {
+		    	max-width: 101px;
+		    }
+		    .link-colaboratorio {
+		    	max-width: 122px;
+		    }
+		    .link-colaboratorio {
+		    	max-width: 103px;
+		    }
+		    .link-rindecuentas {
+		    	max-width: 140px;
+		    }
+		    .link-mexicoleaks {
+		    	max-width: 118px;
+		    }
+		    .link-peruleaks {
+		    	max-width: 102px;
+		    }
+		}
+	}
+	.ribbon-right {
+		position: relative;
+		left: 10px;
+	}
+}
+
+.site-header {
+	@include header(60);
+	@include span-columns(12);
+	background-color: $white;
+	position: relative;
+	z-index: 1;
+	margin-bottom: 20px;
+	.wg-navbar-logo {
+		@include span-columns(4);
+		margin-top: 4px;
+		.navbar-logo-link {
+			display: inline-block;
+			@include fill-parent;
+			height: 100%;
+			position: relative;
+			z-index: 1000;
+		}
+		
+		.torre-logo {
+			width: 100%;
+			max-height: 30px;
+			@media screen and (min-width: 0) and (max-width: $desktop-size) {
+			    display: none;
+		    }
+		}
+		.torre-logo-small {
+			width: 100%;
+			max-height: 30px;
+			display: none;
+			max-width: 28px;
+			margin-left: 10px;
+			@media screen and (min-width: 0) and (max-width: $desktop-size) {
+			    display: block;
+		    }
+		    @media screen and (min-width: 0) and (max-width: $mobile-size) {
+				margin-top: 4px;
+		    }
+			transition: opacity 0.1s ease 0.2s;
+		    position: absolute;
+		    top: 0;
+		    left: 0;
+		}
+		.torre-logo-grey {
+			opacity: 1;
+		}
+		.torre-logo-white {
+			opacity: 0;
+		}
+	}
+	.wg-navbar-menu-button span {
+		background-color: $grey;
+		transition: background-color 0.2s ease;
+	}
+	&.state-active {
+		.torre-logo-grey {
+			@media screen and (min-width: 0) and (max-width: $mobile-size) {
+				opacity: 0;
+			    transition: opacity 0.2s ease;
+			}
+		}
+		.torre-logo-white {
+			@media screen and (min-width: 0) and (max-width: $mobile-size) {
+				opacity: 1;
+			    transition: opacity 0.2s ease;
+			}
+		}
+		.wg-navbar-menu-button span {
+			background-color: $white;
+			transition: background-color 0.1s ease 0.2s;
+		}
+	}
+	.wg-navbar {
+			@include span-columns(8);
+			max-width: 1024px;
+			background-color: $white;
+			@media screen and (min-width: 0) and (max-width: $mobile-size) {
+				background-color: $blue;
+		    }
+		.wg-navbar-menu {
+			margin: 0;
+			.wg-navbar-item {
+				width: 25%;
+				a {
+					position: relative;
+					text-transform: uppercase;
+					text-decoration: none;
+					font-size: 20px;
+					@media screen and (min-width: 0) and (max-width: $mobile-size) {
+						padding: 8px;
+						color: $white;
+					}
+					&:before {
+						content: '';
+						margin: 0 auto;
+						border-bottom: 2px solid $orange;
+						position: absolute;
+						bottom: 10px;
+						left: 35%;
+						right: 35%;
+						opacity: 0;
+						@media screen and (min-width: 0) and (max-width: $mobile-size) {
+							bottom: 3px;
+						}
+					}
+					&:hover,
+					&.active {
+						background-color: transparent;
+						font-weight: 600;
+						&:before {
+							opacity: 1;
+						}
+					}
+				}
+			}
+		}
+		.nav-legend {
+			display: none;
+		}
+		.nav-separator {
+			display: none;
+		}
+		.mobile-social {
+			display: none;
+		}
+		.site-top-ribbon {
+			border: none;
+			display: none;
+			float: none;
+			clear: both;
+			height: auto;
+			overflow: visible;
+			width: 100%;
+			position: initial;
+			background-color: transparent;
+			@media screen and (min-width: 0) and (max-width: $mobile-size) {
+				display: block;
+				padding: 0;
+			}
+			.ribbon-item {
+				float: none;
+				clear: both;
+				height: auto;
+				overflow: visible;
+				width: 100%;
+				position: initial;
+				margin: 0 0 0 0;
+				.ribbon-link {
+					padding: 5px;
+					float: none;
+					clear: both;
+					height: auto;
+					overflow: visible;
+					width: 100%;
+					position: initial;
+					.link-poder {
+						display: none;
+					}
+					img {
+						position: initial;
+						transform: none;
+						margin-left: 0;
+					}
+				}
+			}
+			.ribbon-right {
+				float: none;
+				clear: both;
+				height: auto;
+				overflow: visible;
+				width: 100%;
+				position: initial;
+				.ribbon-link {
+					float: none;
+					clear: both;
+					height: auto;
+					overflow: visible;
+					width: 100%;
+					position: initial;
+					img {
+						position: initial;
+						transform: none;
+					}
+				}
+			}
+		}
+	}
+}
+
+@media screen and (min-width: 0) and (max-width: $desktop-size) {
+    .site-header {
+		.wg-navbar-logo {
+			@include span-columns(1 of 12);
+		}
+		.wg-navbar {
+			@include span-columns(11 of 12);
+			.wg-navbar-menu {
+				.wg-navbar-item {
+					a {
+						@include set-font($font-sm);
+					}
+				}
+			}
+		}
+	}
+}
+
+@media screen and (min-width: 0) and (max-width: $mobile-size) {
+	.site-header {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		.wg-navbar-logo {
+			margin: 0;
+			@include span-columns(8 of 12);
+		}
+		.wg-navbar {
+			padding-top: 60px;
+			@include span-columns(12 of 12);
+			.wg-navbar-menu {
+				margin: 0;
+				.wg-navbar-item {
+					display: block;
+					width: 100%;
+					margin-bottom: 10px;
+				}
+			}
+			.nav-legend {
+				@include span-columns(12 of 12);
+				text-align: center;
+				margin: 10px;
+				display: block;
+				color: $white;
+			}
+			.nav-separator {
+				display: block;
+				height: 2px;
+				background: $white;
+				float: left;
+				width: 80%;
+				margin: 0 10%;
+			}
+			.mobile-social {
+				@include span-columns(12 of 12);
+				display: block;
+				text-align: center;
+				.social-item {
+					display: inline-block;
+					background-color: $white;
+					width: 32px;
+					height: 32px;
+					border-radius: 32px;
+					margin: 0 5px;
+				}
+			}
+		}
+	}
+}
+
 .site-footer {
 	width: 100%;
 	height: 60px;
@@ -196,6 +526,10 @@ button {
 			}
 		}
 
+		.sponsored-by {
+			text-align: right;
+		}
+
 		.developed-by {
 		    margin-top: 10px;
 		    @media screen and (min-width: 0) and (max-width: $mobile-size) {
@@ -212,216 +546,28 @@ button {
 	}
 }
 
-.site-header {
-	@include header(60);
-	@include span-columns(12);
-	background-color: $white;
-	position: relative;
-	z-index: 1;
-	margin-bottom: 20px;
-	.wg-navbar-logo {
-		@include span-columns(4);
-		margin-top: 4px;
-		.navbar-logo-link {
-			display: inline-block;
-			@include fill-parent;
-			height: 100%;
-		}
-		
-		.torre-logo {
-			width: 100%;
-			max-height: 30px;
-			@media screen and (min-width: 0) and (max-width: $desktop-size) {
-			    display: none;
-		    }
-		}
-		.torre-logo-small {
-			width: 100%;
-			max-height: 30px;
-			display: none;
-			max-width: 28px;
-			margin-left: 10px;
-			@media screen and (min-width: 0) and (max-width: $desktop-size) {
-			    display: block;
-		    }
-		    @media screen and (min-width: 0) and (max-width: $mobile-size) {
-				margin-top: 4px;
-		    }
-		}
-	}
-	.wg-navbar {
-			@include span-columns(8);
-			max-width: 1024px;
-			background-color: $white;
-		.wg-navbar-menu {
-			margin: 0;
-			.wg-navbar-item {
-				width: 25%;
-				a {
-					position: relative;
-					text-transform: uppercase;
-					text-decoration: none;
-					font-size: 20px;
-					&:before {
-						content: '';
-						margin: 0 auto;
-						border-bottom: 2px solid $orange;
-						position: absolute;
-						bottom: 10px;
-						left: 35%;
-						right: 35%;
-						opacity: 0;
-					}
-					&:hover,
-					&.active {
-						background-color: transparent;
-						font-weight: 600;
-						&:before {
-							opacity: 1;
-						}
-					}
-				}
-			}
-		}
+.react-datepicker__tether-element-attached-bottom.react-datepicker__tether-element {
+	margin: 5% auto !important;
+	width: 90%;
+	transform: initial !important;
+	top: 0 !important;
+	left: 0 !important;
+	bottom: 0;
+	right: 0;
+	position: fixed !important;
+}
+.react-datepicker,
+.react-datepicker__month-container,
+.react-datepicker_month {
+	@media screen and (min-width: 0) and (max-width: $mobile-size) {
+		width: 100%;
 	}
 }
-
-@media screen and (min-width: 0) and (max-width: $desktop-size) {
-    .site-header {
-		.wg-navbar-logo {
-			@include span-columns(1 of 12);
-		}
-		.wg-navbar {
-			@include span-columns(11 of 12);
-			.wg-navbar-menu {
-				.wg-navbar-item {
-					a {
-						@include set-font($font-sm);
-					}
-				}
-			}
-		}
-	}
+.react-datepicker__triangle {
+	@media screen and (min-width: 0) and (max-width: $mobile-size) {
+		display: none;
+	}	
 }
-
-@media screen and (min-width: 0) and (max-width: $mobile-size) {
-	.site-header {
-		position: fixed;
-		top: 0;
-		left: 0;
-		right: 0;
-		.wg-navbar-logo {
-			margin: 0;
-			@include span-columns(8 of 12);
-		}
-		.wg-navbar {
-			margin-top: 60px;
-			@include span-columns(12 of 12);
-			.wg-navbar-menu {
-				margin: 60px 0 0 0;
-				.wg-navbar-item {
-					display: block;
-					width: 100%;
-					margin-bottom: 10px;
-				}
-			}
-		}
-	}
-}
-
-.site-top-ribbon {
-	@include span-columns(12);
-	.ribbon-item {
-		@include span-columns(6);
-		.ribbon-link {
-			@include span-columns(4);
-		}
-	}
-	.ribbon-right {
-		@include span-columns(5);
-		@include shift(1);
-		.ribbon-link {
-			@include span-columns(4 of 12);
-		}
-	}
-}
-
-.site-top-ribbon {
-	background-color: #0A314E;
-  border-bottom: solid 1px #fff;
-  margin: 0;
-  padding: 10px 0;
-  height: 50px;
-  overflow: hidden;
-  @media screen and (min-width: 0) and (max-width: $mobile-size) {
-  	display: none;
-  	height: 0;
-  }
-	
-	.ribbon-item {
-		height: 100%;
-		.ribbon-link {
-		    text-decoration: none;
-		    color: #006b8d;
-		    margin: 0 auto;
-		    text-align: center;
-		    position: relative;
-		    height: 100%;
-		    img {
-		    	width: 100%;
-		    	position: absolute;
-		    	left: 50%;
-		    	top: 50%;
-		    	transform: translate3d(-50%, -50%, 0);
-		    }
-		    .link-quienesquien {
-		    	max-width: 101px;
-		    }
-		    .link-colaboratorio {
-		    	max-width: 122px;
-		    }
-		    .link-colaboratorio {
-		    	max-width: 103px;
-		    }
-		    .link-rindecuentas {
-		    	max-width: 140px;
-		    }
-		    .link-mexicoleaks {
-		    	max-width: 118px;
-		    }
-		    .link-peruleaks {
-		    	max-width: 102px;
-		    }
-		}
-	}
-	.ribbon-right {
-		position: relative;
-		left: 10px;
-	}
-}
-
-	.react-datepicker__tether-element-attached-bottom.react-datepicker__tether-element {
-		margin: 5% auto !important;
-		width: 90%;
-		transform: initial !important;
-		top: 0 !important;
-		left: 0 !important;
-		bottom: 0;
-		right: 0;
-		position: fixed !important;
-	}
-	.react-datepicker,
-	.react-datepicker__month-container,
-	.react-datepicker_month {
-		@media screen and (min-width: 0) and (max-width: $mobile-size) {
-			width: 100%;
-		}
-	}
-	.react-datepicker__triangle {
-		@media screen and (min-width: 0) and (max-width: $mobile-size) {
-			display: none;
-		}	
-	}
 	
 .react-datepicker_day {
 	@media screen and (min-width: 0) and (max-width: $mobile-size) {

@@ -49,7 +49,7 @@
       height: $height + px;
       z-index: 1;
       transform: scale(0.6);
-      span {
+      span.line {
         border-radius: $height / 3 * $menu-area * $menu-stroke / 3 + px;
         display: block;
         height: $height / 3 * $menu-area * $menu-stroke + px;
@@ -89,7 +89,7 @@
     }
 
     @media only screen and (max-width : 420px) {
-      span {
+      span.line {
         @for $i from 1 through 3 {
           &:nth-child(#{$i}) {
             $angle: -45 + 90 * abs($i - 2) + deg;
