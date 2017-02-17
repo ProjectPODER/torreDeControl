@@ -160,8 +160,6 @@ function setupD3() {
 	/* Charges */
 	const forceManyBody = d3.forceManyBody();
 		forceManyBody.strength(fs);
-		// forceManyBody.distanceMax(mx);
-		// forceManyBody.distanceMin(mn);
 	/* Links */
 	const forceLink = d3.forceLink();
 		forceLink.id(d => d.id);
@@ -207,54 +205,60 @@ function setupD3() {
 	const slide_3 = new Filter({property: 'type', operator: 'eq', expected: 'contract'});
 	const slide_4 = new Filter({property: 'type', operator: 'eq', expected: 'organization'});
 	$('#fullpage').fullpage({
+		anchors: ['slide-1', 'slide-2', 'slide-3', 'slide-4'],
+	    menu: '#slidesMenu',
+		navigation: true,
 		paddingBottom: '60px',
 		paddingTop: ($('.site-top-ribbon').height() + 60) + 'px',
-    scrollingSpeed: 300,
-    onLeave: (index, nextIndex) => {
-    	$(`.info-container`).removeClass('slide-active slide-leaving');
-			$(`.slide-${index}`).removeClass('slide-active').addClass('slide-leaving');
-			switch (nextIndex - 1) {
-				case 0:
-					graph = {
-						nodes: setNodeSizeToType(objectToArray((new MathSet(nodes)).filter(slide_1).toObject()), 'all', 3),
-						links: objectToArray((new MathSet(links)).filter(slide_1).toObject())
-					};
-					draw(graph);
-					d3.selectAll('.nodes.all').transition().attr('r', d => d.activeSize);
-					break;
-				case 1:
-					graph = {
-						nodes: setNodeSizeToType(objectToArray((new MathSet(nodes)).filter(slide_1, slide_2).toObject()), 'contract_type', 3),
-						links: objectToArray((new MathSet(links)).filter(slide_1, slide_2).toObject())
-					};
+    	scrollingSpeed: 300,
+    	onLeave: (index, nextIndex) => {
+	    	$(`.info-container`).removeClass('slide-active slide-leaving');
+				$(`.slide-${index}`).removeClass('slide-active').addClass('slide-leaving');
+				switch (nextIndex - 1) {
+					case 0:
+						graph = {
+							nodes: setNodeSizeToType(objectToArray((new MathSet(nodes)).filter(slide_1).toObject()), 'all', 3),
+							links: objectToArray((new MathSet(links)).filter(slide_1).toObject())
+						};
+						draw(graph);
+						d3.selectAll('.nodes.all').transition().attr('r', d => d.activeSize);
+						break;
+					case 1:
+						graph = {
+							nodes: setNodeSizeToType(objectToArray((new MathSet(nodes)).filter(slide_1, slide_2).toObject()), 'contract_type', 3),
+							links: objectToArray((new MathSet(links)).filter(slide_1, slide_2).toObject())
+						};
 
-					draw(graph);
-					d3.selectAll('.nodes.contract_type').transition().attr('r', d => d.activeSize);
-					d3.selectAll('.all').transition().attr('r', d => d.inactiveSize);
-					d3.selectAll('.links.contract_type').transition().delay(100).attr('opacity', 1);
-					break;
-				case 2:
-					graph = {
-						nodes: setNodeSizeToType(objectToArray((new MathSet(nodes)).filter(slide_1, slide_2, slide_3).toObject()), 'contract', 3),
-						links: objectToArray((new MathSet(links)).filter(slide_1, slide_2, slide_3).toObject())
-					};
-					draw(graph);
-					d3.selectAll('.nodes.contract').transition().attr('r', d => d.activeSize);
-					d3.selectAll('.contract_type').transition().attr('r', d => d.inactiveSize);
-					d3.selectAll('.links.contract').transition().delay(100).attr('opacity', 1);
-					break;
-				case 3:
-					graph = {
-						nodes: setNodeSizeToType(objectToArray((new MathSet(nodes)).filter(slide_1, slide_2, slide_3, slide_4).toObject()), 'organization', 4),
-						links: objectToArray((new MathSet(links)).filter(slide_1, slide_2, slide_3, slide_4).toObject())
-					};
-					draw(graph);
-					d3.selectAll('.nodes.organization').transition().attr('r', d => d.activeSize);
-					d3.selectAll('.organization_type').transition().attr('r', d => d.inactiveSize);
-					d3.selectAll('.links.organization').transition().delay(100).attr('opacity', 1);
-					break;
-			}
-    },
+						draw(graph);
+						d3.selectAll('.nodes.contract_type').transition().attr('r', d => d.activeSize);
+						d3.selectAll('.all').transition().attr('r', d => d.inactiveSize);
+						d3.selectAll('.links.contract_type').transition().delay(100).attr('opacity', 1);
+						break;
+					case 2:
+						graph = {
+							nodes: setNodeSizeToType(objectToArray((new MathSet(nodes)).filter(slide_1, slide_2, slide_3).toObject()), 'contract', 3),
+							links: objectToArray((new MathSet(links)).filter(slide_1, slide_2, slide_3).toObject())
+						};
+						draw(graph);
+						d3.selectAll('.nodes.contract').transition().attr('r', d => d.activeSize);
+						d3.selectAll('.all').transition().attr('r', d => d.inactiveSize);
+						d3.selectAll('.contract_type').transition().attr('r', d => d.inactiveSize);
+						d3.selectAll('.links.contract').transition().delay(100).attr('opacity', 1);
+						break;
+					case 3:
+						graph = {
+							nodes: setNodeSizeToType(objectToArray((new MathSet(nodes)).filter(slide_1, slide_2, slide_3, slide_4).toObject()), 'organization', 4),
+							links: objectToArray((new MathSet(links)).filter(slide_1, slide_2, slide_3, slide_4).toObject())
+						};
+						draw(graph);
+						d3.selectAll('.nodes.organization').transition().attr('r', d => d.activeSize);
+						d3.selectAll('.all').transition().attr('r', d => d.inactiveSize);
+						d3.selectAll('.contract_type').transition().attr('r', d => d.inactiveSize);
+						d3.selectAll('.organization_type').transition().attr('r', d => d.inactiveSize);
+						d3.selectAll('.links.organization').transition().delay(100).attr('opacity', 1);
+						break;
+				}
+	    },
 		afterLoad: function(anchorLink, index){
 			$(`.slide-${index}`).addClass('slide-active');
 		},

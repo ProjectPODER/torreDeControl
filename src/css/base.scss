@@ -242,6 +242,7 @@ button {
 			max-height: 30px;
 			display: none;
 			max-width: 28px;
+			min-width: 20px;
 			margin-left: 10px;
 			@media screen and (min-width: 0) and (max-width: $desktop-size) {
 			    display: block;
