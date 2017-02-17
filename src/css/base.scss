@@ -264,7 +264,7 @@ button {
 	}
 	.wg-navbar-menu-button span {
 		background-color: $grey;
-		transition: background-color 0.2s ease;
+		transition: all 0.2s ease;
 	}
 	&.state-active {
 		.torre-logo-grey {
@@ -281,7 +281,7 @@ button {
 		}
 		.wg-navbar-menu-button span {
 			background-color: $white;
-			transition: background-color 0.1s ease 0.2s;
+			transition: background-color 0.1s ease 0.2s, transform 0.3s ease;
 		}
 	}
 	.wg-navbar {
@@ -425,6 +425,7 @@ button {
 		top: 0;
 		left: 0;
 		right: 0;
+		z-index: 1001;
 		.wg-navbar-logo {
 			margin: 0;
 			@include span-columns(8 of 12);

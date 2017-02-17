@@ -3,6 +3,7 @@ var BowerWebpackPlugin = require("bower-webpack-plugin");
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var HandlebarsPlugin = require("handlebars-webpack-plugin");
 var WatchIgnorePlugin = require('watch-ignore-webpack-plugin')
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 var webpack = require('webpack');
 
 
@@ -41,7 +42,6 @@ module.exports = {
                 test: /\.(jpg|png)$/,
                 loader: 'file-loader?name=[path][name].[ext]?[hash]',
             }
-
 		]
 	},
 	plugins: [
@@ -165,6 +165,9 @@ module.exports = {
             path.resolve(__dirname, 'investigacion.html'),
             path.resolve(__dirname, 'metodologia.html'),
         ]),
+        new CopyWebpackPlugin([
+            { from: 'favicons', to: 'src/favicons' }
+        ])
         // new webpack.optimize.UglifyJsPlugin({
         //   compress: { warnings: false }
         // })
