@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack --progress --colors --watch",
-    "build": "webpack --config webpack.prod.js"
+    "build": "webpack --progress --colors --config webpack.prod.js"
   },
   "author": "Wingu",
   "license": "ISC",

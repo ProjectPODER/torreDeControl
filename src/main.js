@@ -1,3 +1,18 @@
+var images = [
+	require('./images/colaboratorio.svg'),
+	require('./images/hivos.svg'),
+	require('./images/mexicoleaks.svg'),
+	require('./images/peruleaks.svg'),
+	require('./images/poder-white.png'),
+	require('./images/poder.svg'),
+	require('./images/quienesquien.svg'),
+	require('./images/rindecuentas.svg'),
+	require('./images/torre-small-white.svg'),
+	require('./images/torre-small.svg'),
+	require('./images/torre.svg'),
+	require('./images/wingu.svg'),
+];
+
 import $ from 'jquery';
 import visualization from './visualization.js';
 import contracts from './contracts.js';
