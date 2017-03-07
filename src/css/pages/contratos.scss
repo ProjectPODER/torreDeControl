@@ -1,0 +1,722 @@
+@keyframes empty-item {
+    from {background-position: -4000px 0;}
+    to {background-position: 0 0;}
+}
+
+.page-contracts {
+  .site-content {
+    @include outer-container;
+    .contracts-content {
+      @include span-columns(12);
+      .search-box {
+        @include span-columns(12);
+        .search-input {
+          @include span-columns(12);
+        }
+      }
+      .content-title {
+        @include span-columns(12);
+      }
+      .contract-search {
+        @include span-columns(12);
+      }
+      .contract-filter {
+        @include span-columns(12);
+        .filter-footnote {
+          @include span-columns(12);
+        }
+        .filters-wrapper {
+          @include span-columns(12);
+          .filter-box {
+            @include span-columns(3);
+            @media screen and (min-width: 0) and (max-width: $desktop-size) {
+              @include span-columns(6);
+              &.filter-contract-type {
+                @include omega();
+              }
+            }
+            @media screen and (min-width: 0) and (max-width: $mobile-size) {
+              @include span-columns(12);
+              @include omega();
+            }
+            .select-wrapper {
+              @include span-columns(12 of 12);
+            }
+            .filter-input {
+              @include span-columns(12 of 12);
+            }
+            .half-input,
+            .react-datepicker__input-container {
+              @include span-columns(6 of 12);
+            }
+          }
+        }
+      }
+      .sort-bar {
+        @include span-columns(12);
+        .sort-options-list {
+          @include span-columns(12);
+          .sort-by-title {
+            @include span-columns(5);
+            @media screen and (min-width: 0) and (max-width: $mobile-size) {
+              @include span-columns(3);
+            }
+          }
+          .sort-by-count {
+            @include span-columns(3);
+            @media screen and (min-width: 0) and (max-width: $mobile-size) {
+              @include span-columns(5);
+            }
+          }
+          .sort-by-amount {
+            @include span-columns(2);
+            @media screen and (min-width: 0) and (max-width: $mobile-size) {
+              @include span-columns(4);
+              @include omega();
+            }
+          }
+        }
+      }
+      .organizations-results {
+        @include span-columns(12);
+        .contracts-not-found {
+          @include span-columns(12);
+        }
+        .organizations-list {
+          @include span-columns(12);
+          .organizations-item {
+            @include span-columns(12);
+            .organizations-header {
+              @include span-columns(12);
+              .organizations-title {
+                @include span-columns(5);
+                @media screen and (min-width: 0) and (max-width: $mobile-size) {
+                  @include span-columns(12);
+                  @include omega();
+                }
+              }
+              .organizations-count {
+                @include span-columns(3);
+                @media screen and (min-width: 0) and (max-width: $mobile-size) {
+                  @include span-columns(12);
+                  @include omega();
+                }
+              }
+              .organizations-amount {
+                @include span-columns(2);
+                @media screen and (min-width: 0) and (max-width: $mobile-size) {
+                  @include span-columns(12);
+                  @include omega();
+                }
+              }
+              .organizations-send-info {
+                @include span-columns(2);
+                @include omega();
+                @media screen and (min-width: 0) and (max-width: $mobile-size) {
+                  @include span-columns(12);
+                }
+              }
+            }
+
+            .contracts-list {
+              @include span-columns(12);
+              .contracts-item {
+                .contract-title {
+                  @include span-columns(8);
+                  @media screen and (min-width: 0) and (max-width: $mobile-size) {
+                    @include span-columns(12);
+                    @include omega();
+                  }
+                }
+                .contract-details {
+                  @include span-columns(12);
+                }
+                .details-left {
+                  @include span-columns(9);
+                  @media screen and (min-width: 0) and (max-width: $mobile-size) {
+                    @include span-columns(12);
+                    @include omega();
+                  }
+                  .contract-amount {
+                    @include span-columns(12 of 12);
+                  }
+                  .contract-type {
+                    @include span-columns(12 of 12);
+                  }
+                  .contract-procedure-type {
+                    @include span-columns(12 of 12);
+                  }
+                }
+                .details-right {
+                  @include span-columns(3);
+                  @media screen and (min-width: 0) and (max-width: $mobile-size) {
+                    @include span-columns(12);
+                    @include omega();
+                  }
+                  .contract-start-date {
+                    @include span-columns(12 of 12);
+                  }
+                  .contract-end-date {
+                    @include span-columns(12 of 12);
+                  }
+                  .contract-ocid {
+                    @include span-columns(12 of 12);
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      .contact-modal {
+        @include span-columns(12);
+        .wg-modal-backdrop {
+          .wg-modal-body {
+            @include span-columns(8);
+            @include shift(2);
+              @media screen and (min-width: 0) and (max-width: $mobile-size) {
+                @include span-columns(12);
+                @include shift(0);
+              }
+            .info-form {
+              @include span-columns(8 of 8);
+              .wg-modal-close-button {
+              }
+              .wg-modal-title {
+                @include fill-parent();
+              }
+              .wg-modal-info {
+                @include fill-parent();
+                .modal-legend {
+                  @include span-columns(6 of 8);
+                  @include shift(1);
+                }
+                .field-row {
+                  @include fill-parent();
+                  .field-row-wrapper {
+                    @include span-columns(6 of 8);
+                    @include shift(1);
+                    .field-row-input {
+                      @include fill-parent();
+                    }
+                    .input-error-legend {
+                      @include fill-parent();
+                    }
+                  }
+                }  
+              }
+              .wg-modal-actions {
+                .send-info-button {
+                  @include span-columns(2 of 8);
+                  &.button-cancel {
+                    @include shift(4);
+                  }
+                  &.button-send {
+                    @include omega(4);
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+  }
+
+  .site-content {
+    padding: 30px 10% 50px;
+    @media screen and (min-width: 0) and (max-width: $mobile-size) {
+      padding: 30px 10px 50px;
+    }
+    .contracts-content {
+      .pagination-bar {
+        float: right;
+        display: none;
+        &.visible {
+          display: block;
+        }
+        .pagination-item {
+          background-color: transparent;
+          border: none;
+          display: inline-block;
+          margin: 4px;
+          cursor: pointer;
+          font-family: Rajdhani;
+          @include set-font($font-xs);
+          &.active {
+            font-weight: 600;
+          }
+          &:hover {
+            text-decoration: underline;
+          }
+          &:focus {
+            outline: none;
+          }
+        }
+      }
+      .search-title {
+        display: block;
+        color: $blue;
+        font-weight: 600;
+        margin-bottom: 5px;
+      }
+      .search-box {
+        margin-bottom: 15px;
+        .contract-search {
+
+        }
+      }
+      .contract-filter {
+        margin-bottom: 40px;
+        .filter-box {
+          margin-bottom: 10px;
+          .select-wrapper {
+            position: relative;
+            &:before {
+              content: '▸';
+              position: absolute;
+              top: 50%;
+              right: 10px;
+              transform: translateY(-50%) rotate(90deg);
+              pointer-events: none;
+            }
+          }
+          .filter-title {
+            margin-bottom: 5px;
+            display: inline-block;
+            color: $blue;
+            font-weight: 600;
+            position: relative;
+            .title-tip {
+              @include set-font($font-xxs);
+            }
+            .filter-tip {
+              display: block;
+              width: 16px;
+              height: 16px;
+              position: absolute;
+              right: -20px;
+              top: 0;
+              color: transparent;
+              .tooltip-info {
+                position: absolute;
+                left: 50%;
+                top: 22px;
+                height: auto;
+                width: 300px;
+                transform: translateX(-50%);
+                background-color: $white-grey;
+                border: 1px solid $light-grey;
+                border-top-color: $light-orange;
+                box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+                padding: 10px;
+                color: $grey;
+                opacity: 0;
+                pointer-events: none;
+                @include set-font($font-xs);
+                z-index: 100;
+                @media screen and (min-width: 0) and (max-width: $mobile-size) {
+                  transform: translateX(-38%);
+                }
+                &:before {
+                  content: '';
+                  position: absolute;
+                  top: -6px;
+                  left: 50%;
+                  transform: translateX(-50%);
+                  display: block;
+                  z-index: -1;
+                  width: 0;
+                  height: 0;
+                  border-style: solid;
+                  border-width: 0 6px 6px 6px;
+                  border-color: transparent transparent $light-orange transparent;
+                  @media screen and (min-width: 0) and (max-width: $mobile-size) {
+                    left: 38%;
+                  }
+                }
+              }
+              &:before {
+                content: 'i';
+                position: absolute;
+                text-align: center;
+                font-family: Courier;
+                @include set-font($font-xxs);
+                font-style: normal;
+                width: 16px;
+                height: 16px;
+                border-radius: 100%;
+                border: 1px solid $grey;
+                position: absolute;
+                right: 0;
+                top: 0;
+                opacity: 0.7;
+                cursor: pointer;
+                color: $grey;
+              }
+              &:hover {
+                &:before {
+                  opacity: 1;
+                }
+                .tooltip-info {
+                  opacity: 1;
+                  pointer-events: initial;
+                }
+              }
+            }
+          }
+          .half-input {
+
+          }
+        }
+      }
+      .sort-bar {
+        user-select: none;
+        border-bottom: 1px solid $orange;
+        margin-bottom: 10px;
+        .sort-options-list {
+          margin-bottom: 5px;
+          @include set-font($font-xs);
+          .sort-by-count {
+            text-align: center;
+          }
+          .sort-by-amount {
+            text-align: center;
+          }
+          .sort-options-item {
+            cursor: pointer;
+            &.active {
+              font-weight: 600;
+            }
+            .arrows {
+              margin-left: 12px;
+              position: relative;
+              .arrow-top,
+              .arrow-bottom {
+                position: absolute;
+                right: 0;
+                display: inline-block;
+                font-style: normal;
+                font-size: 8px;
+                font-weight: 600;
+                color: $black;
+                opacity: 0.4;
+                &.active {
+                  opacity: 1;
+                }
+              }
+              .arrow-top {
+                top: -3px;
+                // transform: rotate(-90deg);
+              }
+              .arrow-bottom {
+                bottom: -3px;
+                // transform: rotate(90deg);
+              }
+            }
+          }
+        }
+      }
+      .organizations-results {
+        .contracts-not-found {
+          height: 60px;
+          background-color: $light-grey;
+          color: $orange;
+          padding: 22px;
+          text-align: center;
+          margin-top: 50px;
+          margin-bottom: 30px;
+          display: none;
+          &.active {
+            display: block;
+          }
+        }
+        .organizations-list {
+          list-style: none;
+          .organizations-item {
+            position: relative;
+            // overflow: hidden;
+            margin-bottom: 10px;
+            &.empty-item {
+              height: 64px;
+              background-color: #cccccc;
+              box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.3);
+              margin-bottom: 24px;
+              /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#cccccc+41,D9D9D9+49,cccccc+59 */
+              /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#cccccc+40,D9D9D9+50,cccccc+60 */
+              background: #cccccc; /* Old browsers */
+              background: -moz-linear-gradient(-45deg,  #cccccc 40%, #D9D9D9 50%, #cccccc 60%); /* FF3.6-15 */
+              background: -webkit-linear-gradient(-45deg,  #cccccc 40%,#D9D9D9 50%,#cccccc 60%); /* Chrome10-25,Safari5.1-6 */
+              background: linear-gradient(135deg,  #cccccc 40%,#D9D9D9 50%,#cccccc 60%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+              filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cccccc', endColorstr='#cccccc',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+
+              animation-name: empty-item;
+              animation-duration: 4s;
+              animation-iteration-count: infinite;
+              background-repeat: no-repeat;
+              background-size: 6000px;
+            }
+
+            .organizations-header {
+              box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.3);
+              cursor: pointer;
+              height: 64px;
+              padding: 10px;
+              margin-bottom: 4px;
+              background-color: #cccccc;
+              position: relative;
+              @media screen and (min-width: 0) and (max-width: $mobile-size) {
+                padding: 10px;
+                min-height: 64px;
+                height: auto;
+              }
+              .organizations-title {
+                color: $blue;
+                font-weight: 600;
+                text-transform: uppercase;
+                @media screen and (min-width: 0) and (max-width: $mobile-size) {
+                  margin-bottom: 20px;
+                }
+              }
+              .organizations-count,
+              .organizations-amount {
+                color: $black;
+                text-align: center;
+                @media screen and (min-width: 0) and (max-width: $mobile-size) {
+                  text-align: left;
+                }
+              }
+              .organizations-amount {
+                @media screen and (min-width: 0) and (max-width: $mobile-size) {
+                  margin-bottom: 10px;
+                  &:before {
+                    content: 'Cantidad de contratos: ';
+                  }
+                }
+              }
+              .organizations-count {
+                @media screen and (min-width: 0) and (max-width: $mobile-size) {
+                  &:before {
+                    content: 'Monto total: ';
+                  }
+                }
+              }
+
+              .organizations-send-info {
+                @include set-font($font-xxs);
+                text-transform: uppercase;
+                background-color: $orange;
+                color: $white;
+                text-decoration: none;
+                padding: 4px 0;
+                text-align: center;
+                white-space: normal;
+                padding: 0;
+                @media screen and (min-width: 0) and (max-width: $desktop-size) {
+                }
+                &:hover {
+                  background-color: $light-orange;
+                }
+              }
+
+              .organizations-title,
+              .organizations-count,
+              .organizations-amount,
+              .organizations-send-info {
+                @media screen and (min-width: $mobile-size) {
+                  position: relative;
+                  top: 50%;
+                  transform: translateY(-50%);
+                }
+              }
+            }
+
+            .contracts-list {
+              list-style: none;
+              max-height: 0;
+              transition: max-height 300ms ease-out;
+              overflow: hidden;
+              width: calc(100% + 10px);
+              &.opened {
+                max-height: 2000px;
+              }
+              .contracts-item {
+                border: 1px solid rgba(0, 0, 0, 0.03);
+                margin-right: 10px;
+                padding: 20px 10px 20px 10px;
+                box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
+                position: relative;
+                overflow: auto;
+                margin-bottom: 4px;
+                background-color: #E0E2E1;
+                // border-bottom: 1px solid $orange;
+                .contract-title {
+                  margin-bottom: 10px;
+                  color: $blue;
+                }
+                .contract-details {
+
+                }
+                .details-left {
+                  .contract-amount {
+
+                  }
+                  .contract-type {
+
+                  }
+                  .contract-procedure-type {
+
+                  }
+                }
+                .details-right {
+                  .contract-start-date {
+
+                  }
+                  .contract-end-date {
+
+                  }
+                  .contract-ocid {
+
+                  }
+                  .contract-link {
+                    @include set-font($font-xxs);
+                    text-transform: uppercase;
+                    background-color: $orange;
+                    color: $white;
+                    text-decoration: none;
+                    padding: 4px;
+                    &:hover {
+                      background-color: $light-orange;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      .contact-modal {
+        .wg-modal-body {
+          transform: translate3d(0, -50%, 0);
+          left: auto;
+          background-color: $white;
+          border-radius: 0;
+          @media screen and (min-width: 0) and (max-width: $mobile-size) {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            transform: none;
+            height: auto;
+          }
+          .info-form {
+            overflow-y: scroll;
+            height: 100%;
+            .wg-modal-close-button {
+              &:before {
+                content: '✕';
+              }
+              right: 5px;
+              top: 5px;
+              background-color: transparent;
+              cursor: pointer;
+            }
+            .wg-modal-title {
+              margin-bottom: 40px;
+            }
+            .wg-modal-info {
+              .modal-legend {
+                color: $blue;
+                @include set-font($font-xs);
+                &:last-of-type {
+                  margin-bottom: 25px;
+                }
+              }
+              .field-row {
+                .field-row-wrapper {
+                  position: relative;
+                  .field-row-input {
+                    margin-bottom: 30px;
+                    &.field-textarea {
+                      height: 100px;
+                    }
+                  }
+                  .input-error-legend {
+                    @include set-font($font-xs);
+                    color: $orange;
+                    position: absolute;
+                    bottom: 10px;
+                  }
+                }
+              }
+            }
+            .wg-modal-actions {
+              position: static;
+              .send-info-button {
+                @include set-font($font-xxs);
+                text-transform: uppercase;
+                color: $white;
+                text-decoration: none;
+                padding: 4px 0;
+                text-align: center;
+                border: none;
+                padding: 10px;
+                &.button-send {
+                  background-color: $green;
+                  &:hover {
+                    background-color: $light-green;
+                  }
+                }
+                &.button-cancel {
+                  background-color: $orange;
+                  &:hover {
+                    background-color: $light-orange;
+                  }
+                }
+              }
+            }
+          }
+        }
+        .sending-legend {
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          background-color: rgba(255, 255, 255, 0.95);
+          display: none;
+          &.active {
+            display: block;
+          }
+          .sending-legend-text {
+            text-align: center;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate3d(-50%, -50%, 0);
+          }
+          .send-info-button {
+            @include set-font($font-xxs);
+            text-transform: uppercase;
+            color: $white;
+            text-decoration: none;
+            padding: 4px 0;
+            text-align: center;
+            border: none;
+            padding: 10px;
+            background-color: $green;
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            &:hover {
+              background-color: $light-green;
+            }
+          }
+        }
+      }
+      
+    }
+  } 
+}

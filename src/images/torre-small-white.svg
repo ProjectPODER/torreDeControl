@@ -1,0 +1,136 @@
+<svg id="Capa_1" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 26 29">
+  <defs>
+    <style>
+      .cls-1, .cls-4, .cls-7 {
+        fill: none;
+      }
+
+      .cls-2 {
+        opacity: 0.59;
+      }
+
+      .cls-3 {
+        clip-path: url(#clip-path);
+      }
+
+      .cls-4 {
+        stroke: #fff;
+      }
+
+      .cls-4, .cls-7 {
+        stroke-miterlimit: 10;
+      }
+
+      .cls-5 {
+        clip-path: url(#clip-path-2);
+      }
+
+      .cls-6 {
+        clip-path: url(#clip-path-3);
+      }
+
+      .cls-7 {
+        stroke: #ccc;
+        stroke-width: 0.5px;
+      }
+
+      .cls-8 {
+        clip-path: url(#clip-path-4);
+      }
+
+      .cls-9 {
+        clip-path: url(#clip-path-5);
+      }
+
+      .cls-10 {
+        clip-path: url(#clip-path-6);
+      }
+
+      .cls-11 {
+        clip-path: url(#clip-path-7);
+      }
+
+      .cls-12 {
+        fill: #ffffff;
+      }
+    </style>
+    <clipPath id="clip-path">
+      <rect class="cls-1" x="340" y="-1790.7548" width="188" height="360.0897"/>
+    </clipPath>
+    <clipPath id="clip-path-2">
+      <rect class="cls-1" x="-1620.4307" y="-1037" width="1277" height="1095"/>
+    </clipPath>
+    <clipPath id="clip-path-3">
+      <rect class="cls-1" x="-1637.4307" y="-1037" width="1314" height="965"/>
+    </clipPath>
+    <clipPath id="clip-path-4">
+      <rect class="cls-1" x="-1620.4307" y="163" width="1277" height="1095"/>
+    </clipPath>
+    <clipPath id="clip-path-5">
+      <rect class="cls-1" x="-1637.4307" y="163" width="1314" height="965"/>
+    </clipPath>
+    <clipPath id="clip-path-6">
+      <rect class="cls-1" x="-51.4307" y="207" width="1277" height="1095"/>
+    </clipPath>
+    <clipPath id="clip-path-7">
+      <rect class="cls-1" x="-68.4307" y="207" width="1314" height="965"/>
+    </clipPath>
+  </defs>
+  <title>logoSmall</title>
+  <g class="cls-2">
+    <g class="cls-3">
+      <line class="cls-4" x1="1032.3902" y1="-832.4133" x2="-418.878" y2="586.7574"/>
+      <g>
+        <line class="cls-4" x1="848.9756" y1="-1419.3402" x2="-602.2927" y2="-0.1694"/>
+        <line class="cls-4" x1="871.9024" y1="-1345.9743" x2="-579.3659" y2="73.1964"/>
+        <line class="cls-4" x1="894.8293" y1="-1272.6084" x2="-556.439" y2="146.5623"/>
+        <line class="cls-4" x1="917.7561" y1="-1199.2426" x2="-533.5122" y2="219.9281"/>
+        <line class="cls-4" x1="940.6829" y1="-1125.8767" x2="-510.5854" y2="293.294"/>
+        <line class="cls-4" x1="963.6098" y1="-1052.5109" x2="-487.6585" y2="366.6598"/>
+        <line class="cls-4" x1="986.5366" y1="-979.145" x2="-464.7317" y2="440.0257"/>
+        <line class="cls-4" x1="1009.4634" y1="-905.7792" x2="-441.8049" y2="513.3916"/>
+        <line class="cls-4" x1="1055.3171" y1="-759.0475" x2="-395.9512" y2="660.1233"/>
+        <line class="cls-4" x1="1078.2439" y1="-685.6816" x2="-373.0244" y2="733.4891"/>
+        <line class="cls-4" x1="1101.1707" y1="-612.3158" x2="-350.0976" y2="806.855"/>
+        <line class="cls-4" x1="1124.0976" y1="-538.9499" x2="-327.1707" y2="880.2208"/>
+        <line class="cls-4" x1="1147.0244" y1="-465.5841" x2="-304.2439" y2="953.5867"/>
+        <line class="cls-4" x1="1169.9512" y1="-392.2182" x2="-281.3171" y2="1026.9525"/>
+        <line class="cls-4" x1="1192.878" y1="-318.8523" x2="-258.3902" y2="1100.3184"/>
+        <line class="cls-4" x1="1215.8049" y1="-245.4865" x2="-235.4634" y2="1173.6842"/>
+        <line class="cls-4" x1="1238.7317" y1="-172.1206" x2="-212.5366" y2="1247.0501"/>
+        <line class="cls-4" x1="1261.6585" y1="-98.7548" x2="-189.6098" y2="1320.4159"/>
+        <line class="cls-4" x1="1284.5854" y1="-25.3889" x2="-166.6829" y2="1393.7818"/>
+      </g>
+    </g>
+  </g>
+  <g class="cls-5">
+    <g class="cls-6">
+      <g>
+        <line class="cls-7" x1="136.0693" y1="-900.5" x2="-850.9307" y2="71.5"/>
+        <line class="cls-7" x1="218.0693" y1="-857.5" x2="-768.9307" y2="114.5"/>
+        <line class="cls-7" x1="281.0661" y1="-794.5031" x2="-705.9339" y2="177.4969"/>
+      </g>
+    </g>
+  </g>
+  <g class="cls-10">
+    <g class="cls-11">
+      <g>
+        <line class="cls-7" x1="15.5693" y1="-66.5" x2="15.5693" y2="1257.5"/>
+        <line class="cls-7" x1="1011.0693" y1="-4.5" x2="-111.9307" y2="1099.5"/>
+        <line class="cls-7" x1="937.0693" y1="-58.5" x2="-49.9307" y2="913.5"/>
+        <line class="cls-7" x1="861.0693" y1="-110.5" x2="-125.9307" y2="861.5"/>
+        <line class="cls-7" x1="781.0693" y1="-162.5" x2="-205.9307" y2="809.5"/>
+        <line class="cls-7" x1="693.0693" y1="-202.5" x2="-293.9307" y2="769.5"/>
+        <line class="cls-7" x1="617.0693" y1="-250.5" x2="-369.9307" y2="721.5"/>
+        <line class="cls-7" x1="469.0693" y1="-244.5" x2="-517.9307" y2="727.5"/>
+      </g>
+    </g>
+  </g>
+  <g>
+    <g id="UTwNPI.tif">
+      <path class="cls-12" d="M19.31,20.98h1.1132a7.5774,7.5774,0,0,1-15.1549.0015H6.3565a6.4026,6.4026,0,0,0,2.4281,5.0269,6.2722,6.2722,0,0,0,4.4313,1.4175A6.4715,6.4715,0,0,0,19.31,20.98Z"/>
+    </g>
+    <path class="cls-12" d="M1.7773,6.3811,4.373,7.8746a9.8416,9.8416,0,1,0,8.5658-4.92V-.0383a12.84,12.84,0,0,1,6.72,23.7918A12.851,12.851,0,0,1,1.7773,6.3811Z"/>
+    <path class="cls-12" d="M12.9017,6.6967v6.0819L17.177,8.4457a6.09,6.09,0,0,1,1.0379,7.4229A6.133,6.133,0,0,1,6.9232,11.4578,6.0652,6.0652,0,0,1,12.9017,6.6967Z"/>
+  </g>
+</svg>

@@ -1,0 +1,23 @@
+/* resources */
+@import "vendor/normalize";
+@import "neat";
+
+/* mixins */
+@import "mixins/mixins";
+
+/* components */
+@import "components/header";
+@import "components/modal";
+
+/* D3 visualization */
+@import "d3visualization/nodes";
+@import "d3visualization/links";
+
+/* base */
+@import "base";
+
+/* pages */
+@import "pages/visualizacion";
+@import "pages/metodologia";
+@import "pages/investigacion";
+@import "pages/contratos";
