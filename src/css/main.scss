@@ -1,107 +1,23 @@
-@import "./normalize";
+/* resources */
+@import "vendor/normalize";
 @import "neat";
 
-$blue: #002f4d;
-$grey: #5b5b5f;
+/* mixins */
+@import "mixins/mixins";
 
-body {
-	background-color:#E0E2E1;
-	background-image: linear-gradient(#D3D5D4 1px, transparent 1px),
-	linear-gradient(90deg, #D3D5D4 1px, transparent 1px),
-	linear-gradient(-45deg, transparent 70px, #D3D5D4 1px, transparent 71px),
-	linear-gradient(-45deg, transparent 70px, #D3D5D4 1px, transparent 71px);
-	background-size:100px 100px, 100px 100px, 200px 200px, 200px 200px;
-	background-position:-2px -2px, -2px -2px, -2px -2px, -102px -102px;
-}
+/* components */
+@import "components/header";
+@import "components/modal";
 
-html,
-body{
-	width: 100%;
-	height: 100%;
-}
+/* D3 visualization */
+@import "d3visualization/nodes";
+@import "d3visualization/links";
 
-h1,
-h2,
-h3,
-p {
-	margin: 0 0 10px 0;
-}
+/* base */
+@import "base";
 
-.links {
-  stroke: #999;
-  stroke-opacity: 0.6;
-}
-
-.nodes {
-  stroke: #f0f0f0;
-  stroke-width: 1.5px;
-}
-
-.fullpage {
-	opacity: 0;
-}
-
-.graph-container {
-	height: 100%;
-	width: 70%;
-	top: 0;
-	position: fixed;
-	right: 0;
-	svg {
-		width: 100%;
-		height: 100%;
-	}
-}
-
-.main-container {
-	height: 100%;
-	@include outer-container;
-	.info-container {
-		width: 100%;
-		position: relative;
-		.info-wrapper {
-			@include span-columns(4);
-			position: absolute;
-			top: 50%;
-			left: 0;
-			transform: translateY(-50%);
-			.info-data {
-				font-family: roboto;
-				font-weight: 300;
-				color: $grey;
-				margin-bottom: 80px;
-				.top-text {
-					text-transform: uppercase;
-					font-size: 14px;
-				}
-				.middle-text {
-					font-size: 65px;
-				}
-				.bottom-text {
-					font-size: 20px;
-					strong {
-						color: $blue;
-					}
-				}
-			}
-			.info-abstract {
-				font-family: Rajdhani;
-				font-weight: 400;
-				.abstract-title {
-					text-transform: uppercase;
-					font-size: 56px;
-					color: $blue;
-				}
-				.abstract-body {
-					font-size: 16px;
-				}
-			}
-		}
-	}
-}
-
-
-			
-				
-			
-			
+/* pages */
+@import "pages/visualizacion";
+@import "pages/metodologia";
+@import "pages/investigacion";
+@import "pages/contratos";

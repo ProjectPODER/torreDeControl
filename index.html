@@ -4,66 +4,175 @@
 	<meta charset="UTF-8">
 	<title>Document</title>
 	<link href="https://fonts.googleapis.com/css?family=Rajdhani|Roboto:300,400" rel="stylesheet">
+	<script type="text/javascript" src="dist/bundle.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png">
+	<link rel="icon" type="image/png" href="/favicons/favicon-32x32.png" sizes="32x32">
+	<link rel="icon" type="image/png" href="/favicons/favicon-16x16.png" sizes="16x16">
+	<link rel="manifest" href="/favicons/manifest.json">
+	<link rel="mask-icon" href="/favicons/safari-pinned-tab.svg" color="#5bbad5">
+	<meta name="theme-color" content="#ffffff">
 </head>
-<body>
-	<div class="graph-container">
-		<svg></svg>
-	</div>
-	<div id="fullpage" class="fullpage">
-		<div class="main-container">
-			<div class="section info-container">
-				<div class="info-wrapper">
-					<div class="info-data">
-						<p class="top-text">Un valor<br>total de</p>
-						<p class="middle-text" id="contracts_amount">147</p>
-						<p class="bottom-text">equivale a la suma <br>de los contratos</p>
-					</div>
-					<div class="info-abstract">
-						<h2 class="abstract-title">Total de contratos</h2>
-						<p class="abstract-body">Es un hecho establecido hace semasiado tiempo que un lector se distraera con el contenido del texto de un sitio mientras mira su diseño. El punto de usar Lorem ipsum.</p>
+<body class="page-visualizacion fixed-page">
+	<div class="main-container">
+
+		<!-- header -->
+		<ul class="site-top-ribbon">
+			<li class="ribbon-item">
+				<a class="ribbon-link" href="http://projectpoder.org/es/" target="_blank" rel="noopener noreferrer">
+					<img class="link-poder" style="width:115px;" src="src/images/poder-white.png" scale="0">
+				</a>	
+				<a class="ribbon-link" href="https://www.rindecuentas.org/" target="_blank"  rel="noopener noreferrer">
+					<img class="link-rindecuentas" src="src/images/rindecuentas.svg" scale="0">
+				</a>
+				<a class="ribbon-link" href="https://www.colaboratorio.org/" target="_blank"  rel="noopener noreferrer">
+					<img class="link-colaboratorio" src="src/images/colaboratorio.svg" scale="0">
+				</a>				
+			</li>
+			<li class="ribbon-item ribbon-right">
+				<a class="ribbon-link" href="https://www.quienesquien.wiki/" target="_blank" rel="noopener noreferrer">
+					<img class="link-quienesquien" src="src/images/quienesquien.svg" scale="0">
+				</a>
+				<a class="ribbon-link" href="https://mexicoleaks.mx/enviar-para.php?r=poder" target="_blank" rel="noopener noreferrer">
+					<img class="link-mexicoleaks" src="src/images/mexicoleaks.svg" scale="0">
+				</a>							
+				<a class="ribbon-link" href="https://leaks.pe/" target="_blank" rel="noopener noreferrer">
+					<img class="link-peruleaks" class="peru" src="src/images/peruleaks.svg" scale="0">
+				</a>	
+			</li>
+		</ul>
+		<header class="site-header">
+			<div class="wg-navbar-logo"><a class="navbar-logo-link" href="#">
+			<img class="torre-logo" src="src/images/torre.svg" alt="Torre de Control">
+			<img class="torre-logo-small torre-logo-grey" src="src/images/torre-small.svg" alt="Torre de Control">
+			<img class="torre-logo-small torre-logo-white" src="src/images/torre-small-white.svg" alt="Torre de Control">
+			</a></div>
+			<div class="wg-navbar-menu-button">
+				<span class="line"></span>
+				<span class="line"></span>
+				<span class="line"></span>
+			</div>
+			<navbar class="wg-navbar">
+				<ul class="wg-navbar-menu">
+					<li class="wg-navbar-item"><a class="active" href="index.html">Visualización</a></li>
+					<li class="wg-navbar-item"><a class="" href="contratos.html">Contratos</a></li>
+					<li class="wg-navbar-item"><a class="" href="metodologia.html">Metodología</a></li>
+					<li class="wg-navbar-item"><a class="" href="investigacion.html">Investigaciones</a></li>
+				</ul>
+				<div class="nav-separator"></div>
+				<span class="nav-legend">Contamos con otros proyectos</span>
+				<ul class="site-top-ribbon">
+					<li class="ribbon-item">
+						<a class="ribbon-link" href="http://projectpoder.org/es/" target="_blank" rel="noopener noreferrer">
+							<img class="link-poder" style="width:115px;" src="src/images/poder-white.png" scale="0">
+						</a>	
+						<a class="ribbon-link" href="https://www.rindecuentas.org/" target="_blank"  rel="noopener noreferrer">
+							<img class="link-rindecuentas" src="src/images/rindecuentas.svg" scale="0">
+						</a>
+						<a class="ribbon-link" href="https://www.colaboratorio.org/" target="_blank"  rel="noopener noreferrer">
+							<img class="link-colaboratorio" src="src/images/colaboratorio.svg" scale="0">
+						</a>				
+					</li>
+					<li class="ribbon-item ribbon-right">
+						<a class="ribbon-link" href="https://www.quienesquien.wiki/" target="_blank" rel="noopener noreferrer">
+							<img class="link-quienesquien" src="src/images/quienesquien.svg" scale="0">
+						</a>
+						<a class="ribbon-link" href="https://mexicoleaks.mx/enviar-para.php?r=poder" target="_blank" rel="noopener noreferrer">
+							<img class="link-mexicoleaks" src="src/images/mexicoleaks.svg" scale="0">
+						</a>							
+						<a class="ribbon-link" href="https://leaks.pe/" target="_blank" rel="noopener noreferrer">
+							<img class="link-peruleaks" class="peru" src="src/images/peruleaks.svg" scale="0">
+						</a>	
+					</li>
+				</ul>
+				<div class="nav-separator"></div>
+				<span class="nav-legend">Seguinos en nuestras redes</span>
+				<ul class="mobile-social">
+					<li class="social-item item-fb"><a href="#">fb</a></li>
+					<li class="social-item item-tw"><a href="#">tw</a></li>
+				</ul>
+			</navbar>
+		</header>
+		<!-- end of header -->
+
+		<!-- body: visualización -->		
+
+		<div class="graph-container">
+			<svg></svg>
+		</div>
+		<ul id="slidesMenu" class="slides-menu">
+		    <li class="slides-menu-item" data-menuanchor="slide-1" class="active"><a class="slides-menu-item-link" href="#slide-1"></a></li>
+		    <li class="slides-menu-item" data-menuanchor="slide-2"><a class="slides-menu-item-link" href="#slide-2"></a></li>
+		    <li class="slides-menu-item" data-menuanchor="slide-3"><a class="slides-menu-item-link" href="#slide-3"></a></li>
+		    <li class="slides-menu-item" data-menuanchor="slide-4"><a class="slides-menu-item-link" href="#slide-4"></a></li>
+		</ul>
+		<div id="fullpage" class="fullpage">
+			<div class="visualization-container">
+				<div class="section info-container slide-active slide-1 fp-auto-height">
+					<div class="info-wrapper">
+						<div class="info-data">
+							<p class="top-text">Un valor<br>total de</p>
+							<p class="middle-text" id="contracts_amount">147</p>
+							<p class="bottom-text">equivale a la suma <br>de los contratos</p>
+						</div>
+						<div class="info-abstract">
+							<h2 class="abstract-title">Total de contratos</h2>
+							<p class="abstract-body">Es un hecho establecido hace semasiado tiempo que un lector se distraera con el contenido del texto de un sitio mientras mira su diseño. El punto de usar Lorem ipsum.</p>
+						</div>
 					</div>
 				</div>
-			</div>
-			<div class="section info-container">
-				<div class="info-wrapper">
-					<div class="info-data">
-						<p class="top-text">Los tipos <br>de contratos son</p>
-						<p class="middle-text" id="contracts_type">147</p>
-						<p class="bottom-text">Y cada contrato pertenece<br>a uno de estos tipos</p>
-					</div>
-					<div class="info-abstract">
-						<h2 class="abstract-title">Tipos de contratos</h2>
-						<p class="abstract-body">Es un hecho establecido hace semasiado tiempo que un lector se distraera con el contenido del texto de un sitio mientras mira su diseño. El punto de usar Lorem ipsum.</p>
-					</div>
-				</div>
-			</div>
-			<div class="section info-container">
-				<div class="info-wrapper">
-					<div class="info-data">
-						<p class="top-text">Lorem <br>Loremipsum</p>
-						<p class="middle-text" id="contracts_total">147</p>
-						<p class="bottom-text">contratos del <br><strong>NACIM</strong></p>
-					</div>
-					<div class="info-abstract">
-						<h2 class="abstract-title">Total de contratos</h2>
-						<p class="abstract-body">Es un hecho establecido hace semasiado tiempo que un lector se distraera con el contenido del texto de un sitio mientras mira su diseño. El punto de usar Lorem ipsum.</p>
+				<div class="section info-container slide-2 fp-auto-height">
+					<div class="info-wrapper">
+						<div class="info-data">
+							<p class="top-text">Los tipos <br>de contratos son</p>
+							<p class="middle-text" id="contracts_type">147</p>
+							<p class="bottom-text">Y cada contrato pertenece<br>a uno de estos tipos</p>
+						</div>
+						<div class="info-abstract">
+							<h2 class="abstract-title">Tipos de contratos</h2>
+							<p class="abstract-body">Es un hecho establecido hace semasiado tiempo que un lector se distraera con el contenido del texto de un sitio mientras mira su diseño. El punto de usar Lorem ipsum.</p>
+						</div>
 					</div>
 				</div>
-			</div>
-			<div class="section info-container">
-				<div class="info-wrapper">
-					<div class="info-data">
-						<p class="top-text">Lorem <br>Loremipsum</p>
-						<p class="middle-text" id="contracts_total">147</p>
-						<p class="bottom-text">contratos del <br><strong>NACIM</strong></p>
+				<div class="section info-container slide-3 fp-auto-height">
+					<div class="info-wrapper">
+						<div class="info-data">
+							<p class="top-text">Lorem <br>Loremipsum</p>
+							<p class="middle-text" id="contracts_total">147</p>
+							<p class="bottom-text">contratos del <br><strong>NACIM</strong></p>
+						</div>
+						<div class="info-abstract">
+							<h2 class="abstract-title">Total de contratos</h2>
+							<p class="abstract-body">Es un hecho establecido hace semasiado tiempo que un lector se distraera con el contenido del texto de un sitio mientras mira su diseño. El punto de usar Lorem ipsum.</p>
+						</div>
 					</div>
-					<div class="info-abstract">
-						<h2 class="abstract-title">Total de contratos</h2>
-						<p class="abstract-body">Es un hecho establecido hace semasiado tiempo que un lector se distraera con el contenido del texto de un sitio mientras mira su diseño. El punto de usar Lorem ipsum.</p>
+				</div>
+				<div class="section info-container slide-4 fp-auto-height">
+					<div class="info-wrapper">
+						<div class="info-data">
+							<p class="top-text">Lorem <br>Loremipsum</p>
+							<p class="middle-text" id="contracts_total">147</p>
+							<p class="bottom-text">contratos del <br><strong>NACIM</strong></p>
+						</div>
+						<div class="info-abstract">
+							<h2 class="abstract-title">Total de contratos</h2>
+							<p class="abstract-body">Es un hecho establecido hace semasiado tiempo que un lector se distraera con el contenido del texto de un sitio mientras mira su diseño. El punto de usar Lorem ipsum.</p>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+
+		<!-- end of body -->
+
+		<!-- footer -->
+		<footer class="site-footer">
+			<div class="site-development">
+				<p class="developed-by"><span class="developed-title">Desarrollado por</span> <a class="organization-link" href="#"><img src="src/images/poder.svg" alt="" class="organization-logo"></a> y <a class="organization-link" href="#"><img src="src/images/wingu.svg" alt="" class="organization-logo"></a></p>
+				<p class="sponsored-by"><span class="sponsored-title">Con el apoyo de</span> <a class="organization-link" href="#"><img src="src/images/hivos.svg" alt="" class="organization-logo"></a></p>
+			</div>
+		</footer>
+		<!-- end of footer -->
 	</div>
 </body>
 </html>

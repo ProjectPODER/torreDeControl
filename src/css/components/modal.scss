@@ -1,0 +1,73 @@
+/* Modal Mixins ---------------------------------- */
+@mixin modal() {
+	$closeButtonSize: 21;
+
+	.wg-modal-backdrop {
+		
+		position: fixed;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		background-color: rgba(0, 0, 0, 0.9);
+		z-index: 1000;
+		opacity: 1;
+		pointer-events: initial;
+
+		transition: opacity 300ms ease, z-index 0ms ease;
+		.wg-modal-body {
+			width: 80%;
+			height: 80%;
+			min-width: 100px;
+			min-height: 100px;
+			background-color: white;
+			position: absolute;
+			padding: 20px;
+			@include border-radius(2px);
+			@include absolute-center();
+			.wg-modal-close-button {
+				display: block;
+				position: absolute;
+				right: -($closeButtonSize + 10) + px;
+				top: 0;
+				background-color: white;
+				width: $closeButtonSize + px;
+				height: $closeButtonSize + px;
+				@include border-radius(2px);
+				text-decoration: none;
+				color: black;
+				padding: 2px 5px;
+				&:before {
+					content: '✖';
+				}
+			}
+			.wg-modal-title {
+				display: block;
+				font-size: 20px;
+				line-height: 22px;
+				font-weight: 600;
+				padding-bottom: 5px;
+				margin-bottom: 10px;
+				border-bottom: 1px solid #ddd;
+			}
+			.wg-modal-info {
+				margin-bottom: 40px;
+			}
+			.wg-modal-actions {
+				text-align: right;
+				position: absolute;
+				right: 0;
+				bottom: 0;
+				left: 0;
+				margin: 20px;
+			}
+		}
+	}
+
+	&.wg-hide .wg-modal-backdrop {
+		pointer-events: none;
+		transition: opacity 300ms ease, z-index 0ms ease 300ms;
+		opacity: 0;
+		z-index: -1;
+	}
+}

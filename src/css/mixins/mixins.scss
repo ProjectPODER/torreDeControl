@@ -1,0 +1,27 @@
+/* General mixins */
+@mixin border-radius($top: 0, $right: $top, $bottom: $top, $left: $top) {
+	-webkit-border-radius: $top $right $bottom $left;
+	   -moz-border-radius: $top $right $bottom $left;
+	    -ms-border-radius: $top $right $bottom $left;
+	     -o-border-radius: $top $right $bottom $left;
+	        border-radius: $top $right $bottom $left;
+}
+@mixin translate($x: 0, $y: 0, $z: 0) {
+	-webkit-transform: translate3d($x, $y, $z);
+	   -moz-transform: translate3d($x, $y, $z);
+	    -ms-transform: translate3d($x, $y, $z);
+	     -o-transform: translate3d($x, $y, $z);
+	        transform: translate3d($x, $y, $z);
+}
+@mixin absolute($top: 0, $right: 0, $bottom: 0, $left: 0) {
+	top: $top;
+	right: $right;
+	bottom: $bottom;
+	left: $left;
+	position: absolute;
+}
+
+@mixin absolute-center() {
+	@include absolute(50%, auto, auto, 50%);
+	@include translate(-50%, -50%);
+}
