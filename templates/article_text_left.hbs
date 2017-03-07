@@ -1,18 +1,96 @@
 {{#> article_text_left}}
+<h1 class="content-title">Metodología</h1>
 <article class="content-article article-whoami">
 	<div class="article-text">
 		<div class="article-header">
-			<h1 class="article-title ornament-square">Quiénes somos</h1>
-			<h2 class="article-excerpt ornament-vertical-line"><strong class="excerpt-strong">Lorem ipsum dolor sit amet, sect.</strong></h2>
+			<h1 class="article-title ornament-square">Fuentes de datos</h1>
 		</div>
 		<div class="article-body">
-			<p class="article-paragraph">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quasi, deleniti sapiente numquam enim corporis amet quo quaerat, a deserunt cumque aliquid doloremque laudantium, dolorum accusamus. Cum eaque minima magni eos.</p>
-			<p class="article-paragraph">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quasi, deleniti sapiente numquam enim corporis amet quo quaerat, a deserunt cumque aliquid doloremque laudantium, dolorum accusamus. Cum eaque minima magni eos.</p>
-			<p class="article-paragraph">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quasi, deleniti sapiente numquam enim corporis amet quo quaerat, a deserunt cumque aliquid doloremque laudantium, dolorum accusamus. Cum eaque minima magni eos.</p>
+			<div class="article-section">
+				<h2 class="article-excerpt ornament-vertical-line"><strong class="excerpt-strong">CompraNet</strong></h2>
+
+				<p class="article-paragraph">La primera descarga de los contratos relacionados con el Nuevo Aeropuerto Internacional de la Ciudad de México (NAICM) fue a partir de la base
+de datos de CompraNet, entre 2013 al 2016, desde este hipervínculo: <a rel="noopener noreferrer" target="_blank" href="https://sites.google.com/site/cnetuc/contrataciones">https://sites.google.com/site/cnetuc/contrataciones</a>. Los datos de
+contrataciones públicas fueron tratados siguiendo una metodología establecida en trabajos anteriores que se puede encontrar en:
+<a rel="noopener noreferrer" target="_blank" href="http://data.eluniversal.com.mx/contratistas-poder/metodologia.html">http://data.eluniversal.com.mx/contratistas-poder/metodologia.html</a></p>
+				<p class="article-paragraph">Se encontró información general de 191 contratos derivados de los procedimientos de contratación en CompraNet por las Unidades Compradoras del Grupo Aeroportuario de la Ciudad de México. Desglosado por años fueron:
+					<ul>
+						<li>2013: 0</li>
+						<li>2014: 14</li>
+						<li>2015: 108</li>
+						<li>2016: 69 (a 19 de diciembre)</li>
+					</ul>
+				</p>
+				<p class="article-paragraph">El problema de trabajar con distintos años en CompraNet es que las cabeceras de las bases de datos varían según el año, lo que dificulta la consolidación de los distintos conjuntos de datos en un dataset único.</p>
+				<p class="article-paragraph">Al analizar los datos encontramos varias adjudicaciones directas con el mismo objeto y mismo importe de contratación pero a distintas personas físicas contratadas, lo que constituye una mala praxis para su identificación. Este es el caso de los contratos con el número de procedimiento:
+					<ul>
+						<li>- AO-009KDH999-E40-2016</li>
+						<li>- AO-009KDH999-E43-2016</li>
+						<li>- AO-009KDH999-E38-2016</li>
+					</ul>
+				</p>
+				<p class="article-paragraph">Los datos recabados son sólo detalles generales. El contrato y los anexos obligatorios, especialmente de las adjudicaciones directas, pocas veces están adjuntos en la página que cada contrato tiene en CompraNet.</p>
+				<p class="article-paragraph">Además de CompraNet, el portal de transparencia de contratos del gobierno, tuvimos que usar otras fuentes gubernamentales para conseguir la totalidad de los contratos del NAICM.</p>
+			</div>
+			<div class="article-section">
+				<h2 class="article-excerpt"><strong class="excerpt-strong">Solicitudes de información</strong></h2>
+				<p class="article-paragraph">Antes de que el Grupo Aeroportuario de la Ciudad de México (GACM) asumiera el trabajo hubo contratos para el nuevo aeropuerto celebrados por Aeropuertos y Servicios Auxiliares (ASA) y por la Comisión Nacional del Agua (CONAGUA). Ninguno de estos contratos estaba en CompraNet.
+				Según el abogado del GACM que nos recibió, Oscar Valdueza Correa, esto se debe a que, al ser adjudicaciones directas y convenios, no han de ser difundidos por el Sistema Electrónico de Información Pública Gubernamental.</p>
+				<p class="article-paragraph">ASA celebró 59 contratos, esta información se consiguió a través de peticiones de información y fueron entregados en formato PDF escaneados de los documentos originales. Los contratos, con sus anexos, se tuvieron que convertir en un formato procesable por computadora que nos permitiera unificarlo con la base de datos que ya teníamos.</p>
+				<p class="article-paragraph">A la fecha de publicación de la Torre de Control aún no se tenían los contratos de CONAGUA. Cuando se reciban se subirán junto al resto de los contratos de la Torre de Control.</p>
+			</div>
+			<div class="article-section">
+				<h2 class="article-excerpt"><strong class="excerpt-strong">Página de datos del Gobierno Mexicano</strong></h2>
+				<p class="article-paragraph">A finales del 2016 el gobierno mexicano, publicó algunos contratos relacionados con el NAICM en los formatos JSON, XLS y PDF en su página web de datos: <a rel="noopener noreferrer" target="_blank" href="http://datos.gob.mx">http://datos.gob.mx</a>. A través de la API (Application Programing Interface) se obtuvo un JSON de 270 contratos relacionados con el NAICM. Algunos de ellos no estaban ni en CompraNet ni en las peticiones de información.</p>
+				<p class="article-paragraph">La petición de la API usada el 12 de enero de 2017 dejó de funcionar pocas semanas después. Al momento de publicación de la metodología, dejó de funcionar debido a una actualización, obligando a volver a revisar la documentación de la aplicación para seguir con el trabajo. <a rel="noopener noreferrer" target="_blank" href="https://datos.gob.mx/busca/api/3/action/package_search?fq=tags:naicm&rows=500">https://datos.gob.mx/busca/api/3/action/package_search?fq=tags:naicm&rows=500</a></p>
+				<p class="article-paragraph">Esta es la única forma de conseguir los datos de forma masiva, ya que a través de la web —como haría un ciudadano sin formación tecnología avanzada— deberías descargar los 270 uno por uno.</p>
+			</div>
+			<div class="article-section">
+				<h2 class="article-excerpt"><strong class="excerpt-strong">Observaciones</strong></h2>
+				<p class="article-paragraph">Después de usar tres fuentes distintas vemos una importante falla en la homologación de la información de las contrataciones del NAICM, muestra de ello es la inexistencia de una base de datos que contenga todos los contratos. Estas fuentes están en distintos formatos y varían los identificadores principales. <br> Otro gran problema es que entre las distintas fuentes de contratos existen diferencias en la forma de representar los montos de los contratos. Algunas fuentes incluyen el Impuesto al Valor Agregado (IVA) y otra puede tener los montos sin IVA. En la Torre de Control todos los montos están con IVA.</p>
+			</div>
+			<div class="article-section">
+				<h2 class="article-excerpt"><strong class="excerpt-strong">Back-end en QuiénEsQuién.Wiki, front-end en TorreDeControl.org</strong></h2>
+				<p class="article-paragraph">El proyecto de la Torre de Control es lo que llamamos una plataforma vinculada a QuiénEsQuién.Wiki, una base de datos libre, abierta y colaborativa sobre las élites y las estructuras de poder. Todos los datos están alojados en la base de datos de QQW y la Torre de Control se alimenta de ésta a través de una API pública.</p>
+				<p class="article-paragraph">QuiénEsQuién.Wiki está promovida por el Proyecto en Organización, Desarrollo, Educación e Investigación (PODER) y en alianza con medios como Ojo Público, El Universal Data y Plaza Pública, y organizaciones sociales como Wingu, Cargografías e Incide Social.</p>
+			</div>
+			<div class="article-section">
+				<h2 class="article-excerpt"><strong class="excerpt-strong">Implementación del Open Contracting Data Standard</strong></h2>
+				<p class="article-paragraph">QuiénEsQuién.Wiki fue la primera plataforma en México en ofrecer datos de contratación del gobierno mexicano con formato Open Contracting Data Standard (OCDS), esquema que permite transparentar datos de contrataciones públicas con el objetivo de tener un mayor control en la rendición de cuentas.</p>
+				<p class="article-paragraph">El OCDS divide el proceso de contratación en bloques, comenzando por la planeación de un contrato, donde se muestran presupuestos planeados, documentos del proyecto inicial, entre otros. Después, se describe el proceso de licitación con datos sobre precios mínimos y máximos, tipo de procedimiento y fechas. En el bloque de concesión se anuncia el proveedor elegido junto con el número de contrato asignado. Se constituye el bloque de contrato, que muestra información sobre el monto, términos y fechas. El último bloque es el de implementación, y es el menos completo debido a que el desarrollo del proyecto aún no termina.</p>
+				<p class="article-paragraph">Para la Torre de Control se utilizaron los campos que forman parte del bloque de "Contratación" del OCDS. Estos campos son: título del contrato; número de procedimiento; dependencia del gobierno (comprador); proveedor del contrato; dirección del proveedor; tipo de procedimiento y tipo de contratación.</p>
+				<p class="article-paragraph">Cuando, a finales de año, el Gobierno empezó a liberar datos del NAICM ya estábamos trabajando en el proyecto de la Torre de Control y nos fue imposible añadir otros estados al trabajo.</p>
+			</div>
 		</div>
 	</div>
-	<figure class="article-media ornament-people ornament-stripped">
-		<img src="http://www.placepandas.com/400/600" alt="" class="article-image">
-	</figure>
+</article>
+<h1 class="content-title">¿Quiénes somos?</h1>
+<article class="content-article article-whoami">
+	<div class="article-text">
+		<div class="article-body">
+			<div class="article-section">
+				<h2 class="article-excerpt ornament-vertical-line"><strong class="excerpt-strong">PODER</strong></h2>
+				<p class="article-paragraph">El <strong>Proyecto sobre Organización, Desarrollo, Educación e Investigación (PODER)</strong> es una organización regional, no gubernamental, sin fines de lucro. Nuestra misión es fomentar la transparencia y rendición de cuentas de las empresas en América Latina y fortalecer a los actores de la sociedad civil afectados por prácticas empresariales para que actúen como garantes de la rendición de cuentas a largo plazo. PODER logra esto mediante la inteligencia empresarial, las tecnologías de transparencia y la organización comunitaria para construir un movimiento ciudadano a favor de la rendición de cuentas empresarial.</p>
+			</div>
+			<div class="article-section">
+				<h2 class="article-excerpt"><strong class="excerpt-strong">WINGU</strong></h2>
+				<p class="article-paragraph"><strong>Wingu {Tecnología sin fines de lucro}</strong> es una organización sin fines de lucro con base en Buenos Aires y Ciudad de México. Nuestra misión es fortalecer otros proyectos e iniciativas sin fines de lucro en América Latina a través de la implementación de tecnologías y metodologías innovadoras para maximizar su impacto. Lo logramos a través de capacitaciones, la implementación de servicios, y el desarrollo de tecnología cívica basados en datos.</p>
+			</div>
+			<div class="article-section">
+				<h2 class="article-excerpt"><strong class="excerpt-strong">QuienEsQuien.Wiki</strong></h2>
+				<p class="article-paragraph"><strong>QuiénEsQuién.Wiki</strong> es una base de datos abierta y colaborativa para almacenar y mostrar los datos que genera la sociedad civil sobre las élites económicas y políticas en América Latina, exhibiendo así el fenómeno de la captura del estado y otros fenómenos asociados, como la opacidad, la corrupción y la impunidad.</p>
+			</div>
+			<div class="article-section">
+				<p class="article-paragraph">
+					Coordinación: Eduard Martín-Borregón <br>
+					Investigador principal: José Félix Farachala <br>
+					Redacción e investigación: Claudia Ocaranza, Mónica Mojon, Rosario Taracena <br>
+					Datos y back-end: T. Kevin Brown <br>
+					Diseño, desarrollo web y visualización de datos: Wingu
+				</p>
+			</div>
+			
+		</div>
+	</div>
 </article>
 {{/ article_text_left}}

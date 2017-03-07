@@ -52,9 +52,20 @@ module.exports = () => {
 			{nodes: [], links: []},
 			{nodes: [], links: []}
 		]; 
+		const organizationFilter = new Filter({property: 'proveedor'});
+		const contractorsNamesSet = new MathSet(AppData.contracts);
+		const organizationsByNames = Object.keys(contractorsNamesSet.countByFilterProperty(organizationFilter));
+
 		$('#contracts_amount').text("$ " + (Math.round(contractsAmount/1000000)).toLocaleString() + " M");
 		$('#contracts_type').text(Object.keys(contractsByTypes).length);
 		$('#contracts_total').text(objectToArray(contractsByTypes).reduce(function(total, actual) {return total + Object.keys(actual.contracts).length}, 0));
+		$('#direct_adjudication').text(AppData.contracts.filter(contract => {return contract.procedure_type == "Adjudicación Directa Federal"}).length);
+		$('#direct_adjudication_percentage').text((Math.ceil(AppData.contracts.filter(contract => {return contract.procedure_type == "Adjudicación Directa Federal"}).reduce((before, actual) => {return before + actual.amount }, 0)) / contractsAmount * 100 ).toFixed(2));
+		$('#suppliers_count').text(Object.keys(organizationsByNames).length);
+		$('#big_amount_contracts').text(AppData.contracts.filter(contract => {return contract.amount >= 1000000000}).length);
+		$('#big_amount_percentage').text((Math.ceil(AppData.contracts.filter(contract => {return contract.amount >= 1000000000}).reduce((before, actual) => {return before + actual.amount }, 0)) / contractsAmount * 100 ).toFixed(2));
+		$('#big_amount_winners').text(Math.ceil(AppData.contracts.filter(contract => {return contract.amount >= 1000000000}).length ));
+
 		const node = { id: 'contracts', name: 'contracts', activeSize: contractsAmount / 10000000, inactiveSize: 35, type: 'all', group: 1, color: '#BEA288', linksCount: 0 };
 		slidesObjects[1].nodes.push(node);
 		nodes.push(node);
