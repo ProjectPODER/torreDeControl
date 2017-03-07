@@ -39,7 +39,7 @@ module.exports = {
                 loader: 'style-loader!css-loader?'
             },
             {
-                test: /\.(jpg|png)$/,
+                test: /\.(jpg|png|svg)$/,
                 loader: 'file-loader?name=[path][name].[ext]?[hash]',
             }
 		]

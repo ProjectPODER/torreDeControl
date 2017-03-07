@@ -309,6 +309,6 @@ export function setInfoData(data) {
 export function sendContactMail(data) {
   return {
     types: [SEND_CONTACT_INFO, SEND_CONTACT_INFO_SUCCESS, SEND_CONTACT_INFO_FAIL],
-    promise: () => $.post('message.php', data)
+    promise: () => $.post('mailserver/message.php', data)
   };
 }
