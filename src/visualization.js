@@ -52,7 +52,7 @@ module.exports = () => {
 			{nodes: [], links: []},
 			{nodes: [], links: []}
 		]; 
-		const organizationFilter = new Filter({property: 'proveedor'});
+		const organizationFilter = new Filter({property: 'suppliers'});
 		const contractorsNamesSet = new MathSet(AppData.contracts);
 		const organizationsByNames = Object.keys(contractorsNamesSet.countByFilterProperty(organizationFilter));
 
@@ -66,39 +66,55 @@ module.exports = () => {
 		$('#big_amount_percentage').text((Math.ceil(AppData.contracts.filter(contract => {return contract.amount >= 1000000000}).reduce((before, actual) => {return before + actual.amount }, 0)) / contractsAmount * 100 ).toFixed(2));
 		$('#big_amount_winners').text(Math.ceil(AppData.contracts.filter(contract => {return contract.amount >= 1000000000}).length ));
 
-		const node = { id: 'contracts', name: 'contracts', activeSize: contractsAmount / 10000000, inactiveSize: 35, type: 'all', group: 1, color: '#BEA288', linksCount: 0 };
+		const node = { id: 'contracts', name: 'contracts', activeSize: contractsAmount / 10000000, inactiveSize: 35, nodeForce: 10, type: 'all', group: 1, color: '#BEA288', linksCount: 0 };
 		slidesObjects[1].nodes.push(node);
 		nodes.push(node);
 		for (let i in contractsByTypes) {
 			const contractByType = contractsByTypes[i];
-			const node = { id: contractByType.name, name: contractByType.name, activeSize: contractByType.amount / 20000000, inactiveSize: 15, type: 'contract_type', group: 2, color: '#8AC190', linksCount: 0 };
-			const link = { source: 'contracts', target: contractByType.name, type: 'contract_type', distance: 200, color: '#706F74' };
+			const node = { id: contractByType.name, name: contractByType.name, activeSize: Math.sqrt(contractByType.amount) / 1000, inactiveSize: 15, nodeForce: 10, type: 'contract_type', group: 2, color: '#8AC190', linksCount: 0 };
+			const link = { source: 'contracts', target: contractByType.name, type: 'contract_type', linkStrength: 2, linkDistance: 2, color: '#706F74', opacity: 0.6 };
 			slidesObjects[2].nodes.push(node);
 			slidesObjects[2].links.push(link);
 			nodes.push(node);
 			links.push(link);
 			for (let j in contractByType.contracts) {
 				const contract = contractByType.contracts[j];
-				const node = { id: contract.ocid, name: contract.amount, activeSize: Math.log(contract.amount), inactiveSize: 30, type: 'contract', group: 3, color: '#E086A9', linksCount: 0 };
-				const link = { source: 'contracts', target: contract.ocid, type: 'contract', distance: 20, color: '#706F74' };
+				const node = { id: contract.ocid, name: contract.amount, activeSize: Math.log(contract.amount), inactiveSize: 30, nodeForce: 0.6, type: 'contract', group: 3, color: '#E086A9', linksCount: 0 };
+				const link = { source: 'contracts', target: contract.ocid, type: 'contract', linkStrength: 1, linkDistance: 3, color: '#706F74', opacity: 0.6 };
 				slidesObjects[3].nodes.push(node);
 				slidesObjects[3].links.push(link);
 				nodes.push(node);
 				links.push(link);
 			}
 		}
+
 		for (let k in organizations) {
+			// console.log("entra")
 			const organization = organizations[k];
-			const node = { id: organization._id, name: organization.name, activeSize: 20, inactiveSize: 10, type: 'organization', group: 4, color: '#646464', linksCount: 0 };
+			const node = { id: organization._id, name: organization.name, activeSize: 20, inactiveSize: 10, nodeForce: 20, type: 'organization', group: 4, color: '#646464', linksCount: 0 };
 			for (let j in AppData.contracts) {
+				// console.log("entra 2")
 				const contract = AppData.contracts[j];
-				if (contract.proveedor === organization.name) {
-					const link = { source: contract.ocid, target: organization._id, type: 'organization', distance: 20, color: '#706F74' };
+				// console.log({
+				// 	name: organization.name,
+				// 	names: organization.names,
+				// 	simple: organization.simple,
+				// 	real: contract.suppliers_person || contract.suppliers_org
+				// })
+				if (
+					(contract.suppliers_person && contract.suppliers_person.indexOf(organization.simple) > -1) ||
+					(contract.suppliers_org && contract.suppliers_org.indexOf(organization.simple) > -1)
+				) {
+					const link = { source: contract.ocid, target: organization._id, type: 'organization', linkStrength: 4, linkDistance: 3, color: '#706F74', opacity: 1 };
 					slidesObjects[4].links.push(link);
 					links.push(link);
 					node.linksCount++;
 				}
 			}
+			
+			const linkToCenter = { source: 'contracts', target: organization._id, type: 'organization', linkStrength: 3, linkDistance: 9, color: '#706F74', opacity: 0 };
+			slidesObjects[4].links.push(linkToCenter);
+
 			slidesObjects[4].nodes.push(node);
 			nodes.push(node);
 		}
@@ -127,18 +143,18 @@ function getContracts(cb) {
 	async.parallel(
 		[
 			(parallelCB) => {
-				$.get('https://www.quienesquien.wiki/api/v1/contracts?dependency=Grupo%20Aeroportuario%20De%20La%20Ciudad%20De%20M%C3%A9xico,%20S.A.%20de%20C.V.&limit=1000')
+				$.get('https://www.quienesquien.wiki/api/v1/contracts?dependency=Grupo%20Aeroportuario%20De%20La%20Ciudad%20De%20M%C3%A9xico,%20S.A.%20de%20C.V.')
 				.done(response => {parallelCB(null, response.data);})
 				.fail(response => {parallelCB(null, []);});
 			},
-			(parallelCB) => {
-				$.get('https://www.quienesquien.wiki/api/v1/contracts?dependency=Aeropuertos%20Y%20Servicios%20Auxiliares&limit=1000')
-				.done(response => {parallelCB(null, []);})
-				.fail(response => {parallelCB(null, []);});
-			}
+			// (parallelCB) => {
+			// 	$.get('https://q6fe3bea.herokuapp.com/api/v1/contracts?dependency=Grupo%20Aeroportuario%20De%20La%20Ciudad%20De%20M%C3%A9xico,%20S.A.%20de%20C.V.&limit=1000')
+			// 	.done(response => {parallelCB(null, []);})
+			// 	.fail(response => {parallelCB(null, []);});
+			// }
 		],
 		(err, results) => {
-			cb(null, {contracts: [...results[0], ...results[1]]})
+			cb(null, {contracts: [...results[0]/*, ...results[1]*/]})
 		}
 	);
 	
@@ -146,18 +162,31 @@ function getContracts(cb) {
 }
 
 function getOrganizations(params, cb) {
-	const organizationFilter = new Filter({property: 'proveedor'});
+	let suppliers = [];
+	for(var c = 0; c < params.contracts.length; c++) {
+		suppliers = [...suppliers, ...(params.contracts[c].suppliers_person || []), ...(params.contracts[c].suppliers_org || [])]
+	}
+
+	let uniqueSuppliers = {};
+
+	for(var s = 0; s < suppliers.length; s++) {
+		let supplierName = suppliers[s];
+		uniqueSuppliers[supplierName] != undefined ? uniqueSuppliers[supplierName] == uniqueSuppliers[supplierName] + 1 : uniqueSuppliers[supplierName] = 1;
+	}
+	
+	// console.log(uniqueSuppliers)
+	const organizationFilter = new Filter({property: 'suppliers'});
 	const contractorsNamesSet = new MathSet(params.contracts);
-	const organizationsByNames = Object.keys(contractorsNamesSet.countByFilterProperty(organizationFilter));
-	const organizationsNames = organizationsByNames.map((provider) => `name=${encodeURIComponent(provider)}`);
+	const organizationsByNames = Object.keys(uniqueSuppliers);
+	const organizationsNames = organizationsByNames.map((provider) => `simple=${encodeURIComponent(provider)}`);
 	const query = `?${organizationsNames.join('&')}`.substr(0,2000);
-	$.get(`https://www.quienesquien.wiki/api/v1/organizations${query}`)
+	$.get(`https://q6fe3bea.herokuapp.com/api/v1/organizations${query}`)
 	.done(response => {cb(null, {...params, organizations: response.data});})
 	.fail(response => {cb(null, {...params, organizations: []});});
 }
 
 function getPersons(cb) {
-	$.get('https://www.quienesquien.wiki/api/v1/persons')
+	$.get('https://q6fe3bea.herokuapp.com/api/v1/persons')
 	.done(response => {cb(null, response.data);});
 }
 
@@ -170,18 +199,18 @@ function setupD3() {
 	/* ----- Force Setup ----- */
 	/* Charges */
 	const forceManyBody = d3.forceManyBody();
-		forceManyBody.strength(fs);
+		forceManyBody.strength(d => fs * d.nodeForce);
 	/* Links */
 	const forceLink = d3.forceLink();
 		forceLink.id(d => d.id);
-		forceLink.distance(ld);
-		forceLink.strength(ls);
-		forceLink.iterations(3);
+		forceLink.distance(d => ld * d.linkDistance);
+		forceLink.strength(d => ls * d.linkStrength);
+		forceLink.iterations(2);
 	/* Center force */
 	const forceCenter = d3.forceCenter(width / 2 - offset, height / 2 - offset);
 	/* Collides */
 	const forceCollide = d3.forceCollide();
-		forceCollide.radius(d => d.activeSize * (1.2+ d.linksCount));
+		// forceCollide.radius(d => d.inactiveSize /** (1.2 + d.linksCount)*/);
 		forceCollide.iterations(1);
 
 	/* Simulation Setup */
@@ -243,7 +272,7 @@ function setupD3() {
 						draw(graph);
 						d3.selectAll('.nodes.contract_type').transition().attr('r', d => d.activeSize);
 						d3.selectAll('.all').transition().attr('r', d => d.inactiveSize);
-						d3.selectAll('.links.contract_type').transition().delay(100).attr('opacity', 1);
+						d3.selectAll('.links.contract_type').transition().delay(100).attr('opacity', d => d.opacity);
 						break;
 					case 2:
 						graph = {
@@ -254,7 +283,7 @@ function setupD3() {
 						d3.selectAll('.nodes.contract').transition().attr('r', d => d.activeSize);
 						d3.selectAll('.all').transition().attr('r', d => d.inactiveSize);
 						d3.selectAll('.contract_type').transition().attr('r', d => d.inactiveSize);
-						d3.selectAll('.links.contract').transition().delay(100).attr('opacity', 1);
+						d3.selectAll('.links.contract').transition().delay(100).attr('opacity', d => d.opacity);
 						break;
 					case 3:
 						graph = {
@@ -266,7 +295,7 @@ function setupD3() {
 						d3.selectAll('.all').transition().attr('r', d => d.inactiveSize);
 						d3.selectAll('.contract_type').transition().attr('r', d => d.inactiveSize);
 						d3.selectAll('.organization_type').transition().attr('r', d => d.inactiveSize);
-						d3.selectAll('.links.organization').transition().delay(100).attr('opacity', 1);
+						d3.selectAll('.links.organization').transition().delay(100).attr('opacity', d => d.opacity);
 						break;
 				}
 	    },
@@ -329,12 +358,12 @@ function setupD3() {
 			.attr("opacity", 0)
 			.merge(link);
 
-		forceManyBody.strength(fs);
+		forceManyBody.strength(d => fs * d.nodeForce);
 		// forceManyBody.distanceMax(mx);
 		// forceManyBody.distanceMin(mn);
-		forceLink.distance(ld);
-		forceLink.strength(ls);
-		forceCollide.radius(d => d.activeSize * (1.2+ d.linksCount));
+		forceLink.distance(d => ld * d.linkDistance);
+		forceLink.strength(d => ls * d.linkStrength);
+		forceCollide.radius(d => d.inactiveSize /** (1.2+ d.linksCount)*/);
 
 
 		simulation.nodes(graph.nodes);
