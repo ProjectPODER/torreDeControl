@@ -149,20 +149,38 @@ module.exports = () => {
 						const shareholder = shareholders[s];
 						const shareholderId = shareholder.person_id || shareholder.org_id;
 						const shareholderName = shareholder.person || shareholder.org;
-						console.log('shareholder')
-						if (shareholdersStack[shareholderId] != true) {
-							const node = { id: shareholderId, name: shareholderName, activeSize: 15, inactiveSize: 10, topParentNode: !organization.parents, nodeForce: 20, type: 'related', group: 4, color: 'red', linksCount: 0 };
-							const linkToCenter = { source: 'contracts', target: shareholderId, type: 'related', linkStrength: 3, linkDistance: 11, color: '#706F74', dashed: false, opacity: 0 };
-							slidesObjects[5].links.push(linkToCenter);
-							links.push(linkToCenter);
-							slidesObjects[5].nodes.push(node);
-							nodes.push(node);
-							shareholdersStack[shareholderId] = true;
+						if (shareholdersStack[shareholderId] == undefined) {
+								shareholdersStack[shareholderId] = 0;	
+						} else {
+							shareholdersStack[shareholderId]++;
 						}
 
-						const link = { source: linkId, target: shareholderId, type: 'related', linkStrength: 4, linkDistance: 3, topParentNode: !organization.parents, color: '#706F74', dashed: true, opacity: 1 };
-						slidesObjects[5].links.push(link);
-						links.push(link);
+						switch (shareholdersStack[shareholderId]) {
+							case 0: 
+							case 1: {
+								break;
+							}
+							case 2: {
+								console.log(shareholderId)
+								const node = { id: shareholderId, name: shareholderName, activeSize: 15, inactiveSize: 10, topParentNode: false, nodeForce: 20, type: 'related', group: 4, color: 'red', linksCount: 0 };
+								slidesObjects[5].nodes.push(node);
+								nodes.push(node);
+								const linkToCenter = { source: 'contracts', target: shareholderId, type: 'related', linkStrength: 3, linkDistance: 11, color: '#706F74', dashed: false, opacity: 0 };
+								slidesObjects[5].links.push(linkToCenter);
+								links.push(linkToCenter);
+								const link = { source: linkId, target: shareholderId, type: 'related', linkStrength: 4, linkDistance: 3, topParentNode: false, color: '#706F74', dashed: true, opacity: 1 };
+								slidesObjects[5].links.push(link);
+								links.push(link);
+								break;
+							}
+							default: {
+								console.log('acumulado', shareholderId)
+								const link = { source: linkId, target: shareholderId, type: 'related', linkStrength: 4, linkDistance: 3, topParentNode: false, color: '#706F74', dashed: true, opacity: 1 };
+								slidesObjects[5].links.push(link);
+								links.push(link);
+							}
+						}
+							
 					}
 				}
 			}
@@ -181,6 +199,7 @@ module.exports = () => {
 			const organizationWithId = organizations.filter(organization => {return organization._id == id});
 			return organizationWithId.length == 0;
 		}
+		console.log(shareholdersStack)
 
 		// for (let k in organizations) {
 		// 	const organization = organizations[k];
