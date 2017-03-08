@@ -46,6 +46,7 @@ module.exports = () => {
 		const contractsAmount = getContractsAmount(AppData.contracts);
 		const contractsByTypes = getContractsByTypes(AppData.contracts);
 		const organizations = AppData.organizations;
+		const shareholdersStack = {};
 		const slidesObjects = [	null,
 			{nodes: [], links: []},
 			{nodes: [], links: []},
@@ -72,16 +73,16 @@ module.exports = () => {
 		nodes.push(node);
 		for (let i in contractsByTypes) {
 			const contractByType = contractsByTypes[i];
-			const node = { id: contractByType.name, name: contractByType.name, activeSize: Math.pow(contractByType.amount,1/4) / 10, inactiveSize: 15, topParentNode: false, nodeForce: 10, type: 'contract_type', group: 2, color: '#8AC190', linksCount: 0 };
-			const link = { source: 'contracts', target: contractByType.name, type: 'contract_type', linkStrength: 2, linkDistance: 2, color: '#706F74', dashed: false, opacity: 0.6 };
+			const node = { id: contractByType.name, name: contractByType.name, activeSize: Math.pow(contractByType.amount,1/5) / 10, inactiveSize: 15, topParentNode: false, nodeForce: 10, type: 'contract_type', group: 2, color: '#8AC190', linksCount: 0 };
+			const link = { source: 'contracts', target: contractByType.name, type: 'contract_type', linkStrength: 2, linkDistance: 1, color: '#706F74', dashed: false, opacity: 0.6 };
 			slidesObjects[2].nodes.push(node);
 			slidesObjects[2].links.push(link);
 			nodes.push(node);
 			links.push(link);
 			for (let j in contractByType.contracts) {
 				const contract = contractByType.contracts[j];
-				const node = { id: contract.ocid, name: contract.amount, activeSize: Math.log(contract.amount)/2, inactiveSize: 30, topParentNode: false, nodeForce: 0.6, type: 'contract', group: 3, color: '#E086A9', linksCount: 0 };
-				const link = { source: 'contracts', target: contract.ocid, type: 'contract', linkStrength: 3, linkDistance: 3, color: '#706F74', dashed: false, opacity: 0.6 };
+				const node = { id: contract.ocid, name: contract.amount, activeSize: Math.log(contract.amount) / 2, inactiveSize: 30, topParentNode: false, nodeForce: 0.6, type: 'contract', group: 3, color: '#E086A9', linksCount: 0 };
+				const link = { source: 'contracts', target: contract.ocid, type: 'contract', linkStrength: 3, linkDistance: 2.5, color: '#706F74', dashed: false, opacity: 0.6 };
 				slidesObjects[3].nodes.push(node);
 				slidesObjects[3].links.push(link);
 				nodes.push(node);
@@ -92,7 +93,7 @@ module.exports = () => {
 		for (let k in organizations) {
 			// console.log("entra")
 			const organization = organizations[k];
-			const node = { id: organization._id, name: organization.name, activeSize: 15, inactiveSize: 10, topParentNode: !organization.parent_id, nodeForce: 20, type: 'organization', group: 4, color: '#646464', linksCount: 0 };
+			const node = { id: organization._id, name: organization.name, activeSize: 15, inactiveSize: 10, topParentNode: !organization.parents, nodeForce: 10, type: 'organization', group: 4, color: '#646464', linksCount: 0 };
 			for (let j in AppData.contracts) {
 				// console.log("entra 2")
 				const contract = AppData.contracts[j];
@@ -105,32 +106,92 @@ module.exports = () => {
 				// (contract.suppliers_person && contract.suppliers_person.indexOf(organization.simple) > -1) ||
 					// (contract.suppliers_org && contract.suppliers_org.indexOf(organization.simple) > -1)
 					
-				if (contract.suppliers && contract.suppliers.indexOf(organization.simple) > -1) {
-					const link = { source: contract.ocid, target: organization._id, type: 'organization', linkStrength: 4, linkDistance: 3, color: '#706F74', dashed: true, opacity: 1 };
+				if (contract.suppliers && contract.suppliers.filter(supplier => {return supplier.simple == organization.simple}).length > 0) {
+					// console.log(contract.ocid, organization._id)
+					const link = { source: contract.ocid, target: organization._id, type: 'organization', linkStrength: 4, linkDistance: 1, topParentNode: !organization.parents, color: '#706F74', dashed: true, opacity: 1 };
 					slidesObjects[4].links.push(link);
 					links.push(link);
 					node.linksCount++;
 				}
 			}
 			
-			const linkToCenter = { source: 'contracts', target: organization._id, type: 'organization', linkStrength: 3, linkDistance: 8, color: '#706F74', dashed: false, opacity: 0 };
+			const linkToCenter = { source: 'contracts', target: organization._id, type: 'organization', linkStrength: 4, linkDistance: 6, color: '#706F74', dashed: false, opacity: 0 };
 			slidesObjects[4].links.push(linkToCenter);
 			links.push(linkToCenter);
 			slidesObjects[4].nodes.push(node);
 			nodes.push(node);
 		}
 
-		for (let k in organizations) {
-			const organization = organizations[k];
-			console.log(organization.parent_id)
-			if (organization.parent_id) {
-				const link = { source: organization._id, target: organization.parent_id, type: 'related', linkStrength: 4, linkDistance: 3, color: 'red', dashed: true, opacity: 1 };
+		function linkParents(linkId, organization) {
+			const parents = organization.parents;
+			const shareholders = organization.shareholders;
+			if (parents.length > 0) {
+				for (let p in parents) {
+					const parent = parents[p];
+					linkParents(linkId, parent)
+				}
+			} else {
+				if (organizationNotExists(organization._id)) {
+					const node = { id: organization._id, name: organization.name, activeSize: 15, inactiveSize: 10, topParentNode: !organization.parents, nodeForce: 20, type: 'related', group: 4, color: 'blue', linksCount: 0 };
+					const linkToCenter = { source: 'contracts', target: organization._id, type: 'related', linkStrength: 3, linkDistance: 11, color: '#706F74', dashed: false, opacity: 0 };
+					slidesObjects[5].links.push(linkToCenter);
+					links.push(linkToCenter);
+					slidesObjects[5].nodes.push(node);
+					nodes.push(node);
+				}
+
+				const link = { source: linkId, target: organization._id, type: 'related', linkStrength: 4, linkDistance: 3, topParentNode: !organization.parents, color: '#706F74', dashed: true, opacity: 1 };
 				slidesObjects[5].links.push(link);
 				links.push(link);
+
+				if (shareholders.length > 0) {
+					for (let s in shareholders) {
+						const shareholder = shareholders[s];
+						const shareholderId = shareholder.person_id || shareholder.org_id;
+						const shareholderName = shareholder.person || shareholder.org;
+						console.log('shareholder')
+						if (shareholdersStack[shareholderId] != true) {
+							const node = { id: shareholderId, name: shareholderName, activeSize: 15, inactiveSize: 10, topParentNode: !organization.parents, nodeForce: 20, type: 'related', group: 4, color: 'red', linksCount: 0 };
+							const linkToCenter = { source: 'contracts', target: shareholderId, type: 'related', linkStrength: 3, linkDistance: 11, color: '#706F74', dashed: false, opacity: 0 };
+							slidesObjects[5].links.push(linkToCenter);
+							links.push(linkToCenter);
+							slidesObjects[5].nodes.push(node);
+							nodes.push(node);
+							shareholdersStack[shareholderId] = true;
+						}
+
+						const link = { source: linkId, target: shareholderId, type: 'related', linkStrength: 4, linkDistance: 3, topParentNode: !organization.parents, color: '#706F74', dashed: true, opacity: 1 };
+						slidesObjects[5].links.push(link);
+						links.push(link);
+					}
+				}
 			}
 		}
 
-		nodes = [...slidesObjects[1].nodes, ...slidesObjects[2].nodes, ...slidesObjects[3].nodes, ...slidesObjects[4].nodes];
+		for (let k in organizations) {
+			const organization = organizations[k];
+			for (let p in organization.parents) {
+				const parent = organization.parents[p];
+				const linkId = organization._id;
+				linkParents(linkId, parent);
+			}
+		}
+
+		function organizationNotExists(id) {
+			const organizationWithId = organizations.filter(organization => {return organization._id == id});
+			return organizationWithId.length == 0;
+		}
+
+		// for (let k in organizations) {
+		// 	const organization = organizations[k];
+		// 	if (organization.parent_id) {
+		// 		const link = { source: organization._id, target: organization.parent_id, type: 'related', linkStrength: 4, linkDistance: 3, color: 'red', dashed: true, opacity: 1 };
+		// 		slidesObjects[5].links.push(link);
+		// 		links.push(link);
+		// 	}
+		// }
+
+		nodes = [...slidesObjects[1].nodes, ...slidesObjects[2].nodes, ...slidesObjects[3].nodes, ...slidesObjects[4].nodes, ...slidesObjects[5].nodes];
 		links = [...slidesObjects[1].links, ...slidesObjects[2].links, ...slidesObjects[3].links, ...slidesObjects[4].links, ...slidesObjects[5].links];
 		setupD3();
 		window.graph = {nodes, links};
@@ -176,24 +237,23 @@ function getContracts(cb) {
 function getOrganizations(params, cb) {
 	let suppliers = [];
 	for(var c = 0; c < params.contracts.length; c++) {
-		suppliers = [...suppliers, ...(params.contracts[c].suppliers_person || []), ...(params.contracts[c].suppliers_org || [])]
+		suppliers = [...suppliers, ...(params.contracts[c].suppliers || [])]
 	}
 
 	let uniqueSuppliers = {};
 
 	for(var s = 0; s < suppliers.length; s++) {
-		let supplierName = suppliers[s];
+		let supplierName = suppliers[s].simple;
 		uniqueSuppliers[supplierName] != undefined ? uniqueSuppliers[supplierName] == uniqueSuppliers[supplierName] + 1 : uniqueSuppliers[supplierName] = 1;
 	}
 	
 	// console.log(uniqueSuppliers)
+	
 	const organizationFilter = new Filter({property: 'suppliers'});
 	const contractorsNamesSet = new MathSet(params.contracts);
 	const organizationsByNames = Object.keys(uniqueSuppliers);
-	const organizationsNames = organizationsByNames.map((provider) => `simple=${encodeURIComponent(provider)}`);
-	const query = `?${organizationsNames.join('&')}`.substr(0,2000);
-	// $.get(`https://q6fe3bea.herokuapp.com/api/v1/organizations${query}`)
-	$.post("http://ec2-54-83-139-8.compute-1.amazonaws.com/api/v1/organizations")
+	
+	$.post("http://ec2-54-83-139-8.compute-1.amazonaws.com/api/v1/organizations", {name: organizationsByNames})
 	.done(response => {cb(null, {...params, organizations: response.data});})
 	.fail(response => {cb(null, {...params, organizations: []});});
 }
@@ -216,7 +276,7 @@ function setupD3() {
 	/* Links */
 	const forceLink = d3.forceLink();
 		forceLink.id(d => d.id);
-		forceLink.distance(d => ld * d.linkDistance);
+		forceLink.distance(d => ld * d.linkDistance * d.topParentNode ? 10 : 1);
 		forceLink.strength(d => ls * d.linkStrength);
 		forceLink.iterations(2);
 	/* Center force */
@@ -313,7 +373,7 @@ function setupD3() {
 						break;
 					case 4:
 						graph = {
-							nodes: setNodeSizeToType(objectToArray((new MathSet(nodes)).filter(slide_1, slide_2, slide_3, slide_4).toObject()), 'organization', 4),
+							nodes: setNodeSizeToType(objectToArray((new MathSet(nodes)).filter(slide_1, slide_2, slide_3, slide_4, slide_5).toObject()), 'related', 4),
 							links: objectToArray((new MathSet(links)).filter(slide_1, slide_2, slide_3, slide_4, slide_5).toObject())
 						};
 						draw(graph);
@@ -392,7 +452,7 @@ function setupD3() {
 		// forceManyBody.distanceMax(mx);
 		// forceManyBody.distanceMin(mn);
 		forceLink.distance(d => ld * d.linkDistance);
-		forceLink.strength(d => ls * d.linkStrength);
+		forceLink.strength(d => ls * d.linkStrength * d.topParentNode ? 1 : 2);
 		forceCollide.radius(d => d.inactiveSize / 2 /** (1.2+ d.linksCount)*/);
 
 
