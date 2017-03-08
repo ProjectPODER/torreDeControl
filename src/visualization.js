@@ -50,6 +50,7 @@ module.exports = () => {
 			{nodes: [], links: []},
 			{nodes: [], links: []},
 			{nodes: [], links: []},
+			{nodes: [], links: []},
 			{nodes: [], links: []}
 		]; 
 		const organizationFilter = new Filter({property: 'suppliers'});
@@ -66,21 +67,21 @@ module.exports = () => {
 		$('#big_amount_percentage').text((Math.ceil(AppData.contracts.filter(contract => {return contract.amount >= 1000000000}).reduce((before, actual) => {return before + actual.amount }, 0)) / contractsAmount * 100 ).toFixed(2));
 		$('#big_amount_winners').text(Math.ceil(AppData.contracts.filter(contract => {return contract.amount >= 1000000000}).length ));
 
-		const node = { id: 'contracts', name: 'contracts', activeSize: contractsAmount / 10000000, inactiveSize: 35, nodeForce: 10, type: 'all', group: 1, color: '#BEA288', linksCount: 0 };
+		const node = { id: 'contracts', name: 'contracts', activeSize: contractsAmount / 5000000000, inactiveSize: 35, topParentNode: false, nodeForce: 10, type: 'all', group: 1, color: '#BEA288', linksCount: 0 };
 		slidesObjects[1].nodes.push(node);
 		nodes.push(node);
 		for (let i in contractsByTypes) {
 			const contractByType = contractsByTypes[i];
-			const node = { id: contractByType.name, name: contractByType.name, activeSize: Math.sqrt(contractByType.amount) / 1000, inactiveSize: 15, nodeForce: 10, type: 'contract_type', group: 2, color: '#8AC190', linksCount: 0 };
-			const link = { source: 'contracts', target: contractByType.name, type: 'contract_type', linkStrength: 2, linkDistance: 2, color: '#706F74', opacity: 0.6 };
+			const node = { id: contractByType.name, name: contractByType.name, activeSize: Math.pow(contractByType.amount,1/4) / 10, inactiveSize: 15, topParentNode: false, nodeForce: 10, type: 'contract_type', group: 2, color: '#8AC190', linksCount: 0 };
+			const link = { source: 'contracts', target: contractByType.name, type: 'contract_type', linkStrength: 2, linkDistance: 2, color: '#706F74', dashed: false, opacity: 0.6 };
 			slidesObjects[2].nodes.push(node);
 			slidesObjects[2].links.push(link);
 			nodes.push(node);
 			links.push(link);
 			for (let j in contractByType.contracts) {
 				const contract = contractByType.contracts[j];
-				const node = { id: contract.ocid, name: contract.amount, activeSize: Math.log(contract.amount), inactiveSize: 30, nodeForce: 0.6, type: 'contract', group: 3, color: '#E086A9', linksCount: 0 };
-				const link = { source: 'contracts', target: contract.ocid, type: 'contract', linkStrength: 1, linkDistance: 3, color: '#706F74', opacity: 0.6 };
+				const node = { id: contract.ocid, name: contract.amount, activeSize: Math.log(contract.amount)/2, inactiveSize: 30, topParentNode: false, nodeForce: 0.6, type: 'contract', group: 3, color: '#E086A9', linksCount: 0 };
+				const link = { source: 'contracts', target: contract.ocid, type: 'contract', linkStrength: 3, linkDistance: 3, color: '#706F74', dashed: false, opacity: 0.6 };
 				slidesObjects[3].nodes.push(node);
 				slidesObjects[3].links.push(link);
 				nodes.push(node);
@@ -91,7 +92,7 @@ module.exports = () => {
 		for (let k in organizations) {
 			// console.log("entra")
 			const organization = organizations[k];
-			const node = { id: organization._id, name: organization.name, activeSize: 20, inactiveSize: 10, nodeForce: 20, type: 'organization', group: 4, color: '#646464', linksCount: 0 };
+			const node = { id: organization._id, name: organization.name, activeSize: 15, inactiveSize: 10, topParentNode: !organization.parent_id, nodeForce: 20, type: 'organization', group: 4, color: '#646464', linksCount: 0 };
 			for (let j in AppData.contracts) {
 				// console.log("entra 2")
 				const contract = AppData.contracts[j];
@@ -101,25 +102,36 @@ module.exports = () => {
 				// 	simple: organization.simple,
 				// 	real: contract.suppliers_person || contract.suppliers_org
 				// })
-				if (
-					(contract.suppliers_person && contract.suppliers_person.indexOf(organization.simple) > -1) ||
-					(contract.suppliers_org && contract.suppliers_org.indexOf(organization.simple) > -1)
-				) {
-					const link = { source: contract.ocid, target: organization._id, type: 'organization', linkStrength: 4, linkDistance: 3, color: '#706F74', opacity: 1 };
+				// (contract.suppliers_person && contract.suppliers_person.indexOf(organization.simple) > -1) ||
+					// (contract.suppliers_org && contract.suppliers_org.indexOf(organization.simple) > -1)
+					
+				if (contract.suppliers && contract.suppliers.indexOf(organization.simple) > -1) {
+					const link = { source: contract.ocid, target: organization._id, type: 'organization', linkStrength: 4, linkDistance: 3, color: '#706F74', dashed: true, opacity: 1 };
 					slidesObjects[4].links.push(link);
 					links.push(link);
 					node.linksCount++;
 				}
 			}
 			
-			const linkToCenter = { source: 'contracts', target: organization._id, type: 'organization', linkStrength: 3, linkDistance: 9, color: '#706F74', opacity: 0 };
+			const linkToCenter = { source: 'contracts', target: organization._id, type: 'organization', linkStrength: 3, linkDistance: 8, color: '#706F74', dashed: false, opacity: 0 };
 			slidesObjects[4].links.push(linkToCenter);
-
+			links.push(linkToCenter);
 			slidesObjects[4].nodes.push(node);
 			nodes.push(node);
 		}
+
+		for (let k in organizations) {
+			const organization = organizations[k];
+			console.log(organization.parent_id)
+			if (organization.parent_id) {
+				const link = { source: organization._id, target: organization.parent_id, type: 'related', linkStrength: 4, linkDistance: 3, color: 'red', dashed: true, opacity: 1 };
+				slidesObjects[5].links.push(link);
+				links.push(link);
+			}
+		}
+
 		nodes = [...slidesObjects[1].nodes, ...slidesObjects[2].nodes, ...slidesObjects[3].nodes, ...slidesObjects[4].nodes];
-		links = [...slidesObjects[1].links, ...slidesObjects[2].links, ...slidesObjects[3].links, ...slidesObjects[4].links];
+		links = [...slidesObjects[1].links, ...slidesObjects[2].links, ...slidesObjects[3].links, ...slidesObjects[4].links, ...slidesObjects[5].links];
 		setupD3();
 		window.graph = {nodes, links};
 	});
@@ -143,7 +155,7 @@ function getContracts(cb) {
 	async.parallel(
 		[
 			(parallelCB) => {
-				$.get('https://www.quienesquien.wiki/api/v1/contracts?dependency=Grupo%20Aeroportuario%20De%20La%20Ciudad%20De%20M%C3%A9xico,%20S.A.%20de%20C.V.')
+				$.get('http://ec2-54-83-139-8.compute-1.amazonaws.com/api/v1/contracts')
 				.done(response => {parallelCB(null, response.data);})
 				.fail(response => {parallelCB(null, []);});
 			},
@@ -180,7 +192,8 @@ function getOrganizations(params, cb) {
 	const organizationsByNames = Object.keys(uniqueSuppliers);
 	const organizationsNames = organizationsByNames.map((provider) => `simple=${encodeURIComponent(provider)}`);
 	const query = `?${organizationsNames.join('&')}`.substr(0,2000);
-	$.get(`https://q6fe3bea.herokuapp.com/api/v1/organizations${query}`)
+	// $.get(`https://q6fe3bea.herokuapp.com/api/v1/organizations${query}`)
+	$.post("http://ec2-54-83-139-8.compute-1.amazonaws.com/api/v1/organizations")
 	.done(response => {cb(null, {...params, organizations: response.data});})
 	.fail(response => {cb(null, {...params, organizations: []});});
 }
@@ -244,8 +257,9 @@ function setupD3() {
 	const slide_2 = new Filter({property: 'type', operator: 'eq', expected: 'contract_type'});
 	const slide_3 = new Filter({property: 'type', operator: 'eq', expected: 'contract'});
 	const slide_4 = new Filter({property: 'type', operator: 'eq', expected: 'organization'});
+	const slide_5 = new Filter({property: 'type', operator: 'eq', expected: 'related'});
 	$('#fullpage').fullpage({
-		anchors: ['slide-1', 'slide-2', 'slide-3', 'slide-4'],
+		anchors: ['slide-1', 'slide-2', 'slide-3', 'slide-4', 'slide-5'],
 	    menu: '#slidesMenu',
 		navigation: true,
 		paddingBottom: '60px',
@@ -297,6 +311,19 @@ function setupD3() {
 						d3.selectAll('.organization_type').transition().attr('r', d => d.inactiveSize);
 						d3.selectAll('.links.organization').transition().delay(100).attr('opacity', d => d.opacity);
 						break;
+					case 4:
+						graph = {
+							nodes: setNodeSizeToType(objectToArray((new MathSet(nodes)).filter(slide_1, slide_2, slide_3, slide_4).toObject()), 'organization', 4),
+							links: objectToArray((new MathSet(links)).filter(slide_1, slide_2, slide_3, slide_4, slide_5).toObject())
+						};
+						draw(graph);
+						d3.selectAll('.nodes.organization').transition().attr('r', d => d.activeSize);
+						d3.selectAll('.all').transition().attr('r', d => d.inactiveSize);
+						d3.selectAll('.contract_type').transition().attr('r', d => d.inactiveSize);
+						d3.selectAll('.organization_type').transition().attr('r', d => d.inactiveSize);
+						d3.selectAll('.links.organization').transition().delay(100).attr('opacity', d => d.opacity);
+						d3.selectAll('.links.related').transition().delay(100).attr('opacity', d => d.opacity);
+						break;
 				}
 	    },
 		afterLoad: function(anchorLink, index){
@@ -337,7 +364,7 @@ function setupD3() {
 		node.exit().remove();
 		node = node.enter().append("circle")
 			.attr("r", d => d.activeSize)
-			.attr("fill", d => d.color)
+			.attr("fill", d => d.topParentNode ? 'red' : d.color)
 			.attr("class", d => "nodes " + d.type)
 			.merge(node);
 
@@ -354,6 +381,9 @@ function setupD3() {
 		link.exit().remove();
 		link = link.enter().append("line")
 			.attr("class", d => "links " + d.type)
+			.attr("stroke-linecap", d => d.dashed ? "round" : "")
+			.attr("stroke-dasharray", d => d.dashed ? "1, 10" : "")
+			.attr("stroke-width", d => d.dashed ? "3" : "1")
 			.style("stroke", d=> d.color)
 			.attr("opacity", 0)
 			.merge(link);
@@ -363,7 +393,7 @@ function setupD3() {
 		// forceManyBody.distanceMin(mn);
 		forceLink.distance(d => ld * d.linkDistance);
 		forceLink.strength(d => ls * d.linkStrength);
-		forceCollide.radius(d => d.inactiveSize /** (1.2+ d.linksCount)*/);
+		forceCollide.radius(d => d.inactiveSize / 2 /** (1.2+ d.linksCount)*/);
 
 
 		simulation.nodes(graph.nodes);
