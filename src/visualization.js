@@ -94,7 +94,7 @@ module.exports = () => {
 			links.push(link);
 			for (let j in contractByType.contracts) {
 				const contract = contractByType.contracts[j];
-				const node = { id: contract._id, name: contract.title, amount: contract.amount, activeSize: Math.log(contract.amount) / 2, inactiveSize: 30, topParentNode: false, nodeForce: 0.6, type: 'contract', group: 3, color: '#E086A9', linksCount: 0 };
+				const node = { id: contract._id, name: contract.title, amount: contract.amount, activeSize: Math.log(contract.amount) / 2, inactiveSize: 30, topParentNode: false, nodeForce: 0.6, type: 'contract', group: 3, color: '#E086A9', linksCount: 0, suppliersList: contract.suppliers.map(supplier => supplier.simple) };
 				const linkToCenter = { source: contract._id, target: 'contracts', type: 'contract', hidden: true, linkStrength: 3, linkDistance: 2.5, color: '#706F74', dashed: false, opacity: 0.6 };
 				const linkToContractType = { source: contract._id, target: contractByType.name, type: 'contract', linkStrength: 3, linkDistance: 2.5, color: '#706F74', dashed: false, opacity: 0 };
 				slidesObjects[3].nodes.push(node);
@@ -108,22 +108,22 @@ module.exports = () => {
 
 		for (let k in organizations) {
 			const organization = organizations[k];
-			const node = { id: organization._id, name: organization.name, activeSize: 15, inactiveSize: 10, topParentNode: !organization.parents, nodeForce: 10, type: 'organization', group: 4, color: '#646464', linksCount: 0 };
+			const node = { id: organization._id, name: organization.name, activeSize: 15, inactiveSize: 10, topParentNode: !organization.parents, nodeForce: 10, type: 'organization', group: 4, color: '#646464', linksCount: 0, contractsCount: organization.contracts_count, contractsAmount: organization.contracts_amount,  };
 			for (let j in AppData.contracts) {
 				const contract = AppData.contracts[j];
 					
 				if (contract.suppliers && contract.suppliers.filter(supplier => {return supplier.simple == organization.simple}).length > 0) {
-					const link = { source: organization._id, target: contract._id, type: 'organization', linkStrength: 4, linkDistance: 1, topParentNode: !organization.parents, color: '#706F74', dashed: true, opacity: 1, name: organization.name, contractsCount: organization.contract_count };
+					const link = { source: organization._id, target: contract._id, type: 'organization', linkStrength: 4, linkDistance: 1, topParentNode: !organization.parents, color: '#706F74', dashed: true, opacity: 1, name: organization.name };
 					slidesObjects[4].links.push(link);
 					links.push(link);
 					node.linksCount++;
 
 					/* Tooltip suppliers info for contracts */
-					const contractNode = nodes.filter(node => contract._id == node.id);
-					// if (contractNode[0].suppliersList === undefined) {
-					// 	contractNode[0].suppliersList = [];
-					// }
-					contractNode[0].suppliersList = [...contract.suppliers.map(supplier => supplier.simple)];
+					// const contractNode = nodes.filter(node => contract._id == node.id);
+					// // if (contractNode[0].suppliersList === undefined) {
+					// // 	contractNode[0].suppliersList = [];
+					// // }
+					// contractNode[0].suppliersList = [...contract.suppliers.map(supplier => supplier.simple)];
 					/* ------------------------------------ */
 				}
 			}
@@ -511,6 +511,7 @@ function setupD3() {
 		const tooltipLink = d3.select(".tooltip a")
 				.on("mouseover", function() {console.log("over"); tooltip.transition().duration(500).style("opacity", .98)})
 		        .on("mouseout", function() {console.log("out");tooltip.transition().duration(200).style("opacity", 0).style("pointer-events", "none")})
+		        .on("click", function(evt) {evt.preventDefault()})
 
 		if($(window).width() < 420) {
 		    scaleMin = Math.min(width, height) / (2200 - $(window).width());
@@ -605,7 +606,7 @@ function setupD3() {
 	            				break;
 	            		}
 	            	})
-	                .style("left", (d3.event.pageX) + "px")		
+	                .style("left", (d3.event.pageX + 30) + "px")		
 	                .style("top", (d3.event.pageY - 28) + "px");	
 
 					// contracts_amount_text
@@ -620,7 +621,7 @@ function setupD3() {
             })
             .on("mousemove", function(d) {		
 	            tooltip	
-	                .style("left", (d3.event.pageX) + "px")		
+	                .style("left", (d3.event.pageX + 30) + "px")		
 	                .style("top", (d3.event.pageY - 28) + "px");	
             })
 	        .on("mouseout", function(d) {		
