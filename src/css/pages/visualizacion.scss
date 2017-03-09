@@ -80,11 +80,13 @@
 	.fp-tableCell {
 		height: 100% !important;
 		position: relative;
+		pointer-events: none;
 	}
 	.info-container {
 		width: 100%;
 		height: 100% !important;
 		position: relative;
+		pointer-events: none;
 		.info-wrapper {
 			will-change: auto;
 			opacity: 0;
@@ -173,4 +175,17 @@
 }
 .contact-modal {
 	@include modal();
+}
+
+div.tooltip {	
+    position: absolute;			
+    text-align: center;			
+    width: 60px;					
+    height: 28px;					
+    padding: 2px;				
+    font: 12px sans-serif;		
+    background: lightsteelblue;	
+    border: 0px;		
+    border-radius: 8px;			
+    pointer-events: none;			
 }
