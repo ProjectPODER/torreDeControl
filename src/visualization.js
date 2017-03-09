@@ -34,7 +34,8 @@ let graph;
 const AppData = {
 	persons: [],
 	organizations: [],
-	contracts: []
+	contracts: [],
+	actualSlide: 1
 };
 
 module.exports = () => {
@@ -43,6 +44,7 @@ module.exports = () => {
 	getData(data => {
 		AppData.organizations = data.organizations,
 		AppData.contracts = data.contracts;
+		AppData.texts = {};
 		const contractsAmount = getContractsAmount(AppData.contracts);
 		const contractsByTypes = getContractsByTypes(AppData.contracts);
 		const organizations = AppData.organizations;
@@ -59,22 +61,32 @@ module.exports = () => {
 		const contractorsNamesSet = new MathSet(AppData.contracts);
 		const organizationsByNames = Object.keys(contractorsNamesSet.countByFilterProperty(organizationFilter));
 
-		$('#contracts_amount').text("$ " + (Math.round(contractsAmount/1000000)).toLocaleString() + " M");
-		$('#contracts_type').text(Object.keys(contractsByTypes).length);
-		$('#contracts_total').text(objectToArray(contractsByTypes).reduce(function(total, actual) {return total + Object.keys(actual.contracts).length}, 0));
-		$('#direct_adjudication').text(AppData.contracts.filter(contract => {return contract.procedure_type == "Adjudicación Directa Federal"}).length);
-		$('#direct_adjudication_percentage').text((Math.ceil(AppData.contracts.filter(contract => {return contract.procedure_type == "Adjudicación Directa Federal"}).reduce((before, actual) => {return before + actual.amount }, 0)) / contractsAmount * 100 ).toFixed(2));
-		$('#suppliers_count').text(Object.keys(organizationsByNames).length);
-		$('#big_amount_contracts').text(AppData.contracts.filter(contract => {return contract.amount >= 1000000000}).length);
-		$('#big_amount_percentage').text((Math.ceil(AppData.contracts.filter(contract => {return contract.amount >= 1000000000}).reduce((before, actual) => {return before + actual.amount }, 0)) / contractsAmount * 100 ).toFixed(2));
-		$('#big_amount_winners').text(Math.ceil(AppData.contracts.filter(contract => {return contract.amount >= 1000000000}).length ));
+		AppData.texts.contracts_amount_text = "$ " + (Math.round(contractsAmount/1000000)).toLocaleString() + " M";
+		AppData.texts.contracts_type_text = Object.keys(contractsByTypes).length;
+		AppData.texts.contracts_total_text = objectToArray(contractsByTypes).reduce(function(total, actual) {return total + Object.keys(actual.contracts).length}, 0);
+		AppData.texts.direct_adjudication_text = AppData.contracts.filter(contract => {return contract.procedure_type == "Adjudicación Directa Federal"}).length;
+		AppData.texts.direct_adjudication_percentage_text = (Math.ceil(AppData.contracts.filter(contract => {return contract.procedure_type == "Adjudicación Directa Federal"}).reduce((before, actual) => {return before + actual.amount }, 0)) / contractsAmount * 100 ).toFixed(2);
+		AppData.texts.suppliers_count_text = Object.keys(organizationsByNames).length;
+		AppData.texts.big_amount_contracts_text = AppData.contracts.filter(contract => {return contract.amount >= 1000000000}).length;
+		AppData.texts.big_amount_percentage_text = (Math.ceil(AppData.contracts.filter(contract => {return contract.amount >= 1000000000}).reduce((before, actual) => {return before + actual.amount }, 0)) / contractsAmount * 100 ).toFixed(2);
+		AppData.texts.big_amount_winners_text = Math.ceil(AppData.contracts.filter(contract => {return contract.amount >= 1000000000}).length );
+
+		$('#contracts_amount').text(AppData.texts.contracts_amount_text);
+		$('#contracts_type').text(AppData.texts.contracts_type_text);
+		$('#contracts_total').text(AppData.texts.contracts_total_text);
+		$('#direct_adjudication').text(AppData.texts.direct_adjudication_text);
+		$('#direct_adjudication_percentage').text(AppData.texts.direct_adjudication_percentage_text);
+		$('#suppliers_count').text(AppData.texts.suppliers_count_text);
+		$('#big_amount_contracts').text(AppData.texts.big_amount_contracts_text);
+		$('#big_amount_percentage').text(AppData.texts.big_amount_percentage_text);
+		$('#big_amount_winners').text(AppData.texts.big_amount_winners_text);
 
 		const node = { id: 'contracts', name: 'contracts', activeSize: contractsAmount / 5000000000, inactiveSize: 35, topParentNode: false, nodeForce: 10, type: 'all', group: 1, color: '#BEA288', linksCount: 0 };
 		slidesObjects[1].nodes.push(node);
 		nodes.push(node);
 		for (let i in contractsByTypes) {
 			const contractByType = contractsByTypes[i];
-			const node = { id: contractByType.name, name: contractByType.name, activeSize: Math.pow(contractByType.amount,1/5) / 10, inactiveSize: 15, topParentNode: false, nodeForce: 10, type: 'contract_type', group: 2, color: '#8AC190', linksCount: 0 };
+			const node = { id: contractByType.name, name: contractByType.name, activeSize: Math.pow(contractByType.amount,1/5) / 10, inactiveSize: 15, topParentNode: false, nodeForce: 10, type: 'contract_type', group: 2, color: '#8AC190', linksCount: 0, contractsCount: Object.keys(contractByType.contracts).length, contractsAmount: contractByType.amount };
 			const link = { source: contractByType.name, target: 'contracts', type: 'contract_type', linkStrength: 2, linkDistance: 1, color: '#706F74', dashed: false, opacity: 0.6 };
 			slidesObjects[2].nodes.push(node);
 			slidesObjects[2].links.push(link);
@@ -82,7 +94,7 @@ module.exports = () => {
 			links.push(link);
 			for (let j in contractByType.contracts) {
 				const contract = contractByType.contracts[j];
-				const node = { id: contract._id, name: contract.amount, activeSize: Math.log(contract.amount) / 2, inactiveSize: 30, topParentNode: false, nodeForce: 0.6, type: 'contract', group: 3, color: '#E086A9', linksCount: 0 };
+				const node = { id: contract._id, name: contract.title, amount: contract.amount, activeSize: Math.log(contract.amount) / 2, inactiveSize: 30, topParentNode: false, nodeForce: 0.6, type: 'contract', group: 3, color: '#E086A9', linksCount: 0 };
 				const linkToCenter = { source: contract._id, target: 'contracts', type: 'contract', hidden: true, linkStrength: 3, linkDistance: 2.5, color: '#706F74', dashed: false, opacity: 0.6 };
 				const linkToContractType = { source: contract._id, target: contractByType.name, type: 'contract', linkStrength: 3, linkDistance: 2.5, color: '#706F74', dashed: false, opacity: 0 };
 				slidesObjects[3].nodes.push(node);
@@ -101,10 +113,18 @@ module.exports = () => {
 				const contract = AppData.contracts[j];
 					
 				if (contract.suppliers && contract.suppliers.filter(supplier => {return supplier.simple == organization.simple}).length > 0) {
-					const link = { source: organization._id, target: contract._id, type: 'organization', linkStrength: 4, linkDistance: 1, topParentNode: !organization.parents, color: '#706F74', dashed: true, opacity: 1 };
+					const link = { source: organization._id, target: contract._id, type: 'organization', linkStrength: 4, linkDistance: 1, topParentNode: !organization.parents, color: '#706F74', dashed: true, opacity: 1, name: organization.name, contractsCount: organization.contract_count };
 					slidesObjects[4].links.push(link);
 					links.push(link);
 					node.linksCount++;
+
+					/* Tooltip suppliers info for contracts */
+					const contractNode = nodes.filter(node => contract._id == node.id);
+					// if (contractNode[0].suppliersList === undefined) {
+					// 	contractNode[0].suppliersList = [];
+					// }
+					contractNode[0].suppliersList = [...contract.suppliers.map(supplier => supplier.simple)];
+					/* ------------------------------------ */
 				}
 			}
 			
@@ -403,6 +423,7 @@ function setupD3() {
     	onLeave: (index, nextIndex) => {
 	    	$(`.info-container`).removeClass('slide-active slide-leaving');
 				$(`.slide-${index}`).removeClass('slide-active').addClass('slide-leaving');
+				AppData.actualSlide = nextIndex - 1;
 				switch (nextIndex - 1) {
 					case 0:
 						graph = {
@@ -482,15 +503,19 @@ function setupD3() {
 		const height = container.height();
 		let scaleMin;
 
-		const div = d3.select(".tooltip")
+		const tooltip = d3.select(".tooltip")
 				.attr("class", "tooltip")				
-				.style("opacity", 0);
-
+				.style("opacity", 0)
+				.on("mouseover", function() {console.log("over"); tooltip.transition().duration(500).style("opacity", .98)})
+		        .on("mouseout", function() {console.log("out");tooltip.transition().duration(200).style("opacity", 0).style("pointer-events", "none")})
+		const tooltipLink = d3.select(".tooltip a")
+				.on("mouseover", function() {console.log("over"); tooltip.transition().duration(500).style("opacity", .98)})
+		        .on("mouseout", function() {console.log("out");tooltip.transition().duration(200).style("opacity", 0).style("pointer-events", "none")})
 
 		if($(window).width() < 420) {
-	    scaleMin = Math.min(width, height) / (2200 - $(window).width());
+		    scaleMin = Math.min(width, height) / (2200 - $(window).width());
 		} else {
-	    scaleMin = Math.min(width, height) / (3200 - $(window).width());
+		    scaleMin = Math.min(width, height) / (3200 - $(window).width());
 		}
 		const resGWidth = width/2 * (1 - scaleMin);
 		const resGHeight = height/2 * (1 - scaleMin);
@@ -531,24 +556,78 @@ function setupD3() {
 			.attr("class", d => "nodes " + d.type)
 			.merge(node)
 			.on("mouseover", function(d) {		
-	            div
+	            tooltip
 	            	.transition()		
 	                .duration(200)		
-	                .style("opacity", .9);		
-	            div
-	            	.html(d.name)
+	                .style("opacity", .98)
+	                .style("pointer-events", "initial");
+	            tooltip
+	            	.html( () => {
+	            		switch (d.type) {
+	            			case "all":
+	            				return `
+	            				<p>Nuevo Aeropuerto de la ciudad de México</p>
+								<p>Número de contratos: <span>${AppData.texts.contracts_total_text}</span></p>
+								<p>Importe contratado: <span>${AppData.texts.contracts_amount_text}</span></p>
+								`;
+	            				break;
+	            			case "contract_type":
+	            				return `
+	            				<p>${d.name}</p>
+								<p>Número de contratos: <span>${d.contractsCount}</span></p>
+								<p>Importe contratado: <span>${d.contractsAmount}</span></p>
+								`;
+	            				break;
+	            			case "contract":
+	            				return `
+	            				<p>${d.name}</p>
+	            				<span>Proveedores:</span>
+								<ul> ${d.suppliersList.map(supplier => `<li>${supplier}</li>`).join('')}</ul>
+								<p>Importe contratado: <span>${d.amount}</span></p>
+								`;
+	            				break;
+	            			case "organization":
+	            				return `
+	            				<p>${d.name}</p>
+								<p>Número de contratos: <span>${d.contractsCount}</span></p>
+								<p>Importe contratado: <span>${d.contractsAmount}</span></p>
+								`;
+	            				break;
+	            			case "related":
+	            				return `
+	            				<p>${d.name}</p>
+	            				<p>Más información en QuiénEsQuién.Wiki:</p>
+	            				<p><a href="https://quienesquien.wiki/orgs/${d.name}">https://quienesquien.wiki/orgs/${d.name}</a></p>
+								`;
+	            				break;
+	            			default:
+	            				return "sin texto"
+	            				break;
+	            		}
+	            	})
 	                .style("left", (d3.event.pageX) + "px")		
 	                .style("top", (d3.event.pageY - 28) + "px");	
+
+					// contracts_amount_text
+					// contracts_type_text
+					// contracts_total_text
+					// direct_adjudication_text
+					// direct_adjudication_percentage_text
+					// suppliers_count_text
+					// big_amount_contracts_text
+					// big_amount_percentage_text
+					// big_amount_winners_text
             })
             .on("mousemove", function(d) {		
-	            div	
+	            tooltip	
 	                .style("left", (d3.event.pageX) + "px")		
 	                .style("top", (d3.event.pageY - 28) + "px");	
             })
 	        .on("mouseout", function(d) {		
-	            div.transition()		
+	            tooltip.transition()		
 	                .duration(500)		
-	                .style("opacity", 0);	
+	                .style("opacity", 0)
+	                .style("pointer-events", "initial");	
 	        })
 	        .on("mousedown", function(d) {		
 	            const linkId = d.id;
