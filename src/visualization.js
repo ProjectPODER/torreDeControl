@@ -37,10 +37,9 @@ const AppData = {
 	contracts: [],
 	actualSlide: 1
 };
-
+let tooltipHTML;
 module.exports = () => {
 	window.jQuery = $;
-
 	getData(data => {
 		AppData.organizations = data.organizations,
 		AppData.contracts = data.contracts;
@@ -146,7 +145,7 @@ module.exports = () => {
 				}
 			} else {
 				if (organizationNotExists(organization._id)) {
-					const node = { id: organization._id, name: organization.name, activeSize: 15, inactiveSize: 10, topParentNode: !organization.parents, nodeForce: 20, type: 'related', group: 4, color: '#3c5a6f', linksCount: 0 };
+					const node = { id: organization._id, name: organization.name, activeSize: 25, inactiveSize: 10, topParentNode: !organization.parents, nodeForce: 20, type: 'related', group: 4, color: '#3c5a6f', linksCount: 0 };
 					const linkToCenter = { source: organization._id, target: 'contracts', type: 'related', hidden: true, linkStrength: 3, linkDistance: 11, color: '#706F74', dashed: false, opacity: 0 };
 					slidesObjects[5].links.push(linkToCenter);
 					links.push(linkToCenter);
@@ -171,10 +170,10 @@ module.exports = () => {
 
 						switch (shareholdersStack[shareholderId].count) {
 							case 0: {
-								shareholdersStack[shareholderId].node = { id: shareholderId, name: shareholderName, activeSize: 15, inactiveSize: 10, topParentNode: false, nodeForce: 20, type: 'related', group: 4, color: '#3c5a6f', linksCount: 0 };
+								shareholdersStack[shareholderId].node = { id: shareholderId, name: shareholderName, activeSize: 25, inactiveSize: 10, topParentNode: false, nodeForce: 20, type: 'related', group: 4, color: '#3c5a6f', linksCount: 0 };
 								shareholdersStack[shareholderId].linkToCenter = { source: shareholderId, target: 'contracts', type: 'related', hidden: true, linkStrength: 3, linkDistance: 11, color: '#706F74', dashed: false, opacity: 0 };
 								shareholdersStack[shareholderId].link = { source: shareholderId, target: organization._id, type: 'related', linkStrength: 4, linkDistance: 3, topParentNode: false, color: '#706F74', dashed: true, opacity: 1 };
-								console.log(`${shareholdersStack[shareholderId].count + 1} --> `, shareholderName, organization.name)
+								// console.log(`${shareholdersStack[shareholderId].count + 1} --> `, shareholderName, organization.name)
 								break;
 							}
 							case 1: {
@@ -190,7 +189,7 @@ module.exports = () => {
 									/* this continues to default, no brake statement */
 							}
 							default: {
-								console.log(`${shareholdersStack[shareholderId].count + 1} --> `, shareholderName, organization.name)
+								// console.log(`${shareholdersStack[shareholderId].count + 1} --> `, shareholderName, organization.name)
 								const link = { source: shareholderId, target: organization._id, type: 'related', linkStrength: 4, linkDistance: 3, topParentNode: false, color: '#706F74', dashed: true, opacity: 1 };
 								slidesObjects[5].links.push(link);
 								links.push(link);
@@ -212,9 +211,10 @@ module.exports = () => {
 
 						switch (boardsStack[boardId].count) {
 							case 0: {
-								boardsStack[boardId].node = { id: boardId, name: boardName, activeSize: 15, inactiveSize: 10, topParentNode: false, nodeForce: 20, type: 'related', group: 4, color: '#3c5a6f', linksCount: 0 };
+								boardsStack[boardId].node = { id: boardId, name: boardName, activeSize: 25, inactiveSize: 10, topParentNode: false, nodeForce: 20, type: 'related', group: 4, color: '#3c5a6f', linksCount: 0 };
 								boardsStack[boardId].linkToCenter = { source: boardId, target: 'contracts', type: 'related', hidden: true, linkStrength: 3, linkDistance: 11, color: '#706F74', dashed: false, opacity: 0 };
 								boardsStack[boardId].link = { source: boardId, target: organization._id, type: 'related', linkStrength: 4, linkDistance: 3, topParentNode: false, color: '#706F74', dashed: true, opacity: 1 };
+								console.log(`${boardsStack[boardId].count + 1} --> `, boardName, organization.name)
 								break;
 							}
 							case 1: {
@@ -231,6 +231,7 @@ module.exports = () => {
 							}
 							default: {
 								// console.log('acumulado', boardId)
+								console.log(`${boardsStack[boardId].count + 1} --> `, boardName, organization.name)
 								const link = { source: boardId, target: organization._id, type: 'related', linkStrength: 4, linkDistance: 3, topParentNode: false, color: '#706F74', dashed: true, opacity: 1 };
 								slidesObjects[5].links.push(link);
 								links.push(link);
@@ -506,7 +507,7 @@ function setupD3() {
 	};
 	draw(graph);
 	d3.selectAll('.nodes.all').transition().attr('r', d => d.activeSize);
-
+	tooltipHTML = $('.tooltip');
 	function draw(graph) {
 		const container = $('svg');
 		const svg = $('svg');
@@ -544,7 +545,7 @@ function setupD3() {
 	        .on("end", dragend);
 
 	    function dragstart(d, i) {
-	        if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+	        if (!d3.event.active) simulation.alphaTarget(0.2).restart();
 			d.fx = d.x;
 			d.fy = d.y;
 	    }
@@ -569,6 +570,8 @@ function setupD3() {
 			.attr("class", d => "nodes " + d.type)
 			.merge(node)
 			.on("mouseover", function(d) {		
+				const tooltipWidth = tooltipHTML.width() + 20;
+				const tooltipHeight = tooltipHTML.height() + 20;
 	            tooltip
 	            	.transition()		
 	                .duration(200)		
@@ -618,9 +621,10 @@ function setupD3() {
 	            				break;
 	            		}
 	            	})
-	                .style("left", (d3.event.pageX + 30) + "px")		
-	                .style("top", (d3.event.pageY - 28) + "px");	
-
+	                // .style("left", (d3.event.pageX + 30) + "px")		
+	                // .style("top", (d3.event.pageY - 28) + "px");	
+	                .style("left", (d3.event.pageX - tooltipWidth - 30) + "px")		
+	                .style("top", (d3.event.pageY - tooltipHeight / 2) + "px");	
 					// contracts_amount_text
 					// contracts_type_text
 					// contracts_total_text
@@ -631,10 +635,14 @@ function setupD3() {
 					// big_amount_percentage_text
 					// big_amount_winners_text
             })
-            .on("mousemove", function(d) {		
+            .on("mousemove", function(d) {
+            	const tooltipWidth = tooltipHTML.width() + 20;
+				const tooltipHeight = tooltipHTML.height() + 20;
 	            tooltip	
-	                .style("left", (d3.event.pageX + 30) + "px")		
-	                .style("top", (d3.event.pageY - 28) + "px");	
+	                // .style("left", (d3.event.pageX + 30) + "px")		
+	                // .style("top", (d3.event.pageY - 28) + "px");	
+	                .style("left", (d3.event.pageX - tooltipWidth - 30) + "px")		
+	                .style("top", (d3.event.pageY - tooltipHeight / 2) + "px");	
             })
 	        .on("mouseout", function(d) {		
 	            tooltip.transition()		
@@ -642,7 +650,7 @@ function setupD3() {
 	                .style("opacity", 0)
 	                .style("pointer-events", "initial");	
 	        })
-	        .on("mousedown", function(d) {		
+	        .on("mousedown", function(d) {
 	            const linkId = d.id;
 	            for (let l in links) {
 	            	const link = links[l];
@@ -664,12 +672,10 @@ function setupD3() {
 
 	            const onlyParents = 'onlyparents';
 	            const onlyChilds = 'onluchilds';
-	            console.log(d.type)
-	            // showSelectedLinks(linkId, onlyParents);
+
 	            switch (d.type) {
 	            	case "contract":
 	            	case "contract_type":
-			            // showSelectedLinks(linkId, onlyChilds);
 			            setTimeout((function(linkId,onlyParents) {
 				            return function() {showSelectedLinks(linkId, onlyParents)};
 			            })(linkId, onlyParents), 5)
@@ -678,7 +684,6 @@ function setupD3() {
 			            })(linkId, onlyChilds), 5)
 		            	break;
 		            case "all":
-			            // showSelectedLinks(linkId, onlyChilds);
 			            setTimeout((function(linkId,onlyParents) {
 				            return function() {showSelectedLinks(linkId, onlyParents)};
 			            })(linkId, onlyParents), 5)
@@ -690,7 +695,6 @@ function setupD3() {
 		            	break;
 	            }
 	            
-
 	            function showSelectedLinks(linkId, onlyType) {
 	            	const selectedLinks = links.filter(
 		            	link => {
@@ -794,7 +798,7 @@ function setupD3() {
 		simulation.nodes(graph.nodes);
 		simulation.force("link").links(graph.links);
 		simulation.force("center", d3.forceCenter(width / 2 - offset, height / 2 - offset))
-		simulation.alpha(0.5).restart();
+		simulation.alpha(0.2).restart();
 	}
 }
 
