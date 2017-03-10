@@ -35,21 +35,30 @@ const AppData = {
 	persons: [],
 	organizations: [],
 	contracts: [],
-	actualSlide: 1
+	investigations: [],
+	actualSlide: 1,
+	firstSlideLoad: false
 };
 let tooltipHTML;
+const globalTimers = [];
+const requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.msRequestAnimationFrame || window.oRequestAnimationFrame;
+const cancelAnimationFrame = window.cancelAnimationFrame || window.webkitCancelAnimationFrame || window.mozCancelAnimationFrame || window.msCancelAnimationFrame || window.oCancelAnimationFrame;
 module.exports = () => {
 	window.jQuery = $;
 	getData(data => {
 		AppData.organizations = data.organizations,
 		AppData.contracts = data.contracts;
+		AppData.investigations = data.investigations;
+		console.log(data.investigations)
 		AppData.texts = {};
 		const contractsAmount = getContractsAmount(AppData.contracts);
 		const contractsByTypes = getContractsByTypes(AppData.contracts);
 		const organizations = AppData.organizations;
+		const investigations = AppData.investigations;
 		const shareholdersStack = {};
 		const boardsStack = {};
 		const slidesObjects = [	null,
+			{nodes: [], links: []},
 			{nodes: [], links: []},
 			{nodes: [], links: []},
 			{nodes: [], links: []},
@@ -116,14 +125,6 @@ module.exports = () => {
 					slidesObjects[4].links.push(link);
 					links.push(link);
 					node.linksCount++;
-
-					/* Tooltip suppliers info for contracts */
-					// const contractNode = nodes.filter(node => contract._id == node.id);
-					// // if (contractNode[0].suppliersList === undefined) {
-					// // 	contractNode[0].suppliersList = [];
-					// // }
-					// contractNode[0].suppliersList = [...contract.suppliers.map(supplier => supplier.simple)];
-					/* ------------------------------------ */
 				}
 			}
 			
@@ -162,8 +163,8 @@ module.exports = () => {
 						const shareholder = shareholders[s];
 						const shareholderId = shareholder._id;
 						const shareholderName = shareholder.name;
+						const shareholderSimple = shareholder.simple;
 						const typeColor = shareholder.type == "person" ? "#FC8917" : "#363E4E";
-						console.log(shareholder, typeColor)
 						if (shareholdersStack[shareholderId] == undefined) {
 								shareholdersStack[shareholderId] = {count: 0};	
 						} else {
@@ -172,7 +173,7 @@ module.exports = () => {
 
 						switch (shareholdersStack[shareholderId].count) {
 							case 0: {
-								shareholdersStack[shareholderId].node = { id: shareholderId, name: shareholderName, activeSize: 25, inactiveSize: 10, topParentNode: false, nodeForce: 20, type: 'related', group: 4, color: typeColor, linksCount: 0, relationType: 'Shareholder' };
+								shareholdersStack[shareholderId].node = { id: shareholderId, name: shareholderName, simple: shareholderSimple, activeSize: 25, inactiveSize: 10, topParentNode: false, nodeForce: 20, type: 'related', group: 4, color: typeColor, linksCount: 0, relationType: 'Shareholder' };
 								shareholdersStack[shareholderId].linkToCenter = { source: shareholderId, target: 'contracts', type: 'related', hidden: true, linkStrength: 3, linkDistance: 11, color: '#706F74', dashed: false, opacity: 0 };
 								shareholdersStack[shareholderId].link = { source: shareholderId, target: organization._id, type: 'related', linkStrength: 4, linkDistance: 3, topParentNode: false, color: '#706F74', dashed: true, opacity: 1 };
 								// console.log(`${shareholdersStack[shareholderId].count + 1} --> `, shareholderName, organization.name)
@@ -205,6 +206,7 @@ module.exports = () => {
 						const board = boards[s];
 						const boardId = board._id;
 						const boardName = board.name;
+						const boardSimple = board.simple;
 						if (boardsStack[boardId] == undefined) {
 								boardsStack[boardId] = {count: 0};	
 						} else {
@@ -213,10 +215,10 @@ module.exports = () => {
 
 						switch (boardsStack[boardId].count) {
 							case 0: {
-								boardsStack[boardId].node = { id: boardId, name: boardName, activeSize: 25, inactiveSize: 10, topParentNode: false, nodeForce: 20, type: 'related', group: 4, color: '#EB639A', linksCount: 0, relationType: 'Board' };
+								boardsStack[boardId].node = { id: boardId, name: boardName, simple: boardSimple, activeSize: 25, inactiveSize: 10, topParentNode: false, nodeForce: 20, type: 'related', group: 4, color: '#EB639A', linksCount: 0, relationType: 'Board' };
 								boardsStack[boardId].linkToCenter = { source: boardId, target: 'contracts', type: 'related', hidden: true, linkStrength: 3, linkDistance: 11, color: '#706F74', dashed: false, opacity: 0 };
 								boardsStack[boardId].link = { source: boardId, target: organization._id, type: 'related', linkStrength: 4, linkDistance: 3, topParentNode: false, color: '#706F74', dashed: true, opacity: 1 };
-								console.log(`${boardsStack[boardId].count + 1} --> `, boardName, organization.name)
+								// console.log(`${boardsStack[boardId].count + 1} --> `, boardName, organization.name)
 								break;
 							}
 							case 1: {
@@ -233,7 +235,7 @@ module.exports = () => {
 							}
 							default: {
 								// console.log('acumulado', boardId)
-								console.log(`${boardsStack[boardId].count + 1} --> `, boardName, organization.name)
+								// console.log(`${boardsStack[boardId].count + 1} --> `, boardName, organization.name)
 								const link = { source: boardId, target: organization._id, type: 'related', linkStrength: 4, linkDistance: 3, topParentNode: false, color: '#706F74', dashed: true, opacity: 1 };
 								slidesObjects[5].links.push(link);
 								links.push(link);
@@ -253,14 +255,74 @@ module.exports = () => {
 			}
 		}
 
+		/* Investigations */
+		console.log("Investigations")
+		console.log(investigations)
+		for (let i in investigations) {
+			const investigation = investigations[i];
+			console.log("Investigation:", investigation)
+			const investigationId = investigation.title.toLowerCase().replace(/\s/g, "-") + "-" + investigation.date;
+			const suspectedOrganizations = organizations.filter(organization => investigation.suppliers.indexOf(organization.simple) > -1);
+			const node = { id: investigationId, name: investigation.title, activeSize: 15, inactiveSize: 15, nodeForce: 10, type: 'investigation', group: 6, color: 'red', linksCount: 0};
+			nodes.push(node);
+			slidesObjects[6].nodes.push(node);
+
+			suspectedOrganizations.forEach(suspectedOrganization => {
+				const link = { source: investigationId, target: suspectedOrganization._id, type: 'investigation', linkStrength: 2, linkDistance: 1, color: '#706F74', dashed: false, opacity: 0.6 };
+				slidesObjects[6].links.push(link);
+				links.push(link);
+			});
+
+			const shareholders = Object.keys(shareholdersStack)
+				.filter(key => shareholdersStack[key].count > 1) /* Get only elements with more than one relation */
+				.map(key => shareholdersStack[key]) /* Return objects instead of only ids */
+				.filter(shareholder => investigation.suppliers.indexOf(shareholder.node.simple) > -1); /* Get only elements mentioned whithin the investigation */
+				
+			shareholders.forEach(shareholder => {
+				const shareholderNode = shareholder.node;
+				const link = { source: investigationId, target: shareholderNode.id, type: 'investigation', linkStrength: 2, linkDistance: 1, color: '#706F74', dashed: false, opacity: 0.6 };
+				slidesObjects[6].links.push(link);
+				links.push(link);
+			});
+			
+			const boards = Object.keys(boardsStack)
+				.filter(key => boardsStack[key].count > 1) /* Get only elements with more than one relation */
+				.map(key => boardsStack[key]) /* Return objects instead of only ids */
+				.filter(board => investigation.suppliers.indexOf(board.node.simple) > -1); /* Get only elements mentioned whithin the investigation */
+
+			boards.forEach(board => {
+				const boardNode = board.node;
+				const link = { source: investigationId, target: boardNode.id, type: 'investigation', linkStrength: 2, linkDistance: 1, color: '#706F74', dashed: false, opacity: 0.6 };
+				slidesObjects[6].links.push(link);
+				links.push(link);
+			});
+
+				// .filter(shareholder => {console.log(` - `, shareholder.node.simple); return investigation.suppliers.indexOf(shareholder.node.simple) > -1});
+				// console.group("Shareholders")
+				// console.log('[All]', shareholders)
+				// console.log('[> 2]', shareholders)
+				// console.log('[Objects]', shareholders)
+				// console.log(`[Simple in: ${investigation.suppliers}]`)
+				// console.log(shareholders)
+				// console.groupEnd("Shareholders")
+		}
+/*
+		"title": "Consejero del NAICM demandado por la ASF",
+		"date": "03-13-2017",
+		"author": "Claudia Ocaranza",
+		"image": "http://www.eduardo-warnholtz.com/photos/jose_salvador_sanchez_estrada_201115_03.jpg",
+		"link": "http://www.rindecuentas.org",
+		"text": "José Salvador Sánchez Estrada, ex funcionario de los gobiernos de Javier Duarte y Fidel Herrera en Veracruz, es consejero del Grupo Aeroportuario de la Ciudad de México (GACM) para el Nuevo Aeropuerto de la Ciudad de México (NAICM). Sánchez Estrada está siendo investigado por la Auditoria Superior de la Federación por desviar recursos del Estado de Veracruz y Miguel Angel Yunes, actual gobernador de Veracruz, lo denunció junto a otros funcionarios por formar parte de la trama de aviadores de la Secretaria de Educación del estado. ",
+		"suppliers": ["Grupo Aeroportuario De La Ciudad de México, S.A. de C.V."]
+*/
+
 		function organizationNotExists(id) {
 			const organizationWithId = organizations.filter(organization => {return organization._id == id});
 			return organizationWithId.length == 0;
 		}
-		console.log(shareholdersStack)
 
-		nodes = [...slidesObjects[1].nodes, ...slidesObjects[2].nodes, ...slidesObjects[3].nodes, ...slidesObjects[4].nodes, ...slidesObjects[5].nodes];
-		links = [...slidesObjects[1].links, ...slidesObjects[2].links, ...slidesObjects[3].links, ...slidesObjects[4].links, ...slidesObjects[5].links];
+		nodes = [...slidesObjects[1].nodes, ...slidesObjects[2].nodes, ...slidesObjects[3].nodes, ...slidesObjects[4].nodes, ...slidesObjects[5].nodes, ...slidesObjects[6].nodes];
+		links = [...slidesObjects[1].links, ...slidesObjects[2].links, ...slidesObjects[3].links, ...slidesObjects[4].links, ...slidesObjects[5].links, ...slidesObjects[6].links];
 		setupD3();
 		window.graph = {nodes, links};
 	});
@@ -271,11 +333,13 @@ module.exports = () => {
 function getData(cb) {
 	async.waterfall([
 		getContracts,
-		getOrganizations
+		getOrganizations,
+		getInvestigations
 	], (err, results) => {
 		cb({
 			contracts: results.contracts,
-			organizations: results.organizations
+			organizations: results.organizations,
+			investigations: results.investigations
 		});
 	})
 }
@@ -304,13 +368,13 @@ function getContracts(cb) {
 
 function getOrganizations(params, cb) {
 	let suppliers = [];
-	for(var c = 0; c < params.contracts.length; c++) {
+	for(let c = 0; c < params.contracts.length; c++) {
 		suppliers = [...suppliers, ...(params.contracts[c].suppliers || [])]
 	}
 
 	let uniqueSuppliers = {};
 
-	for(var s = 0; s < suppliers.length; s++) {
+	for(let s = 0; s < suppliers.length; s++) {
 		let supplierName = suppliers[s].simple;
 		uniqueSuppliers[supplierName] != undefined ? uniqueSuppliers[supplierName] == uniqueSuppliers[supplierName] + 1 : uniqueSuppliers[supplierName] = 1;
 	}
@@ -326,9 +390,11 @@ function getOrganizations(params, cb) {
 	.fail(response => {cb(null, {...params, organizations: []});});
 }
 
-function getPersons(cb) {
-	$.get('https://q6fe3bea.herokuapp.com/api/v1/persons')
-	.done(response => {cb(null, response.data);});
+function getInvestigations(params, cb) {
+	$.get('/data/investigation.json')
+	.done(response => {
+		cb(null, {...params, investigations: response});
+	})
 }
 
 function setupD3() {
@@ -366,40 +432,40 @@ function setupD3() {
 	link = g.append("g").selectAll('link');
 	node = g.append("g").selectAll('node');
 	// const shadow = g.append("defs");
-	const filter = svg.append("filter");
-	const feGaussianBlur = filter.append("feGaussianBlur");
-	const feComponentTransfer = filter.append("feComponentTransfer");
-	const feFuncA = feComponentTransfer.append("feFuncA");
-	const feMerge = filter.append("feMerge");
-	const feMergeNodeA = feMerge.append("feMergeNode");
-	const feMergeNodeB = feMerge.append("feMergeNode");
+	// const filter = svg.append("filter");
+	// const feGaussianBlur = filter.append("feGaussianBlur");
+	// const feComponentTransfer = filter.append("feComponentTransfer");
+	// const feFuncA = feComponentTransfer.append("feFuncA");
+	// const feMerge = filter.append("feMerge");
+	// const feMergeNodeA = feMerge.append("feMergeNode");
+	// const feMergeNodeB = feMerge.append("feMergeNode");
 	// const feOffset = filter.append("feOffset");
 	// const feBlend = filter.append("feBlend");
 
 	/* Shadow */
-	filter
-		.attr("id","f3")
-		.attr("x","-50%")
-		.attr("y","-50%")
-		.attr("width","200%")
-		.attr("height","200%");
-		// .attr("height","200%");
-	feGaussianBlur
-		// .attr("result","offOut")
-		.attr("in","SourceAlpha")
-		.attr("stdDeviation","6")
-		.attr("dx","20")
-		.attr("dy","20");
-	// feOffset
-	// 	// .attr("result","blurOut")
-	// 	.attr("dx","0")
-	// 	.attr("dy","0")
-	// 	.attr("result","offsetblur");
-	feMergeNodeB
-		.attr("in", "SourceGraphic");
-	feFuncA
-		.attr("type", "linear")
-		.attr("slope", "0.3");
+	// filter
+	// 	.attr("id","f3")
+	// 	.attr("x","-50%")
+	// 	.attr("y","-50%")
+	// 	.attr("width","200%")
+	// 	.attr("height","200%");
+	// 	// .attr("height","200%");
+	// feGaussianBlur
+	// 	// .attr("result","offOut")
+	// 	.attr("in","SourceAlpha")
+	// 	.attr("stdDeviation","6")
+	// 	.attr("dx","20")
+	// 	.attr("dy","20");
+	// // feOffset
+	// // 	// .attr("result","blurOut")
+	// // 	.attr("dx","0")
+	// // 	.attr("dy","0")
+	// // 	.attr("result","offsetblur");
+	// feMergeNodeB
+	// 	.attr("in", "SourceGraphic");
+	// feFuncA
+	// 	.attr("type", "linear")
+	// 	.attr("slope", "0.3");
   //   feBlend
 		// .attr("in","SourceGraphic")
 		// .attr("in2","blurOut")
@@ -428,8 +494,83 @@ function setupD3() {
 	const slide_3 = new Filter({property: 'type', operator: 'eq', expected: 'contract'});
 	const slide_4 = new Filter({property: 'type', operator: 'eq', expected: 'organization'});
 	const slide_5 = new Filter({property: 'type', operator: 'eq', expected: 'related'});
+	const slide_6 = new Filter({property: 'type', operator: 'eq', expected: 'investigation'});
+
+	function goToSlide(index) {
+		switch (index) {
+			case 0:
+				graph = {
+					nodes: setNodeSizeToType(objectToArray((new MathSet(nodes)).filter(slide_1).toObject()), 'all', 3),
+					links: objectToArray((new MathSet(links)).filter(slide_1).toObject())
+				};
+				draw(graph);
+				d3.selectAll('.nodes.all').transition().attr('r', d => d.activeSize);
+				break;
+			case 1:
+				graph = {
+					nodes: setNodeSizeToType(objectToArray((new MathSet(nodes)).filter(slide_1, slide_2).toObject()), 'contract_type', 3),
+					links: objectToArray((new MathSet(links)).filter(slide_1, slide_2).toObject())
+				};
+
+				draw(graph);
+				d3.selectAll('.nodes.contract_type').transition().attr('r', d => d.activeSize);
+				d3.selectAll('.all').transition().attr('r', d => d.inactiveSize);
+				d3.selectAll('.links.contract_type').transition().delay(100).attr('opacity', d => d.opacity);
+				break;
+			case 2:
+				graph = {
+					nodes: setNodeSizeToType(objectToArray((new MathSet(nodes)).filter(slide_1, slide_2, slide_3).toObject()), 'contract', 3),
+					links: objectToArray((new MathSet(links)).filter(slide_1, slide_2, slide_3).toObject())
+				};
+				draw(graph);
+				d3.selectAll('.nodes.contract').transition().attr('r', d => d.activeSize);
+				d3.selectAll('.all').transition().attr('r', d => d.inactiveSize);
+				d3.selectAll('.contract_type').transition().attr('r', d => d.inactiveSize);
+				d3.selectAll('.links.contract').transition().delay(100).attr('opacity', d => d.opacity);
+				break;
+			case 3:
+				graph = {
+					nodes: setNodeSizeToType(objectToArray((new MathSet(nodes)).filter(slide_1, slide_2, slide_3, slide_4).toObject()), 'organization', 4),
+					links: objectToArray((new MathSet(links)).filter(slide_1, slide_2, slide_3, slide_4).toObject())
+				};
+				draw(graph);
+				d3.selectAll('.nodes.organization').transition().attr('r', d => d.activeSize);
+				d3.selectAll('.all').transition().attr('r', d => d.inactiveSize);
+				d3.selectAll('.contract_type').transition().attr('r', d => d.inactiveSize);
+				d3.selectAll('.organization_type').transition().attr('r', d => d.inactiveSize);
+				d3.selectAll('.links.organization').transition().delay(100).attr('opacity', d => d.opacity);
+				break;
+			case 4:
+				graph = {
+					nodes: setNodeSizeToType(objectToArray((new MathSet(nodes)).filter(slide_1, slide_2, slide_3, slide_4, slide_5).toObject()), 'related', 4),
+					links: objectToArray((new MathSet(links)).filter(slide_1, slide_2, slide_3, slide_4, slide_5).toObject())
+				};
+				draw(graph);
+				d3.selectAll('.nodes.organization').transition().attr('r', d => d.activeSize);
+				d3.selectAll('.all').transition().attr('r', d => d.inactiveSize);
+				d3.selectAll('.contract_type').transition().attr('r', d => d.inactiveSize);
+				d3.selectAll('.organization_type').transition().attr('r', d => d.inactiveSize);
+				d3.selectAll('.links.organization').transition().delay(100).attr('opacity', d => d.opacity);
+				d3.selectAll('.links.related').transition().delay(100).attr('opacity', d => d.opacity);
+				break;
+			case 5:
+				graph = {
+					nodes: setNodeSizeToType(objectToArray((new MathSet(nodes)).filter(slide_1, slide_2, slide_3, slide_4, slide_5, slide_6).toObject()), 'investigation', 4),
+					links: objectToArray((new MathSet(links)).filter(slide_1, slide_2, slide_3, slide_4, slide_5, slide_6).toObject())
+				};
+				draw(graph);
+				d3.selectAll('.nodes.organization').transition().attr('r', d => d.activeSize);
+				d3.selectAll('.all').transition().attr('r', d => d.inactiveSize);
+				d3.selectAll('.contract_type').transition().attr('r', d => d.inactiveSize);
+				d3.selectAll('.organization_type').transition().attr('r', d => d.inactiveSize);
+				d3.selectAll('.links.organization').transition().delay(100).attr('opacity', d => d.opacity);
+				d3.selectAll('.links.related').transition().delay(100).attr('opacity', d => d.opacity);
+				break;
+		}
+	}
+
 	$('#fullpage').fullpage({
-		anchors: ['slide-1', 'slide-2', 'slide-3', 'slide-4', 'slide-5'],
+		anchors: ['slide-1', 'slide-2', 'slide-3', 'slide-4', 'slide-5', 'slide-6'],
 	    menu: '#slidesMenu',
 		navigation: true,
 		// paddingBottom: '60px',
@@ -439,70 +580,23 @@ function setupD3() {
 	    	$(`.info-container`).removeClass('slide-active slide-leaving');
 				$(`.slide-${index}`).removeClass('slide-active').addClass('slide-leaving');
 				AppData.actualSlide = nextIndex - 1;
-				switch (nextIndex - 1) {
-					case 0:
-						graph = {
-							nodes: setNodeSizeToType(objectToArray((new MathSet(nodes)).filter(slide_1).toObject()), 'all', 3),
-							links: objectToArray((new MathSet(links)).filter(slide_1).toObject())
-						};
-						draw(graph);
-						d3.selectAll('.nodes.all').transition().attr('r', d => d.activeSize);
-						break;
-					case 1:
-						graph = {
-							nodes: setNodeSizeToType(objectToArray((new MathSet(nodes)).filter(slide_1, slide_2).toObject()), 'contract_type', 3),
-							links: objectToArray((new MathSet(links)).filter(slide_1, slide_2).toObject())
-						};
-
-						draw(graph);
-						d3.selectAll('.nodes.contract_type').transition().attr('r', d => d.activeSize);
-						d3.selectAll('.all').transition().attr('r', d => d.inactiveSize);
-						d3.selectAll('.links.contract_type').transition().delay(100).attr('opacity', d => d.opacity);
-						break;
-					case 2:
-						graph = {
-							nodes: setNodeSizeToType(objectToArray((new MathSet(nodes)).filter(slide_1, slide_2, slide_3).toObject()), 'contract', 3),
-							links: objectToArray((new MathSet(links)).filter(slide_1, slide_2, slide_3).toObject())
-						};
-						draw(graph);
-						d3.selectAll('.nodes.contract').transition().attr('r', d => d.activeSize);
-						d3.selectAll('.all').transition().attr('r', d => d.inactiveSize);
-						d3.selectAll('.contract_type').transition().attr('r', d => d.inactiveSize);
-						d3.selectAll('.links.contract').transition().delay(100).attr('opacity', d => d.opacity);
-						break;
-					case 3:
-						graph = {
-							nodes: setNodeSizeToType(objectToArray((new MathSet(nodes)).filter(slide_1, slide_2, slide_3, slide_4).toObject()), 'organization', 4),
-							links: objectToArray((new MathSet(links)).filter(slide_1, slide_2, slide_3, slide_4).toObject())
-						};
-						draw(graph);
-						d3.selectAll('.nodes.organization').transition().attr('r', d => d.activeSize);
-						d3.selectAll('.all').transition().attr('r', d => d.inactiveSize);
-						d3.selectAll('.contract_type').transition().attr('r', d => d.inactiveSize);
-						d3.selectAll('.organization_type').transition().attr('r', d => d.inactiveSize);
-						d3.selectAll('.links.organization').transition().delay(100).attr('opacity', d => d.opacity);
-						break;
-					case 4:
-						graph = {
-							nodes: setNodeSizeToType(objectToArray((new MathSet(nodes)).filter(slide_1, slide_2, slide_3, slide_4, slide_5).toObject()), 'related', 4),
-							links: objectToArray((new MathSet(links)).filter(slide_1, slide_2, slide_3, slide_4, slide_5).toObject())
-						};
-						draw(graph);
-						d3.selectAll('.nodes.organization').transition().attr('r', d => d.activeSize);
-						d3.selectAll('.all').transition().attr('r', d => d.inactiveSize);
-						d3.selectAll('.contract_type').transition().attr('r', d => d.inactiveSize);
-						d3.selectAll('.organization_type').transition().attr('r', d => d.inactiveSize);
-						d3.selectAll('.links.organization').transition().delay(100).attr('opacity', d => d.opacity);
-						d3.selectAll('.links.related').transition().delay(100).attr('opacity', d => d.opacity);
-						break;
-				}
+				goToSlide(nextIndex - 1);
 	    },
 		afterLoad: function(anchorLink, index){
+			// if (AppData.firstSlideLoad) {
+			// 	goToSlide(index);
+			// 	AppData.firstSlideLoad = true;
+			// }
 			$(`.slide-${index}`).addClass('slide-active');
 		},
+		afterRender: function(anchorLink, index){
+			$(`.slide-${index}`).addClass('slide-active');
+		}
+
 	});
 	$('.fullpage').animate({'opacity': 1});
 
+	$.fn.fullpage.moveTo('slide-1');
 	graph = {
 		nodes: setNodeSizeToType(objectToArray((new MathSet(nodes)).filter(slide_1).toObject()), 'all', 3),
 		links: objectToArray((new MathSet(links)).filter(slide_1).toObject())
@@ -521,11 +615,11 @@ function setupD3() {
 		const tooltip = d3.select(".tooltip")
 				.attr("class", "tooltip")				
 				.style("opacity", 0)
-				.on("mouseover", function() {console.log("over"); tooltip.transition().duration(500).style("opacity", .98)})
-		        .on("mouseout", function() {console.log("out");tooltip.transition().duration(200).style("opacity", 0).style("pointer-events", "none")})
+				.on("mouseover", function() {tooltip.transition().duration(500).style("opacity", .98)})
+		        .on("mouseout", function() {tooltip.transition().duration(200).style("opacity", 0).style("pointer-events", "none")})
 		const tooltipLink = d3.select(".tooltip a")
-				.on("mouseover", function() {console.log("over"); tooltip.transition().duration(500).style("opacity", .98)})
-		        .on("mouseout", function() {console.log("out");tooltip.transition().duration(200).style("opacity", 0).style("pointer-events", "none")})
+				.on("mouseover", function() {tooltip.transition().duration(500).style("opacity", .98)})
+		        .on("mouseout", function() {tooltip.transition().duration(200).style("opacity", 0).style("pointer-events", "none")})
 		        .on("click", function(evt) {evt.preventDefault()})
 
 		if($(window).width() < 420) {
@@ -568,7 +662,7 @@ function setupD3() {
 		node = node.enter().append("circle")
 			.attr("r", d => d.activeSize)
 			.attr("fill", d => d.topParentNode ? 'red' : d.color)
-			.attr("filter", 'url(#f3)')
+			// .attr("filter", 'url(#f3)')
 			.attr("class", d => "nodes " + d.type)
 			.merge(node)
 			.on("mouseover", function(d) {		
@@ -618,6 +712,11 @@ function setupD3() {
 	            				<p><a href="https://quienesquien.wiki/orgs/${d.name}">https://quienesquien.wiki/orgs/${d.name}</a></p>
 								`;
 	            				break;
+	            			case "investigation":
+	            				return `
+	            				<p></p>
+								`;
+	            				break;
 	            			default:
 	            				return "sin texto"
 	            				break;
@@ -653,6 +752,7 @@ function setupD3() {
 	                .style("pointer-events", "initial");	
 	        })
 	        .on("mousedown", function(d) {
+	        	globalTimers.forEach(timer => cancelAnimationFrame(timer));
 	            const linkId = d.id;
 	            for (let l in links) {
 	            	const link = links[l];
@@ -678,22 +778,31 @@ function setupD3() {
 	            switch (d.type) {
 	            	case "contract":
 	            	case "contract_type":
-			            setTimeout((function(linkId,onlyParents) {
-				            return function() {showSelectedLinks(linkId, onlyParents)};
-			            })(linkId, onlyParents), 5)
-			            setTimeout((function(linkId,onlyChilds) {
-				            return function() {showSelectedLinks(linkId, onlyChilds)};
-			            })(linkId, onlyChilds), 5)
+	            	case "organization":
+			            globalTimers.push(
+			            	requestAnimationFrame((function(linkId,onlyParents) {
+					            return function() {showSelectedLinks(linkId, onlyParents)};
+			            	})(linkId, onlyParents))
+			            )
+			            globalTimers.push(
+			            	requestAnimationFrame((function(linkId,onlyChilds) {
+					            return function() {showSelectedLinks(linkId, onlyChilds)};
+			            	})(linkId, onlyChilds))
+			            )
 		            	break;
 		            case "all":
-			            setTimeout((function(linkId,onlyParents) {
-				            return function() {showSelectedLinks(linkId, onlyParents)};
-			            })(linkId, onlyParents), 5)
+			            globalTimers.push(
+			            	requestAnimationFrame((function(linkId,onlyParents) {
+					            return function() {showSelectedLinks(linkId, onlyParents)};
+			            	})(linkId, onlyParents))
+			            )
 		            	break;
 		            default:
-			            setTimeout((function(linkId,onlyChilds) {
-			            	return function() {showSelectedLinks(linkId, onlyChilds);}
-			            })(linkId, onlyChilds), 5)
+			            globalTimers.push(
+			            	requestAnimationFrame((function(linkId,onlyChilds) {
+				            	return function() {showSelectedLinks(linkId, onlyChilds);}
+			            	})(linkId, onlyChilds))
+			            )
 		            	break;
 	            }
 	            
@@ -734,19 +843,24 @@ function setupD3() {
 	            		} else {
 	            			linkType = iAmAChild;
 	            		}
-	            		setTimeout((function(linkId) {
-			            	return function() {showSelectedNodes(linkId);}
-			            })(selectedLink.source.id), 25)
-			            setTimeout((function(linkId) {
-			            	return function() {showSelectedNodes(linkId);}
-			            })(selectedLink.target.id), 25)
+	            		globalTimers.push(
+	            			requestAnimationFrame((function(linkId) {
+				            	return function() {showSelectedNodes(linkId);}
+			            	})(selectedLink.source.id))
+			            )
+			            globalTimers.push(
+			            	requestAnimationFrame((function(linkId) {
+				            	return function() {showSelectedNodes(linkId);}
+			            	})(selectedLink.target.id))
+			            )
 
-		            	
 		            	// if (selectedLink.type == 'organization') {continue; }
 		            	// showSelectedLinks(selectedLink.source.id);
-		            	setTimeout((function(linkTypeId, onlyType) {
-			            	return function() {showSelectedLinks(linkTypeId, onlyType);}
-			            })(linkType.id, onlyType), 25)
+		            	globalTimers.push(
+		            		requestAnimationFrame((function(linkTypeId, onlyType) {
+				            	return function() {showSelectedLinks(linkTypeId, onlyType);}
+			            	})(linkType.id, onlyType))
+			            )
 		            	// showSelectedLinks(linkType.id, onlyType);
 
 		            }
