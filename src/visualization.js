@@ -361,7 +361,8 @@ function getOrganizations(params, cb) {
 }
 
 function getInvestigations(params, cb) {
-	$.get('data/investigation.json')
+
+	$.get('/torre_de_control/data/investigation.json')
 	.done(response => {
 		cb(null, {...params, investigations: response});
 	})
