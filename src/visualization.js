@@ -36,8 +36,7 @@ const AppData = {
 	organizations: [],
 	contracts: [],
 	investigations: [],
-	actualSlide: 1,
-	firstSlideLoad: false
+	actualSlide: 1
 };
 let tooltipHTML;
 const globalTimers = [];
@@ -49,7 +48,6 @@ module.exports = () => {
 		AppData.organizations = data.organizations,
 		AppData.contracts = data.contracts;
 		AppData.investigations = data.investigations;
-		console.log(data.investigations)
 		AppData.texts = {};
 		const contractsAmount = getContractsAmount(AppData.contracts);
 		const contractsByTypes = getContractsByTypes(AppData.contracts);
@@ -176,7 +174,6 @@ module.exports = () => {
 								shareholdersStack[shareholderId].node = { id: shareholderId, name: shareholderName, simple: shareholderSimple, activeSize: 25, inactiveSize: 10, topParentNode: false, nodeForce: 20, type: 'related', group: 4, color: typeColor, linksCount: 0, relationType: 'Shareholder' };
 								shareholdersStack[shareholderId].linkToCenter = { source: shareholderId, target: 'contracts', type: 'related', hidden: true, linkStrength: 3, linkDistance: 11, color: '#706F74', dashed: false, opacity: 0 };
 								shareholdersStack[shareholderId].link = { source: shareholderId, target: organization._id, type: 'related', linkStrength: 4, linkDistance: 3, topParentNode: false, color: '#706F74', dashed: true, opacity: 1 };
-								// console.log(`${shareholdersStack[shareholderId].count + 1} --> `, shareholderName, organization.name)
 								break;
 							}
 							case 1: {
@@ -192,7 +189,6 @@ module.exports = () => {
 									/* this continues to default, no brake statement */
 							}
 							default: {
-								// console.log(`${shareholdersStack[shareholderId].count + 1} --> `, shareholderName, organization.name)
 								const link = { source: shareholderId, target: organization._id, type: 'related', linkStrength: 4, linkDistance: 3, topParentNode: false, color: '#706F74', dashed: true, opacity: 1 };
 								slidesObjects[5].links.push(link);
 								links.push(link);
@@ -218,7 +214,6 @@ module.exports = () => {
 								boardsStack[boardId].node = { id: boardId, name: boardName, simple: boardSimple, activeSize: 25, inactiveSize: 10, topParentNode: false, nodeForce: 20, type: 'related', group: 4, color: '#EB639A', linksCount: 0, relationType: 'Board' };
 								boardsStack[boardId].linkToCenter = { source: boardId, target: 'contracts', type: 'related', hidden: true, linkStrength: 3, linkDistance: 11, color: '#706F74', dashed: false, opacity: 0 };
 								boardsStack[boardId].link = { source: boardId, target: organization._id, type: 'related', linkStrength: 4, linkDistance: 3, topParentNode: false, color: '#706F74', dashed: true, opacity: 1 };
-								// console.log(`${boardsStack[boardId].count + 1} --> `, boardName, organization.name)
 								break;
 							}
 							case 1: {
@@ -234,8 +229,6 @@ module.exports = () => {
 									/* this continues to default, no brake statement */
 							}
 							default: {
-								// console.log('acumulado', boardId)
-								// console.log(`${boardsStack[boardId].count + 1} --> `, boardName, organization.name)
 								const link = { source: boardId, target: organization._id, type: 'related', linkStrength: 4, linkDistance: 3, topParentNode: false, color: '#706F74', dashed: true, opacity: 1 };
 								slidesObjects[5].links.push(link);
 								links.push(link);
@@ -256,14 +249,11 @@ module.exports = () => {
 		}
 
 		/* Investigations */
-		console.log("Investigations")
-		console.log(investigations)
 		for (let i in investigations) {
 			const investigation = investigations[i];
-			console.log("Investigation:", investigation)
 			const investigationId = investigation.title.toLowerCase().replace(/\s/g, "-") + "-" + investigation.date;
 			const suspectedOrganizations = organizations.filter(organization => investigation.suppliers.indexOf(organization.simple) > -1);
-			const node = { id: investigationId, name: investigation.title, activeSize: 15, inactiveSize: 15, nodeForce: 10, type: 'investigation', group: 6, color: 'red', linksCount: 0};
+			const node = { id: investigationId, name: investigation.title, activeSize: 15, inactiveSize: 15, nodeForce: 10, type: 'investigation', group: 6, color: '#FFCF40', linksCount: 0, url: investigation.link};
 			nodes.push(node);
 			slidesObjects[6].nodes.push(node);
 
@@ -296,25 +286,7 @@ module.exports = () => {
 				slidesObjects[6].links.push(link);
 				links.push(link);
 			});
-
-				// .filter(shareholder => {console.log(` - `, shareholder.node.simple); return investigation.suppliers.indexOf(shareholder.node.simple) > -1});
-				// console.group("Shareholders")
-				// console.log('[All]', shareholders)
-				// console.log('[> 2]', shareholders)
-				// console.log('[Objects]', shareholders)
-				// console.log(`[Simple in: ${investigation.suppliers}]`)
-				// console.log(shareholders)
-				// console.groupEnd("Shareholders")
 		}
-/*
-		"title": "Consejero del NAICM demandado por la ASF",
-		"date": "03-13-2017",
-		"author": "Claudia Ocaranza",
-		"image": "http://www.eduardo-warnholtz.com/photos/jose_salvador_sanchez_estrada_201115_03.jpg",
-		"link": "http://www.rindecuentas.org",
-		"text": "José Salvador Sánchez Estrada, ex funcionario de los gobiernos de Javier Duarte y Fidel Herrera en Veracruz, es consejero del Grupo Aeroportuario de la Ciudad de México (GACM) para el Nuevo Aeropuerto de la Ciudad de México (NAICM). Sánchez Estrada está siendo investigado por la Auditoria Superior de la Federación por desviar recursos del Estado de Veracruz y Miguel Angel Yunes, actual gobernador de Veracruz, lo denunció junto a otros funcionarios por formar parte de la trama de aviadores de la Secretaria de Educación del estado. ",
-		"suppliers": ["Grupo Aeroportuario De La Ciudad de México, S.A. de C.V."]
-*/
 
 		function organizationNotExists(id) {
 			const organizationWithId = organizations.filter(organization => {return organization._id == id});
@@ -379,8 +351,6 @@ function getOrganizations(params, cb) {
 		uniqueSuppliers[supplierName] != undefined ? uniqueSuppliers[supplierName] == uniqueSuppliers[supplierName] + 1 : uniqueSuppliers[supplierName] = 1;
 	}
 	
-	// console.log(uniqueSuppliers)
-	
 	const organizationFilter = new Filter({property: 'suppliers'});
 	const contractorsNamesSet = new MathSet(params.contracts);
 	const organizationsByNames = Object.keys(uniqueSuppliers);
@@ -439,8 +409,6 @@ function setupD3() {
 	// const feMerge = filter.append("feMerge");
 	// const feMergeNodeA = feMerge.append("feMergeNode");
 	// const feMergeNodeB = feMerge.append("feMergeNode");
-	// const feOffset = filter.append("feOffset");
-	// const feBlend = filter.append("feBlend");
 
 	/* Shadow */
 	// filter
@@ -449,34 +417,28 @@ function setupD3() {
 	// 	.attr("y","-50%")
 	// 	.attr("width","200%")
 	// 	.attr("height","200%");
-	// 	// .attr("height","200%");
 	// feGaussianBlur
-	// 	// .attr("result","offOut")
 	// 	.attr("in","SourceAlpha")
 	// 	.attr("stdDeviation","6")
 	// 	.attr("dx","20")
-	// 	.attr("dy","20");
-	// // feOffset
-	// // 	// .attr("result","blurOut")
-	// // 	.attr("dx","0")
-	// // 	.attr("dy","0")
-	// // 	.attr("result","offsetblur");
+	// 	.attr("dy","20")
+	// 	.attr("result","feGaussianBlur");
+	
+	// feMergeNodeA
+	// 	.attr("in", "opacityShadow");
 	// feMergeNodeB
 	// 	.attr("in", "SourceGraphic");
 	// feFuncA
 	// 	.attr("type", "linear")
-	// 	.attr("slope", "0.3");
-  //   feBlend
-		// .attr("in","SourceGraphic")
-		// .attr("in2","blurOut")
-		// .attr("mode","normal");
-
+	// 	.attr("slope", "0.3")
+	// 	.attr("result","opacityShadow");
 
 	function ticked() {
 		node
 		    .attr("cx", d => d.x + offset)
 		    .attr("cy", d => d.y + offset)
-		    .attr("opacity", d => d.opacity);
+		    .attr("opacity", d => d.opacity)
+		    .attr("class", d => "nodes " + d.type + " " + (d.visibleNode ? "visible-node" : "invisible-node"))
 
 		link
 		    .attr("x1", d => d.source.x + offset)
@@ -484,7 +446,6 @@ function setupD3() {
 		    .attr("x2", d => d.target.x + offset)
 		    .attr("y2", d => d.target.y + offset)
 		    .attr("opacity", d => d.opacity);
-
 	}
 
 	window.addEventListener("resize", function() {draw(graph);});
@@ -583,20 +544,16 @@ function setupD3() {
 				goToSlide(nextIndex - 1);
 	    },
 		afterLoad: function(anchorLink, index){
-			// if (AppData.firstSlideLoad) {
-			// 	goToSlide(index);
-			// 	AppData.firstSlideLoad = true;
-			// }
-			$(`.slide-${index}`).addClass('slide-active');
-		},
-		afterRender: function(anchorLink, index){
 			$(`.slide-${index}`).addClass('slide-active');
 		}
 
 	});
-	$('.fullpage').animate({'opacity': 1});
-
+	
+	$.fn.fullpage.moveTo('slide-2');
 	$.fn.fullpage.moveTo('slide-1');
+	$('.fullpage').animate({'opacity': 1});
+	// $('.slide-1').addClass('slide-active');
+	
 	graph = {
 		nodes: setNodeSizeToType(objectToArray((new MathSet(nodes)).filter(slide_1).toObject()), 'all', 3),
 		links: objectToArray((new MathSet(links)).filter(slide_1).toObject())
@@ -623,9 +580,9 @@ function setupD3() {
 		        .on("click", function(evt) {evt.preventDefault()})
 
 		if($(window).width() < 420) {
-		    scaleMin = Math.min(width, height) / (2400 - $(window).width());
+		    scaleMin = Math.min(width, height) / (2500 - $(window).width());
 		} else {
-		    scaleMin = Math.min(width, height) / (3400 - $(window).width());
+		    scaleMin = Math.min(width, height) / (3500 - $(window).width());
 		}
 		const resGWidth = width/2 * (1 - scaleMin);
 		const resGHeight = height/2 * (1 - scaleMin);
@@ -661,9 +618,9 @@ function setupD3() {
 		node.exit().remove();
 		node = node.enter().append("circle")
 			.attr("r", d => d.activeSize)
-			.attr("fill", d => d.topParentNode ? 'red' : d.color)
+			.attr("fill", d => d.color)
 			// .attr("filter", 'url(#f3)')
-			.attr("class", d => "nodes " + d.type)
+			.attr("class", d => "nodes " + d.type + " " + (d.visibleNode ? "visible-node" : "invisible-node"))
 			.merge(node)
 			.on("mouseover", function(d) {		
 				const tooltipWidth = tooltipHTML.width() + 20;
@@ -714,7 +671,9 @@ function setupD3() {
 	            				break;
 	            			case "investigation":
 	            				return `
-	            				<p></p>
+	            				<p>${d.name}</p>
+	            				<p>Más información en QuiénEsQuién.Wiki:</p>
+	            				<p><a href="${d.url}">${d.url}</a></p>
 								`;
 	            				break;
 	            			default:
@@ -915,6 +874,10 @@ function setupD3() {
 		simulation.force("link").links(graph.links);
 		simulation.force("center", d3.forceCenter(width / 2 - offset, height / 2 - offset))
 		simulation.alpha(0.2).restart();
+		link.each(d => {
+			d.target.visibleNode = true;
+			d.source.visibleNode = true;
+		});
 	}
 }
 
