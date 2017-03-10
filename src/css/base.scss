@@ -217,7 +217,7 @@ button {
 	@include span-columns(12);
 	background-color: $white;
 	position: relative;
-	z-index: 1;
+	z-index: 1100;
 	margin-bottom: 20px;
 	.wg-navbar-logo {
 		@include span-columns(4);
@@ -345,7 +345,8 @@ button {
 			height: auto;
 			overflow: visible;
 			width: 100%;
-			position: initial;
+			position: relative;
+			z-index: 1100;
 			background-color: transparent;
 			@media screen and (min-width: 0) and (max-width: $mobile-size) {
 				display: block;
