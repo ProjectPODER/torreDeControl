@@ -1,4 +1,14 @@
 .nodes {
-  stroke: #f0f0f0;
-  stroke-width: 1.5px;
+	display: none;
+	cursor: pointer;
+	stroke: #f0f0f0;
+	stroke-width: 1.5px;
+	-webkit-transition: opacity ease 300ms;
+	-moz-transition: opacity ease 300ms;
+	-ms-transition: opacity ease 300ms;
+	-o-transition: opacity ease 300ms;
+	transition: opacity ease 300ms;
+	&.visible-node {
+		display: block;
+	}
 }

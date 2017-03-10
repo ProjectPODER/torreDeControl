@@ -56,8 +56,8 @@ class OrganizationsList extends React.Component {
 		byTitle(contracts, reverse) {
 			const finalOrder = reverse ? -1 : 1;
 			const sortedContracts = contracts.sort((a, b) => {
-				const aTitle = a[0].value.proveedor;
-				const bTitle = b[0].value.proveedor;
+				const aTitle = a[0].value.suppliers[0].simple;
+				const bTitle = b[0].value.suppliers[0].simple;
 				const aId = a[0].value._id;
 				const bId = b[0].value._id;
 				if (aTitle < bTitle) return -10 * finalOrder;
@@ -123,16 +123,16 @@ class OrganizationsList extends React.Component {
 					</ul>
 				</div>
 				{
-					contractsLoaded ? 
+					contractsLoaded ?
 						<div className="organizations-results">
 							<ul className="organizations-list">
 								{paginatedContracts.map((contracts) => {
-									const organizationTitle = contracts[0].value.proveedor;
+									const organizationTitle = contracts[0].key;
 									const opened = this.state.tabsOpened[organizationTitle] === true;
-									const organizationName = contracts[0].value.proveedor;
+									const organizationName = contracts[0].key;
 									const organizationAmount = contracts.reduce((semitotal, amount) => {return semitotal + amount.value.amount}, 0);
 									const organizationCount = contracts.length;
-									return <OrgainzationItem organizationName={organizationName} organizationAmount={organizationAmount} organizationCount={organizationCount} opened={opened} key={organizationTitle} contracts={contracts} tabClick={this.tabClick}/>	
+									return <OrgainzationItem organizationName={organizationName} organizationAmount={organizationAmount} organizationCount={organizationCount} opened={opened} key={organizationTitle} contracts={contracts} tabClick={this.tabClick}/>
 								})}
 							</ul>
 							<p className={classNames(["contracts-not-found", {active: noResults}])}>No se han encontrado resultados de búsqueda</p>
@@ -148,7 +148,7 @@ class OrganizationsList extends React.Component {
 				}
 				<div className={classNames(['pagination-bar', {visible: paginationVisible}])}>
 					{page === 0 ? null : <button onClick={this.props.paginationGoToPreviousPage} className="pagination-item">Anterior</button>}
-					{pages === 0 ? null : 
+					{pages === 0 ? null :
 						[...Array(pages)].map((item, index) => {
 							const activePage = page === index;
 							return (<button key={index} className={classNames(['pagination-item', {active: activePage}])} onClick={() => {this.props.paginationGoToPage(index)}}>{index + 1}</button>);

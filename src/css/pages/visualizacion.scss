@@ -1,3 +1,16 @@
+.page-visualizacion .site-footer {
+	bottom: -210px;
+	transition: bottom ease 300ms;
+	-webkit-transition: bottom ease 300ms;
+	-moz-transition: bottom ease 300ms;
+	-ms-transition: bottom ease 300ms;
+	-o-transition: bottom ease 300ms;
+}
+
+.page-visualizacion .site-footer.active {
+	bottom: 0;
+}
+
 .fixed-page {
 	overflow: hidden;
 }
@@ -62,13 +75,15 @@
 	top: 0;
 	position: fixed;
 	right: 0;
+	z-index: 1000;
 	svg {
+		will-change: auto;
 		width: 100%;
 		margin-top: 110px;
-		height: calc(100% - 110px - 60px) !important;
+		height: calc(100% - 110px) !important;
 		@media screen and (min-width: 0) and (max-width: $mobile-size) {
 			margin-top: 60px;
-			height: calc(100% - 60px - 60px) !important;
+			height: calc(100% - 60px) !important;
 			transform: translateY(-8%);
 		}
 	}
@@ -80,11 +95,15 @@
 	.fp-tableCell {
 		height: 100% !important;
 		position: relative;
+		z-index: 999;
+		// pointer-events: none;
 	}
 	.info-container {
 		width: 100%;
 		height: 100% !important;
 		position: relative;
+		z-index: 999;
+		// pointer-events: none;
 		.info-wrapper {
 			will-change: auto;
 			opacity: 0;
@@ -173,4 +192,33 @@
 }
 .contact-modal {
 	@include modal();
+}
+
+div.tooltip {
+	font-family: Rajdhani;
+	font-size: 13px;
+	line-height: 15px;
+    position: absolute;
+    max-width: 300px;
+    padding: 10px;
+    font: 12px sans-serif;
+    background: #efefef;
+    border: 0px;
+    border-radius: 2px;
+    z-index: 1001;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
+    text-align: left;
+}
+
+div.tooltip ul {
+	margin-left: 15px;
+	list-style: square;
+}
+
+div.tooltip * {
+	pointer-events: none;
+}
+
+div.tooltip a {
+	pointer-events: initial;
 }

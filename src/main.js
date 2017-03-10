@@ -11,6 +11,9 @@ var images = [
 	require('./images/torre-small.svg'),
 	require('./images/torre.svg'),
 	require('./images/wingu.svg'),
+	require('./images/tw.svg'),
+	require('./images/animal-politico.svg'),
+	require('./images/serapaz-trazo.svg'),
 ];
 
 import $ from 'jquery';
