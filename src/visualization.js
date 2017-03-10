@@ -145,7 +145,7 @@ module.exports = () => {
 				}
 			} else {
 				if (organizationNotExists(organization._id)) {
-					const node = { id: organization._id, name: organization.name, activeSize: 25, inactiveSize: 10, topParentNode: !organization.parents, nodeForce: 20, type: 'related', group: 4, color: '#3c5a6f', linksCount: 0 };
+					const node = { id: organization._id, name: organization.name, activeSize: 25, inactiveSize: 10, topParentNode: !organization.parents, nodeForce: 20, type: 'related', group: 4, color: '#3c5a6f', linksCount: 0, relationType: 'Organization' };
 					const linkToCenter = { source: organization._id, target: 'contracts', type: 'related', hidden: true, linkStrength: 3, linkDistance: 11, color: '#706F74', dashed: false, opacity: 0 };
 					slidesObjects[5].links.push(linkToCenter);
 					links.push(linkToCenter);
@@ -162,6 +162,8 @@ module.exports = () => {
 						const shareholder = shareholders[s];
 						const shareholderId = shareholder._id;
 						const shareholderName = shareholder.name;
+						const typeColor = shareholder.type == "person" ? "#FC8917" : "#363E4E";
+						console.log(shareholder, typeColor)
 						if (shareholdersStack[shareholderId] == undefined) {
 								shareholdersStack[shareholderId] = {count: 0};	
 						} else {
@@ -170,7 +172,7 @@ module.exports = () => {
 
 						switch (shareholdersStack[shareholderId].count) {
 							case 0: {
-								shareholdersStack[shareholderId].node = { id: shareholderId, name: shareholderName, activeSize: 25, inactiveSize: 10, topParentNode: false, nodeForce: 20, type: 'related', group: 4, color: '#3c5a6f', linksCount: 0 };
+								shareholdersStack[shareholderId].node = { id: shareholderId, name: shareholderName, activeSize: 25, inactiveSize: 10, topParentNode: false, nodeForce: 20, type: 'related', group: 4, color: typeColor, linksCount: 0, relationType: 'Shareholder' };
 								shareholdersStack[shareholderId].linkToCenter = { source: shareholderId, target: 'contracts', type: 'related', hidden: true, linkStrength: 3, linkDistance: 11, color: '#706F74', dashed: false, opacity: 0 };
 								shareholdersStack[shareholderId].link = { source: shareholderId, target: organization._id, type: 'related', linkStrength: 4, linkDistance: 3, topParentNode: false, color: '#706F74', dashed: true, opacity: 1 };
 								// console.log(`${shareholdersStack[shareholderId].count + 1} --> `, shareholderName, organization.name)
@@ -211,7 +213,7 @@ module.exports = () => {
 
 						switch (boardsStack[boardId].count) {
 							case 0: {
-								boardsStack[boardId].node = { id: boardId, name: boardName, activeSize: 25, inactiveSize: 10, topParentNode: false, nodeForce: 20, type: 'related', group: 4, color: '#3c5a6f', linksCount: 0 };
+								boardsStack[boardId].node = { id: boardId, name: boardName, activeSize: 25, inactiveSize: 10, topParentNode: false, nodeForce: 20, type: 'related', group: 4, color: '#EB639A', linksCount: 0, relationType: 'Board' };
 								boardsStack[boardId].linkToCenter = { source: boardId, target: 'contracts', type: 'related', hidden: true, linkStrength: 3, linkDistance: 11, color: '#706F74', dashed: false, opacity: 0 };
 								boardsStack[boardId].link = { source: boardId, target: organization._id, type: 'related', linkStrength: 4, linkDistance: 3, topParentNode: false, color: '#706F74', dashed: true, opacity: 1 };
 								console.log(`${boardsStack[boardId].count + 1} --> `, boardName, organization.name)
@@ -611,7 +613,7 @@ function setupD3() {
 	            				break;
 	            			case "related":
 	            				return `
-	            				<p>${d.name}</p>
+	            				<p>${d.name} [${d.relationType}]</p>
 	            				<p>Más información en QuiénEsQuién.Wiki:</p>
 	            				<p><a href="https://quienesquien.wiki/orgs/${d.name}">https://quienesquien.wiki/orgs/${d.name}</a></p>
 								`;
