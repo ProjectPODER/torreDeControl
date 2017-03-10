@@ -13,8 +13,8 @@ require('react-datepicker/dist/react-datepicker.css')
     dispatch => bindActionCreators({filterChange, paginationGoToStart}, dispatch))
 class SearchFilters extends React.Component {
 	static propTypes = {
-		fromAmount: PropTypes.number,
-		toAmount: PropTypes.number,
+		fromAmount: PropTypes.string,
+		toAmount: PropTypes.string,
 		contractType: PropTypes.string,
 		procedureType: PropTypes.string,
 		fromDate: PropTypes.instanceOf(moment),

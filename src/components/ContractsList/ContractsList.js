@@ -14,7 +14,7 @@ class ContractsList extends React.Component {
 	render() {
 		const contracts = this.props.contracts;
 		const opened = this.props.opened;
-		
+
 		return (
 			<ul className={classNames(['contracts-list', {opened: opened}])}>
 				{contracts.map((contract) => {

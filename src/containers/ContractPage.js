@@ -33,8 +33,8 @@ class ContractPage extends React.Component {
 	static propTypes = {
 		contracts: PropTypes.array,
 		keyword: PropTypes.string,
-		fromAmount: PropTypes.number,
-		toAmount: PropTypes.number,
+		fromAmount: PropTypes.string,
+		toAmount: PropTypes.string,
 		contractType: PropTypes.string,
 		procedureType: PropTypes.string,
 		fromDate: PropTypes.instanceOf(moment),
@@ -66,9 +66,22 @@ class ContractPage extends React.Component {
 	}
 
 	groupByOrganizations(contracts) {
-		const contractsSet = new MathSet(contracts);
-		contractsSet.indexBy("proveedor");
-		const contractsByOrganizations = contractsSet.indexes.proveedor;
+		if( contracts.length == 0 ) return []
+    // const contractsSet = new MathSet(contracts);
+    // contractsSet.indexBy("proveedor");
+    // const contractsByOrganizations = contractsSet.indexes.proveedor;
+
+    // TO-DO: Deberiamos mover esta logica al MathSet.indexBy()
+		var contractsByOrganizations = []
+		contracts.forEach(function(contract){
+			contract.suppliers.forEach(function(supplier){
+				if (contractsByOrganizations[supplier.simple] === undefined) contractsByOrganizations[supplier.simple] = [];
+				contractsByOrganizations[supplier.simple].push({
+		      key: supplier.simple,
+		      value: contract
+		    })
+			})
+		})
 		window.contracts = Object.keys(contractsByOrganizations).map(key => contractsByOrganizations[key]);
 		return Object.keys(contractsByOrganizations).map(key => contractsByOrganizations[key]);
 	}
@@ -87,7 +100,9 @@ class ContractPage extends React.Component {
 
 		const filtered = contracts.filter((contract) => {
 			const title = contract.title.toLowerCase();
-			const organization = contract.proveedor.toLowerCase();
+			const organization = contract.suppliers.map(function(supplier){
+				return supplier.simple;
+			}).join('; ');
 			const startDate = contract.start_date;
 			const endDate = contract.end_date;
 			const date = contract.title.toLowerCase();
@@ -102,7 +117,7 @@ class ContractPage extends React.Component {
 			const inProcedureType = procedureType === 'todos' || procedureType === procedureTypeField;
 			const inContractType = contractType === 'todos' || contractType === contractTypeField;
 
-			
+
 			return (inOrganization || inTitle) && inAmount && inDate && inProcedureType && inContractType;
 		});
 		return filtered;
@@ -111,7 +126,7 @@ class ContractPage extends React.Component {
 	render() {
 		const filteredContracts = this.filterContracts(this.props.contracts)
 		const contractsByOrganizations = this.groupByOrganizations(filteredContracts);
-		
+
 		return (
 			<div className="contracts-content">
 				<h1 className="content-title">Contratos por empresas</h1>

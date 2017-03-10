@@ -10,7 +10,7 @@ class ContractItem extends React.Component {
 		procedureType: PropTypes.string,
 		startDate: PropTypes.string,
 		endDate: PropTypes.string,
-		ocid: PropTypes.number,
+		ocid: PropTypes.string,
 		contractLink: PropTypes.string,
 	}
 
@@ -23,7 +23,7 @@ class ContractItem extends React.Component {
 		const endDate = (new Date(this.props.endDate)).toLocaleDateString();
 		const ocid = this.props.ocid;
 		const contractLink = this.props.contractLink;
-		
+
 		return (
 			<li className="contracts-item">
 				<span className="contract-title">{title}</span>
