@@ -432,7 +432,7 @@ function setupD3() {
 		anchors: ['slide-1', 'slide-2', 'slide-3', 'slide-4', 'slide-5'],
 	    menu: '#slidesMenu',
 		navigation: true,
-		paddingBottom: '60px',
+		// paddingBottom: '60px',
 		paddingTop: ($('.site-top-ribbon').height() + 60) + 'px',
     	scrollingSpeed: 300,
     	onLeave: (index, nextIndex) => {
@@ -529,9 +529,9 @@ function setupD3() {
 		        .on("click", function(evt) {evt.preventDefault()})
 
 		if($(window).width() < 420) {
-		    scaleMin = Math.min(width, height) / (2200 - $(window).width());
+		    scaleMin = Math.min(width, height) / (2400 - $(window).width());
 		} else {
-		    scaleMin = Math.min(width, height) / (3200 - $(window).width());
+		    scaleMin = Math.min(width, height) / (3400 - $(window).width());
 		}
 		const resGWidth = width/2 * (1 - scaleMin);
 		const resGHeight = height/2 * (1 - scaleMin);

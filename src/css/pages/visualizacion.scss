@@ -1,3 +1,16 @@
+.page-visualizacion .site-footer {
+	bottom: -210px;
+	transition: bottom ease 300ms;
+	-webkit-transition: bottom ease 300ms;
+	-moz-transition: bottom ease 300ms;
+	-ms-transition: bottom ease 300ms;
+	-o-transition: bottom ease 300ms;
+}
+
+.page-visualizacion .site-footer.active {
+	bottom: 0;
+}
+
 .fixed-page {
 	overflow: hidden;
 }
@@ -66,10 +79,10 @@
 	svg {
 		width: 100%;
 		margin-top: 110px;
-		height: calc(100% - 110px - 60px) !important;
+		height: calc(100% - 110px) !important;
 		@media screen and (min-width: 0) and (max-width: $mobile-size) {
 			margin-top: 60px;
-			height: calc(100% - 60px - 60px) !important;
+			height: calc(100% - 60px) !important;
 			transform: translateY(-8%);
 		}
 	}
