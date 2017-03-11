@@ -1,0 +1,59 @@
+.iframe-display {
+  $footer-height: 70px;
+  .graph-container{
+    svg{
+      margin-top: 0px;
+      margin-bottom: $footer-height;
+      height: calc(100% - #{$footer-height}) !important;
+    }
+  }
+  .slides-menu{
+    top: calc(50% - #{$footer-height/2}) !important;
+  }
+  .visualization-container {
+    .info-container {
+      .info-wrapper {
+        @include media($until-desktop) {
+          top: calc(50% - #{$footer-height/2}) !important;
+        }
+        .info-data {
+          @include media($until-desktop) {
+            margin-bottom: 20px;
+            .middle-text{
+              @include set-font(40);
+            }
+            .bottom-text{
+              @include set-font(22);
+            }
+          }
+        }
+        .info-abstract {
+          @include media($until-desktop) {
+            .abstract-title {
+              @include set-font(24);
+            }
+          }
+        }
+      }
+    }
+  }
+  .iframe-footer{
+    background-color: $blue;
+    padding: 10px;
+    position:fixed;
+    bottom: 0px;
+    z-index:10000;
+    p{
+      color: $white;
+      margin-bottom:0px;
+      a {
+        color: $white;
+        text-decoration: none;
+        font-weight: 600;
+        &:hover{
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
