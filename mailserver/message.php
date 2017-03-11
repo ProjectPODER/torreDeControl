@@ -57,8 +57,8 @@ function sendMail($subject, $email, $text) {
 	$mail->isSMTP();
 	$mail->Host = 'bulk.mayfirst.org';
 	$mail->SMTPAuth = true;
-	$mail->Username = 'qqw@rindecuentas.org';
-	$mail->Password = '6To3nZ64e6Ax';
+	$mail->Username = 'outbound@projectpoder.org';
+	$mail->Password = '48hJ54f6M88q';
 	$mail->SMTPSecure = 'tls';
 	$mail->Port = 587;
 
