@@ -30,7 +30,7 @@ let node;
 let link;
 let offset = 0;
 let graph;
-
+let zoomLevel;
 const AppData = {
 	persons: [],
 	organizations: [],
@@ -361,7 +361,7 @@ function getOrganizations(params, cb) {
 }
 
 function getInvestigations(params, cb) {
-	$.get('/data/investigation.json')
+	$.get('data/investigation.json')
 	.done(response => {
 		cb(null, {...params, investigations: response});
 	})
@@ -541,10 +541,31 @@ function setupD3() {
 	    	$(`.info-container`).removeClass('slide-active slide-leaving');
 				$(`.slide-${index}`).removeClass('slide-active').addClass('slide-leaving');
 				AppData.actualSlide = nextIndex - 1;
+				console.log(nextIndex)
+				switch (nextIndex) {
+					case 1:
+						zoomLevel = 800;
+						break;
+					case 2:
+						zoomLevel = 1000;
+						break;
+					case 3:
+						zoomLevel = 1500;
+						break;
+					case 4:
+						zoomLevel = 2000;
+						break;
+					case 5:
+						zoomLevel = 2500;
+						break;
+					case 6:
+						zoomLevel = 2800;
+						break;
+				}
 				goToSlide(nextIndex - 1);
 	    },
 		afterLoad: function(anchorLink, index){
-			$(`.slide-${index}`).addClass('slide-active');
+			$(`.slide-${index}`).addClass('slide-active');			
 		}
 
 	});
@@ -580,9 +601,9 @@ function setupD3() {
 		        .on("click", function(evt) {evt.preventDefault()})
 
 		if($(window).width() < 420) {
-		    scaleMin = Math.min(width, height) / (2500 - $(window).width());
+		    scaleMin = Math.min(width, height) / (zoomLevel - $(window).width());
 		} else {
-		    scaleMin = Math.min(width, height) / (3500 - $(window).width());
+		    scaleMin = Math.min(width, height) / ((zoomLevel + 1000) - $(window).width());
 		}
 		const resGWidth = width/2 * (1 - scaleMin);
 		const resGHeight = height/2 * (1 - scaleMin);
@@ -924,4 +945,10 @@ function objectToArray(obj) {
 function setNodeSizeToType(nodes, type, value) {
 	return nodes;
 	return nodes.map(node => node.type !== type ? {...node, value} : node);
+}
+
+function redraw() {
+  vis.attr("transform",
+      "translate(" + d3.event.translate + ")"
+      + " scale(" + d3.event.scale + ")");
 }
