@@ -359,6 +359,9 @@ button {
 		.nav-separator {
 			display: none;
 		}
+		.mobile-icons {
+			display: none;
+		}
 		.mobile-social {
 			display: none;
 		}
@@ -482,6 +485,7 @@ button {
 				margin: 0 10%;
 			}
 			.mobile-icons{
+				display: block;
 				text-align: center;
 				.organization-link{
 					display: inline-block;
