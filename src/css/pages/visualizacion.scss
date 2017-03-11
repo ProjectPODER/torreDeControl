@@ -178,6 +178,10 @@
 						line-height: 40px;
 					}
 				}
+				#direct_adjudication,
+				#slide_5_count {
+					color: $blue;
+				}
 				.abstract-body {
 					font-size: 16px;
 					line-height: 18px;
@@ -216,8 +220,16 @@ div.tooltip ul {
 
 div.tooltip * {
 	pointer-events: none;
+	color: #013E5C;
+	margin: 0;
+}
+
+div.tooltip .title {
+	font-weight: 600;
+	margin-bottom: 10px;
 }
 
 div.tooltip a {
 	pointer-events: initial;
+	color: #013E5C;
 }
