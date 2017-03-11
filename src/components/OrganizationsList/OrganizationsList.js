@@ -109,10 +109,21 @@ class OrganizationsList extends React.Component {
 		const paginationFrom = page * paginationResultsPerPage;
 		const paginationTo = paginationFrom + paginationResultsPerPage;
 		const paginatedContracts = contractsByOrganizations.slice(paginationFrom, paginationTo);
-		const pages = this.props.pages;
+		const pages = [...Array(this.props.pages).keys()];
 		const paginationVisible = contractsByOrganizations.length > 0;
 		const contractsLoaded = !this.props.loadingResults;
 		const noResults = paginatedContracts.length === 0;
+		let paginatorPages = [];
+
+		if (pages.length > 5){
+			let bottom = (page - 3) < 0 ? 0 : (page - 3);
+			let top = (page + 3) > pages.length ? pages.length : (page + 3);
+			paginatorPages = pages.slice(bottom, top)
+			if (bottom > 0) paginatorPages.unshift(0, '...')
+			if (top < pages.length) paginatorPages.push('...', pages.length - 1)
+		} else {
+			paginatorPages = pages;
+		}
 		return (
 			<div>
 				<div className="sort-bar">
@@ -148,13 +159,14 @@ class OrganizationsList extends React.Component {
 				}
 				<div className={classNames(['pagination-bar', {visible: paginationVisible}])}>
 					{page === 0 ? null : <button onClick={this.props.paginationGoToPreviousPage} className="pagination-item">Anterior</button>}
-					{pages === 0 ? null :
-						[...Array(pages)].map((item, index) => {
+					{paginatorPages.length == 1 ? null :
+						paginatorPages.map(index => {
+							if (index == '...') return (<span key={index + Math.random(100)} className={'ellipsis'}>{index}</span>);
 							const activePage = page === index;
 							return (<button key={index} className={classNames(['pagination-item', {active: activePage}])} onClick={() => {this.props.paginationGoToPage(index)}}>{index + 1}</button>);
 						})
 					}
-					{page === pages - 1 ? null : <button onClick={this.props.paginationGoToNextPage} className="pagination-item">Siguiente</button>}
+					{pages.length <= page + 1 ? null : <button onClick={this.props.paginationGoToNextPage} className="pagination-item">Siguiente</button>}
 				</div>
 			</div>
 		);

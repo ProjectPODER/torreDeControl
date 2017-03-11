@@ -487,7 +487,7 @@ button {
 .site-footer {
 	width: 100%;
 	height: 200px;
-	background-color: $light-grey;
+	background-color: $white;
 	z-index: 1;
 	padding: 10px 50px;
 	@media screen and (min-width: 0) and (max-width: $mobile-size) {
@@ -537,6 +537,11 @@ button {
 					position: relative;
 					top: -10px;
 				}
+				.logo-hivos{
+					position: relative;
+					top: -7px;
+    			max-height: 35px;
+				}
 			}
 			.organization-link:first-of-type {
 				.organization-logo {
@@ -547,6 +552,7 @@ button {
 			}
 			.sitemap-link {
 				display: block;
+				text-decoration:none;
 			}
 		}
 

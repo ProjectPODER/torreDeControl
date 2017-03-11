@@ -1,4 +1,4 @@
-.page-metodologia {
+.page-sobre_el_proyecto {
 	.site-content {
 		@include outer-container;
 		.content-title {
@@ -13,61 +13,6 @@
 					@include omega();
 				}
 			}
-			// .article-media {
-			// 	@include span-columns(7);
-			// 	@include omega();
-			// 	@media screen and (min-width: 0) and (max-width: $desktop-size) {
-			// 		@include span-columns(12);
-							
-			// 	}
-			// }
-		
-		// 	&.article-theproject {
-		// 		.article-text {
-		// 			@include span-columns(9);
-		// 			@media screen and (min-width: 0) and (max-width: $tablet-size) {
-		// 				@include span-columns(12);
-		// 			}
-		// 			.article-header {
-		// 				@include span-columns(4 of 8);
-		// 				@media screen and (min-width: 0) and (max-width: $tablet-size) {
-		// 					@include fill-parent();
-		// 				}
-		// 				.article-title {
-							
-		// 				}
-		// 				.article-excerpt {
-		// 					@include span-columns(1 of 2);
-		// 					@media screen and (min-width: 0) and (max-width: $mobile-size) {
-		// 						@include span-columns(2 of 2);
-		// 					}
-		// 				}
-		// 			}
-		// 			.article-body {
-		// 				@include span-columns(4 of 8);
-		// 				@media screen and (min-width: 0) and (max-width: $tablet-size) {
-		// 					@include fill-parent();
-		// 					@include omega();
-		// 				}
-		// 			}
-		// 			@media screen and (min-width: 0) and (max-width: $desktop-size) {
-		// 				@include span-columns(12);
-		// 				@include omega();
-		// 			}
-		// 		}
-		// 		.article-media {
-		// 			@include span-columns(3);
-		// 			@include omega();
-		// 			@media screen and (min-width: 0) and (max-width: $desktop-size) {
-		// 				@include span-columns(12);
-		// 			}
-		// 			@media screen and (min-width: 0) and (max-width: $mobile-size) {
-		// 				.article-image {
-		// 					@include span-columns(12);
-		// 				}
-		// 			}
-		// 		}
-		// 	}
 		}
 	}
 
@@ -102,6 +47,10 @@
 							color: $blue;
 						}
 					}
+			    a {
+			      text-decoration:none;
+			      &:hover{text-decoration:underline;}
+			    }
 				}
 			}
 		}
@@ -118,8 +67,8 @@
 
 			ul, p {
 				margin-bottom: 15px;
-				font-size: 13px;
-				line-height: 15px;
+				@include set-font($font-sm);
+				line-height: 19px;
 			}
 			margin-bottom: 50px;
 			.article-text {
@@ -133,74 +82,8 @@
 					top: 0;
 					margin-bottom: 120px;
 				}
-				// .article-image {
-				// 	margin-right: 10%;
-				// 	@media screen and (min-width: 0) and (max-width: $desktop-size) {
-
-				// 		width: calc(90% - 100px);
-				// 		margin-left: 100px;
-				// 	}
-				// 	@media screen and (min-width: 0) and (max-width: $mobile-size) {
-				// 		width: 90%;
-				// 	}
-				// }
 			}
 		}
-		// .article-theproject {
-		// 	position: relative;
-		// 	.article-text {
-		// 		@media screen and (min-width: 0) and (max-width: $desktop-size) {
-		// 			margin-bottom: 50px;
-		// 		}
-		// 		@media screen and (min-width: 0) and (max-width: $mobile-size) {
-		// 			margin-bottom: 20px;
-		// 		}
-		// 	}		
-		// 	.article-body {
-		// 		background-color: rgba(255, 255, 255, 0.3);
-		// 		padding: 10px 20px;
-		// 		@media screen and (min-width: $tablet-size) and (max-width: $desktop-size) {
-		// 			min-height: 300px;
-		// 		}
-		// 		@media screen and (min-width: 0) and (max-width: $mobile-size) {
-		// 			padding: 10px 0;
-		// 			background-color: transparent;
-		// 		}
-		// 	}
-		// 	.article-media {
-		// 		position: absolute;
-		// 		top: 50%;
-		// 		right: 0;
-		// 		transform: translateY(-50%);
-		// 		@media screen and (min-width: 0) and (max-width: $desktop-size) {
-		// 			position: static;
-		// 		}
-		// 		@media screen and (min-width: 0) and (max-width: $tablet-size) {
-		// 			position: absolute;
-		// 			top: 40px;
-		// 			right: 0;
-		// 			transform: none;
-		// 		}
-		// 		@media screen and (min-width: 0) and (max-width: $mobile-size) {
-		// 			position: static;
-		// 		}
-		// 		.article-image {
-		// 			border-radius: 100%;
-		// 			@media screen and (min-width: $tablet-size) and (max-width: $desktop-size) {
-		// 				position: absolute;
-		// 				left: 100px;
-		// 				bottom: 0;
-		// 			}
-		// 			@media screen and (min-width: 0) and (max-width: $mobile-size) {
-		// 				border-radius: 0;
-		// 				position: static;
-		// 				float: none;
-		// 				height: auto;
-		// 				width: 100%;
-		// 			}
-		// 		}
-		// 	}
-		// }
 	}
 
 	.ornament-stripped{

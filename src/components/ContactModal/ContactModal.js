@@ -73,7 +73,7 @@ class ContactModal extends React.Component {
 								<p className="modal-legend">Si tienes documentos, fotografías o vídeos con más información sobre contratos, empresarios, obras o cualquier otro asunto referente al NAICM comunicalo a través del siguiente formulario o de forma anónima por Méxicoleaks.</p>
 								<label className="field-row">
 									<div className="field-row-wrapper">
-										<input disabled={disabledForm} className="field-row-input" 
+										<input disabled={disabledForm} className="field-row-input"
 										ref={(subjectInput) => { this.subjectInput = subjectInput; }}
 										type="text" placeholder="asunto" name="subject" onChange={this.changeFieldHandler}/>
 									</div>
@@ -97,8 +97,11 @@ class ContactModal extends React.Component {
 								</label>
 							</div>
 							<div className="wg-modal-actions">
-								<button disabled={disabledForm} type="button" className="send-info-button button-cancel" onClick={this.closeHandler}>Cancel</button>
 								<button disabled={disabledForm} type="submit" className="send-info-button button-send">Enviar</button>
+							</div>
+							<div className="tor-message">
+								<p className="modal-legend">También puedes enviar información de forma anónima y segura a través de <a href="https://mexicoleaks.mx/enviar-para.php?r=poder" rel="noreferrer noopener">Mexicoleaks</a> con el <a href="https://www.torproject.org" rel="noreferrer noopener">navegador TOR</a>.
+								</p>
 							</div>
 						</form>
 						<div className={classNames(["sending-legend",  {"active": infoStatus}])}>
