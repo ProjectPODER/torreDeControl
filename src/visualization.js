@@ -63,11 +63,22 @@ module.exports = () => {
 			{nodes: [], links: []},
 			{nodes: [], links: []},
 			{nodes: [], links: []}
-		];
-		const organizationFilter = new Filter({property: 'suppliers'});
-		const contractorsNamesSet = new MathSet(AppData.contracts);
-		const organizationsByNames = Object.keys(contractorsNamesSet.countByFilterProperty(organizationFilter));
+		];		
 
+		var contractsByOrganizations = []
+		AppData.contracts.forEach(function(contract){
+			contract.suppliers.forEach(function(supplier){
+				if (contractsByOrganizations[supplier.simple] === undefined) contractsByOrganizations[supplier.simple] = [];
+				contractsByOrganizations[supplier.simple].push({
+		      key: supplier.simple,
+		      value: contract
+		    })
+			})
+		})
+
+		const organizationsByNames = Object.keys(contractsByOrganizations).map(key => contractsByOrganizations[key]);
+		console.log(AppData.contracts)
+		console.log(organizationsByNames)
 		AppData.texts.contracts_amount_text = "$ " + (Math.round(contractsAmount/1000000)).toLocaleString() + " M";
 		AppData.texts.contracts_type_text = Object.keys(contractsByTypes).length;
 		AppData.texts.contracts_total_text = objectToArray(contractsByTypes).reduce(function(total, actual) {return total + Object.keys(actual.contracts).length}, 0);
@@ -88,7 +99,7 @@ module.exports = () => {
 		$('#big_amount_percentage').text(AppData.texts.big_amount_percentage_text);
 		$('#big_amount_winners').text(AppData.texts.big_amount_winners_text);
 
-		const node = { id: 'contracts', name: 'contracts', activeSize: contractsAmount / 5000000000, inactiveSize: 35, topParentNode: false, nodeForce: 10, type: 'all', group: 1, color: '#1ee6d3', linksCount: 0, label: "NAICM" };
+		const node = { id: 'contracts', name: 'contracts', activeSize: contractsAmount / 1000000000, inactiveSize: 35, topParentNode: false, nodeForce: 10, type: 'all', group: 1, color: '#1ee6d3', linksCount: 0, label: "NAICM" };
 		slidesObjects[1].nodes.push(node);
 		nodes.push(node);
 		for (let i in contractsByTypes) {
