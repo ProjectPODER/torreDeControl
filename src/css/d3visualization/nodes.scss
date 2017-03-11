@@ -16,8 +16,11 @@
 .labelText {
 	display: none;
     font-size: 60px;
-    transform: translate3d(-79px,16px,0);
+    transform: translate3d(-106px, 22px, 0);
     pointer-events: none;
+    fill: white;
+    font-weight: 700;
+    font-family: lato;
     &.active {
     	display: block;
     }

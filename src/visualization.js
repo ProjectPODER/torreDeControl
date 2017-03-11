@@ -134,6 +134,8 @@ module.exports = () => {
 			nodes.push(node);
 		}
 
+		let allFiguresCount = 0;
+
 		function linkParents(linkId, organization) {
 			const parents = organization.parents;
 			const shareholders = organization.shareholders;
@@ -145,6 +147,7 @@ module.exports = () => {
 				}
 			} else {
 				if (organizationNotExists(organization._id)) {
+					allFiguresCount++;
 					const node = { id: organization._id, name: organization.name, activeSize: 25, inactiveSize: 10, topParentNode: !organization.parents, nodeForce: 20, type: 'related', group: 4, color: '#3c5a6f', linksCount: 0, relationType: 'Organization' };
 					const linkToCenter = { source: organization._id, target: 'contracts', type: 'related', hidden: true, linkStrength: 3, linkDistance: 11, color: '#706F74', dashed: false, opacity: 0 };
 					slidesObjects[5].links.push(linkToCenter);
@@ -159,6 +162,7 @@ module.exports = () => {
 
 				if (shareholders.length > 0) {
 					for (let s in shareholders) {
+						allFiguresCount++;
 						const shareholder = shareholders[s];
 						const shareholderId = shareholder._id;
 						const shareholderName = shareholder.name;
@@ -200,6 +204,7 @@ module.exports = () => {
 
 				if (boards.length > 0) {
 					for (let s in boards) {
+						allFiguresCount++;
 						const board = boards[s];
 						const boardId = board._id;
 						const boardName = board.name;
@@ -248,6 +253,8 @@ module.exports = () => {
 				linkParents(linkId, parent);
 			}
 		}
+
+		$('#slide_5_count').text(allFiguresCount);
 
 		/* Investigations */
 		for (let i in investigations) {
@@ -403,6 +410,22 @@ function setupD3() {
 	link = g.append("g").selectAll('link');
 	node = g.append("g").selectAll('node');
 	label = g.append("g").selectAll('.labelText');
+
+	$('svg').on("mousedown", function() {
+		for (let l in graph.links) {
+        	const link = graph.links[l];
+        	link.lastOpacity = link.opacity;
+        	link.opacity = 1;
+        	link.selected = false;
+        }
+
+        for (let l in graph.nodes) {
+        	const node = graph.nodes[l];
+        	node.lastOpacity = node.opacity;
+        	node.opacity = 1;
+        	node.selected = false;
+        }
+	})
 	// const shadow = g.append("defs");
 	// const filter = svg.append("filter");
 	// const feGaussianBlur = filter.append("feGaussianBlur");
@@ -669,43 +692,43 @@ function setupD3() {
 	            		switch (d.type) {
 	            			case "all":
 	            				return `
-	            				<p>Nuevo Aeropuerto de la ciudad de México</p>
+	            				<p class="title">El Nuevo Aeropuerto Internacional de la Ciudad de México</p>
 								<p>Número de contratos: <span>${AppData.texts.contracts_total_text}</span></p>
-								<p>Importe contratado: <span>${AppData.texts.contracts_amount_text}</span></p>
+								<p>Importe contratado: <span>$${AppData.texts.contracts_amount_text}</span></p>
 								`;
 	            				break;
 	            			case "contract_type":
 	            				return `
-	            				<p>${d.name}</p>
+	            				<p class="title">${d.name}</p>
 								<p>Número de contratos: <span>${d.contractsCount}</span></p>
-								<p>Importe contratado: <span>${d.contractsAmount}</span></p>
+								<p>Importe contratado: <span>$${d.contractsAmount}</span></p>
 								`;
 	            				break;
 	            			case "contract":
 	            				return `
-	            				<p>${d.name}</p>
+	            				<p class="title">${d.name}</p>
 	            				<span>Proveedores:</span>
 								<ul> ${d.suppliersList.map(supplier => `<li>${supplier}</li>`).join('')}</ul>
-								<p>Importe contratado: <span>${d.amount}</span></p>
+								<p>Importe contratado: <span>$${d.amount}</span></p>
 								`;
 	            				break;
 	            			case "organization":
 	            				return `
-	            				<p>${d.name}</p>
+	            				<p class="title">${d.name}</p>
 								<p>Número de contratos: <span>${d.contractsCount}</span></p>
-								<p>Importe contratado: <span>${d.contractsAmount}</span></p>
+								<p>Importe contratado: <span>$${d.contractsAmount}</span></p>
 								`;
 	            				break;
 	            			case "related":
 	            				return `
-	            				<p>${d.name} [${d.relationType}]</p>
+	            				<p class="title">${d.name} [${d.relationType}]</p>
 	            				<p>Más información en QuiénEsQuién.Wiki:</p>
 	            				<p><a href="https://quienesquien.wiki/orgs/${d.name}">https://quienesquien.wiki/orgs/${d.name}</a></p>
 								`;
 	            				break;
 	            			case "investigation":
 	            				return `
-	            				<p>${d.name}</p>
+	            				<p class="title">${d.name}</p>
 	            				<p>Más información en QuiénEsQuién.Wiki:</p>
 	            				<p><a href="${d.url}">${d.url}</a></p>
 								`;
