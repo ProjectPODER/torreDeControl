@@ -1,5 +1,5 @@
 <?php 
-require 'src/phpMailer/PHPMailerAutoload.php';
+require 'phpMailer/PHPMailerAutoload.php';
 class ResponseError {
 	private $status;
 	private $messages;
