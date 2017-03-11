@@ -1,4 +1,8 @@
 var images = [
+	require('./images/mexicoleaks-grey.svg'),
+	require('./images/quienesquien-grey.svg'),
+	require('./images/peruleaks-grey.svg'),
+	require('./images/rindecuentas-grey.svg'),
 	require('./images/scroll_down.svg'),
 	require('./images/colaboratorio.svg'),
 	require('./images/hivos.svg'),
