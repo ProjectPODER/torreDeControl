@@ -100,7 +100,7 @@ class ContactModal extends React.Component {
 								<button disabled={disabledForm} type="submit" className="send-info-button button-send">Enviar</button>
 							</div>
 							<div className="tor-message">
-								<p className="modal-legend">También puedes enviar información de forma anónima y segura a través de <a href="https://mexicoleaks.mx" rel="noreferrer noopener">Mexicoleaks</a> con el <a href="https://www.torproject.org" rel="noreferrer noopener">navegador TOR</a>.
+								<p className="modal-legend">También puedes enviar información de forma anónima y segura a través de <a href="https://mexicoleaks.mx/enviar-para.php?r=poder" rel="noreferrer noopener">Mexicoleaks</a> con el <a href="https://www.torproject.org" rel="noreferrer noopener">navegador TOR</a>.
 								</p>
 							</div>
 						</form>
