@@ -174,19 +174,21 @@
           .wg-modal-body {
             @include span-columns(8);
             @include shift(2);
-              @media screen and (min-width: 0) and (max-width: $mobile-size) {
-                @include span-columns(12);
-                @include shift(0);
-              }
+            height:auto;
+            @media screen and (min-width: 0) and (max-width: $mobile-size) {
+              @include span-columns(12);
+              @include shift(0);
+            }
             .info-form {
               @include span-columns(8 of 8);
               .wg-modal-close-button {
               }
               .wg-modal-title {
-                @include fill-parent();
+                @include row();
               }
               .wg-modal-info {
-                @include fill-parent();
+                @include row();
+                margin-bottom:0px;
                 .modal-legend {
                   @include span-columns(6 of 8);
                   @include shift(1);
@@ -203,17 +205,20 @@
                       @include fill-parent();
                     }
                   }
-                }  
+                }
               }
               .wg-modal-actions {
+                @include row();
                 .send-info-button {
                   @include span-columns(2 of 8);
-                  &.button-cancel {
-                    @include shift(4);
-                  }
-                  &.button-send {
-                    @include omega(4);
-                  }
+                  @include shift(3);
+                }
+              }
+              .tor-message{
+                @include row();
+                .modal-legend {
+                  @include span-columns(6 of 8);
+                  @include shift(1);
                 }
               }
             }
@@ -236,6 +241,9 @@
         &.visible {
           display: block;
         }
+        .ellipsis {
+          @include set-font($font-md);
+        }
         .pagination-item {
           background-color: transparent;
           border: none;
@@ -243,7 +251,7 @@
           margin: 4px;
           cursor: pointer;
           font-family: Rajdhani;
-          @include set-font($font-xs);
+          @include set-font($font-sm);
           &.active {
             font-weight: 600;
           }
@@ -612,7 +620,7 @@
             height: auto;
           }
           .info-form {
-            overflow-y: scroll;
+            // overflow-y: hidden;
             height: 100%;
             .wg-modal-close-button {
               &:before {
@@ -630,6 +638,8 @@
               .modal-legend {
                 color: $blue;
                 @include set-font($font-xs);
+                line-height: 19px;
+                text-align:center;
                 &:last-of-type {
                   margin-bottom: 25px;
                 }
@@ -638,7 +648,7 @@
                 .field-row-wrapper {
                   position: relative;
                   .field-row-input {
-                    margin-bottom: 30px;
+                    margin-bottom: 10px;
                     &.field-textarea {
                       height: 100px;
                     }
@@ -653,7 +663,8 @@
               }
             }
             .wg-modal-actions {
-              position: static;
+              margin:0px;
+              position:relative;
               .send-info-button {
                 @include set-font($font-xxs);
                 text-transform: uppercase;
@@ -674,6 +685,17 @@
                   &:hover {
                     background-color: $light-orange;
                   }
+                }
+              }
+            }
+            .tor-message{
+              margin-top:20px;
+              text-align:center;
+              a{
+                text-decoration:none;
+                font-weight:600;
+                &:hover{
+                  text-decoration:underline;
                 }
               }
             }
@@ -716,7 +738,7 @@
           }
         }
       }
-      
+
     }
-  } 
+  }
 }

@@ -63,7 +63,7 @@ module.exports = () => {
 			{nodes: [], links: []},
 			{nodes: [], links: []},
 			{nodes: [], links: []}
-		]; 
+		];
 		const organizationFilter = new Filter({property: 'suppliers'});
 		const contractorsNamesSet = new MathSet(AppData.contracts);
 		const organizationsByNames = Object.keys(contractorsNamesSet.countByFilterProperty(organizationFilter));
@@ -118,7 +118,7 @@ module.exports = () => {
 			const node = { id: organization._id, name: organization.name, activeSize: 15, inactiveSize: 10, topParentNode: !organization.parents, nodeForce: 10, type: 'organization', group: 4, color: '#3c5a6f', linksCount: 0, contractsCount: organization.contracts_count, contractsAmount: organization.contracts_amount,  };
 			for (let j in AppData.contracts) {
 				const contract = AppData.contracts[j];
-					
+
 				if (contract.suppliers && contract.suppliers.filter(supplier => {return supplier.simple == organization.simple}).length > 0) {
 					const link = { source: organization._id, target: contract._id, type: 'organization', linkStrength: 4, linkDistance: 1, topParentNode: !organization.parents, color: '#706F74', dashed: true, opacity: 1, name: organization.name };
 					slidesObjects[4].links.push(link);
@@ -126,7 +126,7 @@ module.exports = () => {
 					node.linksCount++;
 				}
 			}
-			
+
 			const linkToCenter = { source: organization._id, target: 'contracts', type: 'organization', hidden: true, linkStrength: 4, linkDistance: 6, color: '#706F74', dashed: false, opacity: 0 };
 			slidesObjects[4].links.push(linkToCenter);
 			links.push(linkToCenter);
@@ -169,7 +169,7 @@ module.exports = () => {
 						const shareholderSimple = shareholder.simple;
 						const typeColor = shareholder.type == "person" ? "#FC8917" : "#363E4E";
 						if (shareholdersStack[shareholderId] == undefined) {
-								shareholdersStack[shareholderId] = {count: 0};	
+								shareholdersStack[shareholderId] = {count: 0};
 						} else {
 							shareholdersStack[shareholderId].count++;
 						}
@@ -210,7 +210,7 @@ module.exports = () => {
 						const boardName = board.name;
 						const boardSimple = board.simple;
 						if (boardsStack[boardId] == undefined) {
-								boardsStack[boardId] = {count: 0};	
+								boardsStack[boardId] = {count: 0};
 						} else {
 							boardsStack[boardId].count++;
 						}
@@ -275,14 +275,14 @@ module.exports = () => {
 				.filter(key => shareholdersStack[key].count > 1) /* Get only elements with more than one relation */
 				.map(key => shareholdersStack[key]) /* Return objects instead of only ids */
 				.filter(shareholder => investigation.suppliers.indexOf(shareholder.node.simple) > -1); /* Get only elements mentioned whithin the investigation */
-				
+
 			shareholders.forEach(shareholder => {
 				const shareholderNode = shareholder.node;
 				const link = { source: investigationId, target: shareholderNode.id, type: 'investigation', linkStrength: 2, linkDistance: 1, color: '#706F74', dashed: false, opacity: 0.6 };
 				slidesObjects[6].links.push(link);
 				links.push(link);
 			});
-			
+
 			const boards = Object.keys(boardsStack)
 				.filter(key => boardsStack[key].count > 1) /* Get only elements with more than one relation */
 				.map(key => boardsStack[key]) /* Return objects instead of only ids */
@@ -306,8 +306,8 @@ module.exports = () => {
 		setupD3();
 		window.graph = {nodes, links};
 	});
-	
-	
+
+
 };
 
 function getData(cb) {
@@ -342,8 +342,8 @@ function getContracts(cb) {
 			cb(null, {contracts: [...results[0]/*, ...results[1]*/]})
 		}
 	);
-	
-	
+
+
 }
 
 function getOrganizations(params, cb) {
@@ -358,11 +358,11 @@ function getOrganizations(params, cb) {
 		let supplierName = suppliers[s].simple;
 		uniqueSuppliers[supplierName] != undefined ? uniqueSuppliers[supplierName] == uniqueSuppliers[supplierName] + 1 : uniqueSuppliers[supplierName] = 1;
 	}
-	
+
 	const organizationFilter = new Filter({property: 'suppliers'});
 	const contractorsNamesSet = new MathSet(params.contracts);
 	const organizationsByNames = Object.keys(uniqueSuppliers);
-	
+
 	$.post("http://ec2-54-83-139-8.compute-1.amazonaws.com/api/v1/organizations", {name: organizationsByNames})
 	.done(response => {cb(null, {...params, organizations: response.data});})
 	.fail(response => {cb(null, {...params, organizations: []});});
@@ -448,7 +448,7 @@ function setupD3() {
 	// 	.attr("dx","20")
 	// 	.attr("dy","20")
 	// 	.attr("result","feGaussianBlur");
-	
+
 	// feMergeNodeA
 	// 	.attr("in", "opacityShadow");
 	// feMergeNodeB
@@ -600,16 +600,16 @@ function setupD3() {
 				goToSlide(nextIndex - 1);
 	    },
 		afterLoad: function(anchorLink, index){
-			$(`.slide-${index}`).addClass('slide-active');			
+			$(`.slide-${index}`).addClass('slide-active');
 		}
 
 	});
-	
+
 	$.fn.fullpage.moveTo('slide-2');
 	$.fn.fullpage.moveTo('slide-1');
 	$('.fullpage').animate({'opacity': 1});
 	// $('.slide-1').addClass('slide-active');
-	
+
 	graph = {
 		nodes: setNodeSizeToType(objectToArray((new MathSet(nodes)).filter(slide_1).toObject()), 'all', 3),
 		links: objectToArray((new MathSet(links)).filter(slide_1).toObject())
@@ -626,7 +626,7 @@ function setupD3() {
 		let scaleMin;
 
 		const tooltip = d3.select(".tooltip")
-				.attr("class", "tooltip")				
+				.attr("class", "tooltip")
 				.style("opacity", 0)
 				.on("mouseover", function() {tooltip.transition().duration(500).style("opacity", .98)})
 		        .on("mouseout", function() {tooltip.transition().duration(200).style("opacity", 0).style("pointer-events", "none")})
@@ -679,12 +679,12 @@ function setupD3() {
 			// .attr("filter", 'url(#f3)')
 			.attr("class", d => "nodes " + d.type + " " + (d.visibleNode ? "visible-node" : "invisible-node"))
 			.merge(node)
-			.on("mouseover", function(d) {		
+			.on("mouseover", function(d) {
 				const tooltipWidth = tooltipHTML.width() + 20;
 				const tooltipHeight = tooltipHTML.height() + 20;
 	            tooltip
-	            	.transition()		
-	                .duration(200)		
+	            	.transition()
+	                .duration(200)
 	                .style("opacity", .98)
 	                .style("pointer-events", "initial");
 	            tooltip
@@ -738,10 +738,10 @@ function setupD3() {
 	            				break;
 	            		}
 	            	})
-	                // .style("left", (d3.event.pageX + 30) + "px")		
-	                // .style("top", (d3.event.pageY - 28) + "px");	
-	                .style("left", (d3.event.pageX - tooltipWidth - 30) + "px")		
-	                .style("top", (d3.event.pageY - tooltipHeight / 2) + "px");	
+	                // .style("left", (d3.event.pageX + 30) + "px")
+	                // .style("top", (d3.event.pageY - 28) + "px");
+	                .style("left", (d3.event.pageX - tooltipWidth - 30) + "px")
+	                .style("top", (d3.event.pageY - tooltipHeight / 2) + "px");
 					// contracts_amount_text
 					// contracts_type_text
 					// contracts_total_text
@@ -755,17 +755,17 @@ function setupD3() {
             .on("mousemove", function(d) {
             	const tooltipWidth = tooltipHTML.width() + 20;
 				const tooltipHeight = tooltipHTML.height() + 20;
-	            tooltip	
-	                // .style("left", (d3.event.pageX + 30) + "px")		
-	                // .style("top", (d3.event.pageY - 28) + "px");	
-	                .style("left", (d3.event.pageX - tooltipWidth - 30) + "px")		
-	                .style("top", (d3.event.pageY - tooltipHeight / 2) + "px");	
+	            tooltip
+	                // .style("left", (d3.event.pageX + 30) + "px")
+	                // .style("top", (d3.event.pageY - 28) + "px");
+	                .style("left", (d3.event.pageX - tooltipWidth - 30) + "px")
+	                .style("top", (d3.event.pageY - tooltipHeight / 2) + "px");
             })
-	        .on("mouseout", function(d) {		
-	            tooltip.transition()		
-	                .duration(500)		
+	        .on("mouseout", function(d) {
+	            tooltip.transition()
+	                .duration(500)
 	                .style("opacity", 0)
-	                .style("pointer-events", "initial");	
+	                .style("pointer-events", "initial");
 	        })
 	        .on("mousedown", function(d) {
 	        	globalTimers.forEach(timer => cancelAnimationFrame(timer));
@@ -821,7 +821,7 @@ function setupD3() {
 			            )
 		            	break;
 	            }
-	            
+
 	            function showSelectedLinks(linkId, onlyType) {
 	            	const selectedLinks = links.filter(
 		            	link => {
