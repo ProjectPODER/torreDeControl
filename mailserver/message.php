@@ -55,16 +55,16 @@ function sendMail($subject, $email, $text) {
 	// $mail->SMTPDebug = 3;
 
 	$mail->isSMTP();
-	$mail->Host = 'smtp.mailtrap.io';
+	$mail->Host = 'bulk.mayfirst.org';
 	$mail->SMTPAuth = true;
-	$mail->Username = '2b87694800225f';
-	$mail->Password = '9cfd9254785eac';
+	$mail->Username = 'qqw@rindecuentas.org';
+	$mail->Password = '6To3nZ64e6Ax';
 	$mail->SMTPSecure = 'tls';
-	$mail->Port = 2525;
+	$mail->Port = 587;
 
 	$mail->setFrom($email);
-	$mail->addAddress('torredecontrol@example.net', 'Torre de control');
-	$mail->addReplyTo('info@torredecontrol.com', 'Torre de control');
+	$mail->addAddress('torredecontrol@projectpoder.org', 'Torre de Control - Project Poder');
+	$mail->addReplyTo('torredecontrol@projectpoder.org', 'Torre de Control - Project Poder');
 	$mail->isHTML(true);
 
 	$mail->Subject = $subject;

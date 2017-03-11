@@ -1,3 +1,8 @@
+@keyframes pulse {
+    0% {opacity:0.05;}
+    50% {opacity:0.25;}
+    100% {opacity:0.05;}
+}
 .page-visualizacion .site-footer {
 	bottom: -210px;
 	transition: bottom ease 300ms;
@@ -232,4 +237,20 @@ div.tooltip .title {
 div.tooltip a {
 	pointer-events: initial;
 	color: #013E5C;
+}
+
+.visualization-down-arrow {
+	width: 54px;
+	height: 30px;
+	position: absolute;
+	left: 50%;
+	bottom: 20px;
+	transform: translate3d(-50%, 0, 0);
+	-webkit-transform: translate3d(-50%, 0, 0);
+	-moz-transform: translate3d(-50%, 0, 0);
+	-ms-transform: translate3d(-50%, 0, 0);
+	-o-transform: translate3d(-50%, 0, 0);
+	background-image: url('../images/scroll_down.svg');
+	background-size: cover;
+	animation: pulse 5s infinite;
 }

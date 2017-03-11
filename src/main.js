@@ -1,4 +1,5 @@
 var images = [
+	require('./images/scroll_down.svg'),
 	require('./images/colaboratorio.svg'),
 	require('./images/hivos.svg'),
 	require('./images/mexicoleaks.svg'),
