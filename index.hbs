@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Torre de control</title>
-	<link href="https://fonts.googleapis.com/css?family=Rajdhani|Roboto:300,400" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Rajdhani|Roboto:300,400|Lato:400,700" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	{{> templates/favicon}}
 	<meta name="theme-color" content="#ffffff">
@@ -19,94 +19,7 @@
 		<!-- end of header -->
 
 		<!-- body: visualización -->
-
-		<div class="graph-container">
-			<svg></svg>
-		</div>
-		<ul id="slidesMenu" class="slides-menu">
-		    <li class="slides-menu-item" data-menuanchor="slide-1" class="active"><a class="slides-menu-item-link" href="#slide-1"></a></li>
-		    <li class="slides-menu-item" data-menuanchor="slide-2"><a class="slides-menu-item-link" href="#slide-2"></a></li>
-		    <li class="slides-menu-item" data-menuanchor="slide-3"><a class="slides-menu-item-link" href="#slide-3"></a></li>
-		    <li class="slides-menu-item" data-menuanchor="slide-4"><a class="slides-menu-item-link" href="#slide-4"></a></li>
-		    <li class="slides-menu-item" data-menuanchor="slide-5"><a class="slides-menu-item-link" href="#slide-5"></a></li>
-		    <li class="slides-menu-item" data-menuanchor="slide-6"><a class="slides-menu-item-link" href="#slide-6"></a></li>
-		</ul>
-		<div id="fullpage" class="fullpage">
-			<div class="visualization-container">
-				<div class="section info-container slide-active slide-1 fp-auto-height">
-					<div class="info-wrapper">
-						<div class="info-data">
-							<p class="top-text">La contratación empezó en</p>
-							<p class="middle-text">2014</p>
-							<p class="bottom-text">con los primeros estudios de terreno  </p>
-						</div>
-						<div class="info-abstract">
-							<h2 class="abstract-title">El Nuevo Aeropuerto de la Ciudad de México</h2>
-							<p class="abstract-body">La construcción del NAICM es el proyecto de obra pública estrella del sexenio de Peña Nieto y uno de los que comporta más gasto de la década.</p>
-						</div>
-					</div>
-				</div>
-				<div class="section info-container slide-2 fp-auto-height">
-					<div class="info-wrapper">
-						<div class="info-data">
-							<p class="top-text">Se han contratado</p>
-							<p class="middle-text" id="contracts_amount"></p>
-							{{!-- contracts_type --}}
-							<p class="bottom-text">para la realización del megaproyecto.</p>
-						</div>
-						<div class="info-abstract">
-							<h2 class="abstract-title little-title">Tres organismos estatales realizan contrataciones</h2>
-							<p class="abstract-body">Antes de la creación del Grupo Aeroportuario de la Ciudad de México el Gobierno Federal realizó convenios a través de Aeropuertos y Servicos Auxiliares (ASA) y la Conagua.</p>
-						</div>
-					</div>
-				</div>
-				<div class="section info-container slide-3 fp-auto-height">
-					<div class="info-wrapper">
-						<div class="info-data">
-							<p class="top-text">En total se han realizado</p>
-							<p class="middle-text" id="contracts_total"></p>
-							<p class="bottom-text">contratos del <br><strong>NACIM</strong></p>
-						</div>
-						<div class="info-abstract">
-							<h2 class="abstract-title"><span id="direct_adjudication">{cant de adjudicaciones directas}</span> adjudicaciones directas</h2>
-							<p class="abstract-body">El <strong><span id="direct_adjudication_percentage">{porcentaje de adjudicaciones directas sobre el total}</span>%</strong> de los contratos se han adjudicado sin concurso. La ley recomienda que la contratación de obra pública se haga en forma de licitación abierta a todas las empresas.</p>
-						</div>
-					</div>
-				</div>
-				<div class="section info-container slide-4 fp-auto-height">
-					<div class="info-wrapper">
-						<div class="info-data">
-							<p class="top-text">Los contratos los han ganado</p>
-							<p class="middle-text"><span id="suppliers_count">{"suppliers_person" y "suppliers_org" sin duplicados}</span> </p>
-							<p class="bottom-text">empresas en solitario o en consorcio.</p>
-						</div>
-						<div class="info-abstract">
-							<h2 class="abstract-title">Los contratos más importantes</h2>
-							<p class="abstract-body">Hay <strong id="big_amount_contracts">{Número de contratos con un importe superior a 1.000.000.000}</strong> licitaciones y adjudicaciones de más de mil millones de pesos, estas suponen el <strong><span id="big_amount_percentage">{porcentaje de que representan las suma del contratos de más de mil millones sobre el total de gasto total de NAICM}</span>%</strong> del gasto total del NAICM y lo han ganado <strong id="big_amount_winners">{Número de empresas que han ganado estos contratos}</strong> empresas</p>
-						</div>
-					</div>
-				</div>
-				<div class="section info-container slide-5 fp-auto-height">
-					<div class="info-wrapper">
-						<div class="info-abstract">
-							<h2 class="abstract-title">Los contratos más importantes</h2>
-							<p class="abstract-body">La Torre de Control publicará de forma periodica <a href="investigacion.html">investigaciones</a> sobre el proceso de construcción del NAICM.</p>
-							<p class="abstract-body">Tips, información o comentarios a <a href="mailto:torredecontrol@projectpoder.org">torredecontrol@projectpoder.org</a> y <a href="https://mexicoleaks.mx/enviar-para.php?r=poder" rel="noreferrer noopener" target="_blank" >Méxicoleaks</a></p>
-						</div>
-					</div>
-				</div>
-				<div class="section info-container slide-6 fp-auto-height">
-					<div class="info-wrapper">
-						<div class="info-abstract">
-							<h2 class="abstract-title">Los contratos más importantes</h2>
-							<p class="abstract-body">La Torre de Control publicará de forma periodica <a href="investigacion.html">investigaciones</a> sobre el proceso de construcción del NAICM.</p>
-							<p class="abstract-body">Tips, información o comentarios a <a href="mailto:torredecontrol@projectpoder.org">torredecontrol@projectpoder.org</a> y <a href="https://mexicoleaks.mx/enviar-para.php?r=poder" rel="noreferrer noopener" target="_blank" >Méxicoleaks</a></p>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-
+		{{> templates/visualization}}
 		<!-- end of body -->
 
 		<!-- footer -->

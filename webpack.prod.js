@@ -120,9 +120,13 @@ module.exports = {
 	      template: 'investigacion.html'
 	    }),
 	    new HtmlWebpackPlugin({  // Also generate a test.html
-	      filename: 'sobre_el_proyecto.html',
-	      template: 'sobre_el_proyecto.html'
+          filename: 'sobre_el_proyecto.html',
+          template: 'sobre_el_proyecto.html'
 	    }),
+        new HtmlWebpackPlugin({  // Also generate a test.html
+          filename: 'iframe-prensa.html',
+          template: 'iframe-prensa.html'
+        }),
 	    new ExtractTextPlugin("[name].css"),
         new CopyWebpackPlugin([
             { from: 'favicons', to: 'src/favicons' },
