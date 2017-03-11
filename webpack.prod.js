@@ -93,9 +93,9 @@ module.exports = {
             onDone: function (Handlebars) {}
         }),
         new HandlebarsPlugin({
-            entry: path.join(process.cwd(), "metodologia.hbs"),
-            output: path.join(process.cwd(), "metodologia.html"),
-            
+            entry: path.join(process.cwd(), "sobre_el_proyecto.hbs"),
+            output: path.join(process.cwd(), "sobre_el_proyecto.html"),
+
             // hooks
             partials: [
                 path.join(process.cwd(), "templates", "*.hbs")
@@ -111,17 +111,17 @@ module.exports = {
 	      inject: true,
 	      template: 'index.html'
 	    }),
-	    new HtmlWebpackPlugin({  // Also generate a test.html 
+	    new HtmlWebpackPlugin({  // Also generate a test.html
 	      filename: 'contratos.html',
 	      template: 'contratos.html'
 	    }),
-	    new HtmlWebpackPlugin({  // Also generate a test.html 
+	    new HtmlWebpackPlugin({  // Also generate a test.html
 	      filename: 'investigacion.html',
 	      template: 'investigacion.html'
 	    }),
-	    new HtmlWebpackPlugin({  // Also generate a test.html 
-	      filename: 'metodologia.html',
-	      template: 'metodologia.html'
+	    new HtmlWebpackPlugin({  // Also generate a test.html
+	      filename: 'sobre_el_proyecto.html',
+	      template: 'sobre_el_proyecto.html'
 	    }),
 	    new ExtractTextPlugin("[name].css"),
         new CopyWebpackPlugin([
