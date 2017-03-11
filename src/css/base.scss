@@ -171,6 +171,7 @@ button {
 	@media screen and (min-width: 0) and (max-width: $mobile-size) {
 		display: none;
 		height: 0;
+		padding-bottom: 10px;
 	}
 
 	.ribbon-item {
@@ -182,12 +183,36 @@ button {
 		    text-align: center;
 		    position: relative;
 		    height: 100%;
+		    &.link-desktop{
+					@media screen and (min-width: 0) and (max-width: $mobile-size) {
+		    		display:none;
+						height: 0;
+					}
+	    	}
 		    img {
 		    	width: 100%;
 		    	position: absolute;
 		    	left: 50%;
 		    	top: 50%;
 		    	transform: translate3d(-50%, -50%, 0);
+		    	&.link-desktop{
+						@media screen and (min-width: 0) and (max-width: $mobile-size) {
+			    		display:none;
+							height: 0;
+						}
+		    	}
+		    	&.link-mobile{
+		    		display:none;
+						height: 0;
+						@media screen and (min-width: 0) and (max-width: $mobile-size) {
+							display: inline-block;
+							height: auto;
+							height:24px;
+							&.link-quienesquien{
+								height:32px;
+							}
+						}
+		    	}
 		    }
 		    .link-quienesquien {
 		    	max-width: 101px;
@@ -280,7 +305,7 @@ button {
 			}
 		}
 		.wg-navbar-menu-button span {
-			background-color: $white;
+			background-color: $grey;
 			transition: background-color 0.1s ease 0.2s, transform 0.3s ease;
 		}
 	}
@@ -289,8 +314,8 @@ button {
 			max-width: 1024px;
 			background-color: $white;
 			@media screen and (min-width: 0) and (max-width: $mobile-size) {
-				background-color: $blue;
-		    }
+				background-color: $white;
+		  }
 		.wg-navbar-menu {
 			margin: 0;
 			.wg-navbar-item {
@@ -302,7 +327,7 @@ button {
 					font-size: 20px;
 					@media screen and (min-width: 0) and (max-width: $mobile-size) {
 						padding: 8px;
-						color: $white;
+						color: $blue;
 					}
 					&:before {
 						content: '';
@@ -350,7 +375,7 @@ button {
 			background-color: transparent;
 			@media screen and (min-width: 0) and (max-width: $mobile-size) {
 				display: block;
-				padding: 0;
+				padding-bottom: 10px;
 			}
 			.ribbon-item {
 				float: none;
@@ -368,9 +393,6 @@ button {
 					overflow: visible;
 					width: 100%;
 					position: initial;
-					.link-poder {
-						display: none;
-					}
 					img {
 						position: initial;
 						transform: none;
@@ -434,6 +456,8 @@ button {
 		.wg-navbar {
 			padding-top: 60px;
 			@include span-columns(12 of 12);
+			overflow-y: scroll;
+			overflow-x: hidden;
 			.wg-navbar-menu {
 				margin: 0;
 				.wg-navbar-item {
@@ -447,15 +471,22 @@ button {
 				text-align: center;
 				margin: 10px;
 				display: block;
-				color: $white;
+				color: $grey;
 			}
 			.nav-separator {
 				display: block;
-				height: 2px;
-				background: $white;
+				height: 1px;
+				background: $grey;
 				float: left;
 				width: 80%;
 				margin: 0 10%;
+			}
+			.mobile-icons{
+				text-align: center;
+				.organization-link{
+					display: inline-block;
+					margin: 0 5px;
+				}
 			}
 			.mobile-social {
 				@include span-columns(12 of 12);
