@@ -12,3 +12,13 @@
 		display: block;
 	}
 }
+
+.labelText {
+	display: none;
+    font-size: 60px;
+    transform: translate3d(-79px,16px,0);
+    pointer-events: none;
+    &.active {
+    	display: block;
+    }
+}
