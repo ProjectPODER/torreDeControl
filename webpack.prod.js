@@ -95,7 +95,7 @@ module.exports = {
         new HandlebarsPlugin({
             entry: path.join(process.cwd(), "metodologia.hbs"),
             output: path.join(process.cwd(), "metodologia.html"),
-            
+
             // hooks
             partials: [
                 path.join(process.cwd(), "templates", "*.hbs")
@@ -111,18 +111,22 @@ module.exports = {
 	      inject: true,
 	      template: 'index.html'
 	    }),
-	    new HtmlWebpackPlugin({  // Also generate a test.html 
+	    new HtmlWebpackPlugin({  // Also generate a test.html
 	      filename: 'contratos.html',
 	      template: 'contratos.html'
 	    }),
-	    new HtmlWebpackPlugin({  // Also generate a test.html 
+	    new HtmlWebpackPlugin({  // Also generate a test.html
 	      filename: 'investigacion.html',
 	      template: 'investigacion.html'
 	    }),
-	    new HtmlWebpackPlugin({  // Also generate a test.html 
+	    new HtmlWebpackPlugin({  // Also generate a test.html
 	      filename: 'metodologia.html',
 	      template: 'metodologia.html'
 	    }),
+        new HtmlWebpackPlugin({  // Also generate a test.html
+          filename: 'iframe-prensa.html',
+          template: 'iframe-prensa.html'
+        }),
 	    new ExtractTextPlugin("[name].css"),
         new CopyWebpackPlugin([
             { from: 'favicons', to: 'src/favicons' },
