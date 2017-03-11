@@ -166,6 +166,8 @@ button {
 	padding: 10px 0;
 	height: 50px;
 	overflow: hidden;
+	position: relative;
+	z-index: 1002;
 	@media screen and (min-width: 0) and (max-width: $mobile-size) {
 		display: none;
 		height: 0;
