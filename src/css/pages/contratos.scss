@@ -397,6 +397,37 @@
           }
           .sort-by-amount {
             text-align: center;
+            position: relative;
+            .tooltip {
+              font-weight: 100;
+              position: absolute;
+              display: none;
+              top: 20px;
+              width: 200px;
+              left: 50%;
+              font-family: Rajdhani;
+              font-size: 13px;
+              line-height: 15px;
+              max-width: 300px;
+              padding: 10px;
+              background: white;
+              border: 0px;
+              border-radius: 2px;
+              box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
+              text-align: left;
+              -webkit-transform: translate3d(-50%, 0, 0);
+              -moz-transform: translate3d(-50%, 0, 0);
+              -ms-transform: translate3d(-50%, 0, 0);
+              -o-transform: translate3d(-50%, 0, 0);
+              transform: translate3d(-50%, 0, 0);
+              z-index: 1001;
+              pointer-events: none;
+            }
+            &:hover {
+              .tooltip {
+                display: block;
+              }
+            }
           }
           .sort-options-item {
             cursor: pointer;
