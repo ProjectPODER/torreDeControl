@@ -82,6 +82,7 @@ class SearchFilters extends React.Component {
 							<select disabled={disabledInputs} name="procedureType" id="" className="filter-input" defaultValue={procedureType} onChange={this.changeFieldHandler}>
 								<option value="todos">-Todos-</option>
 								<option value="Adjudicación Directa Federal">Adjudicación Directa Federal</option>
+								<option value="Convenio">Convenio</option>
 								<option value="Invitación a Cuando Menos 3 Personas">Invitación a Cuando Menos 3 Personas</option>
 								<option value="Licitación Pública">Licitación Pública</option>
 							</select>
