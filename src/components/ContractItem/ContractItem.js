@@ -19,8 +19,8 @@ class ContractItem extends React.Component {
 		const amount = this.props.amount.toLocaleString();
 		const type = this.props.type;
 		const procedureType = this.props.procedureType;
-		const startDate = (new Date(this.props.startDate)).toLocaleDateString();
-		const endDate = (new Date(this.props.endDate)).toLocaleDateString();
+		const startDate = typeof(this.props.startDate) !== 'undefined' ? (new Date(this.props.startDate)).toLocaleDateString() : 'No registrada';
+		const endDate = typeof(this.props.endDate) !== 'undefined' ? (new Date(this.props.endDate)).toLocaleDateString() : 'No registrada';
 		const ocid = this.props.ocid;
 		const contractLink = this.props.contractLink;
 
