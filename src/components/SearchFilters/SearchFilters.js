@@ -67,7 +67,6 @@ class SearchFilters extends React.Component {
 								<option value="todos">-Todos-</option>
 								<option value="Adquisiciones">Adquisiciones</option>
 								<option value="Arrendamientos">Arrendamientos</option>
-								<option value="Arrendamientos">Arrendamientos</option>
 								<option value="Obra Pública">Obra Pública</option>
 								<option value="Servicios">Servicios</option>
 								<option value="Servicios Relacionados con la OP">Servicios Relacionados con la OP</option>
