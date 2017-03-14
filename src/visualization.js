@@ -107,14 +107,12 @@ module.exports = () => {
 			for (let j in contractByType.contracts) {
 				const contract = contractByType.contracts[j];
 				const node = { id: contract._id, name: contract.title, amount: contract.amount, activeSize: Math.log(contract.amount) / 2, inactiveSize: 30, topParentNode: false, nodeForce: 0.6, type: 'contract', group: 3, color: '#438a9c', linksCount: 0, suppliersList: contract.suppliers.map(supplier => supplier.simple), icon: null };
-				const linkToCenter = { source: contract._id, target: 'contracts', type: 'contract', hidden: true, linkStrength: 3, linkDistance: 2.5, color: '#706F74', dashed: false, opacity: 0.6 };
-				const linkToContractType = { source: contract._id, target: contractByType.name, type: 'contract', linkStrength: 3, linkDistance: 2.5, color: '#706F74', dashed: false, opacity: 0, hideOnReset: true };
+				const linkToCenter = { source: contract._id, target: 'contracts', type: 'contract', hidden: true, linkStrength: 3, linkDistance: 2.5, color: '#706F74', dashed: false, opacity: 0 };
+				const linkToContractType = { source: contract._id, target: contractByType.name, type: 'contract', linkStrength: 3, linkDistance: 2.5, color: '#706F74', dashed: false, opacity: 0.6 };
 				slidesObjects[3].nodes.push(node);
 				slidesObjects[3].links.push(linkToCenter);
 				slidesObjects[3].links.push(linkToContractType);
 				nodes.push(node);
-				links.push(linkToCenter);
-				links.push(linkToContractType);
 				links.push(linkToCenter);
 				links.push(linkToContractType);
 			}
@@ -122,7 +120,7 @@ module.exports = () => {
 
 		for (let k in organizations) {
 			const organization = organizations[k];
-			const node = { id: organization._id, name: organization.name, activeSize: 15, inactiveSize: 10, nodeForce: 10, type: 'organization', group: 4, color: '#3c5a6f', linksCount: 0, contractsCount: organization.contracts_count, contractsAmount: organization.contracts_amount, icon: null  };
+			const node = { id: organization._id, name: organization.name, activeSize: organization.contracts_count * 2 + 10, inactiveSize: 10, nodeForce: 10, type: 'organization', group: 4, color: '#3c5a6f', linksCount: 0, contractsCount: organization.contracts_count, contractsAmount: organization.contracts_amount, icon: null  };
 			for (let j in AppData.contracts) {
 				const contract = AppData.contracts[j];
 
@@ -134,7 +132,7 @@ module.exports = () => {
 				}
 			}
 
-			const linkToCenter = { source: organization._id, target: 'contracts', type: 'organization', hidden: true, linkStrength: 4, linkDistance: 6, color: '#706F74', dashed: false, opacity: 0, hideOnReset: true  };
+			const linkToCenter = { source: organization._id, target: 'contracts', type: 'organization', hidden: true, linkStrength: 4, linkDistance: 6, color: '#706F74', dashed: false, opacity: 0  };
 			slidesObjects[4].links.push(linkToCenter);
 			links.push(linkToCenter);
 			slidesObjects[4].nodes.push(node);
@@ -157,8 +155,8 @@ module.exports = () => {
 
 			if (organizationNotExists(organization._id)) {
 				allFiguresCount++;
-				const node = { id: organization._id, name: organization.name, activeSize: 25, inactiveSize: 10, nodeForce: 10, type: 'related', group: 4, color: '#3c5a6f', linksCount: 0, relationType: 'organization', icon: null, relationType2: 'Organization', contractsCount: organization.contracts_count };
-				const linkToCenter = { source: organization._id, target: 'contracts', type: 'related', hidden: true, linkStrength: 3, linkDistance: 9, color: '#706F74', dashed: false, opacity: 0, hideOnReset: true  };
+				const node = { id: organization._id, name: organization.name, activeSize: organization.contracts_count * 2 + 10, inactiveSize: 10, nodeForce: 10, type: 'related', group: 4, color: '#3c5a6f', linksCount: 0, relationType: 'organization', icon: null, relationType2: 'Organization', contractsCount: organization.contracts_count };
+				const linkToCenter = { source: organization._id, target: 'contracts', type: 'related', hidden: true, linkStrength: 3, linkDistance: 9, color: '#706F74', dashed: false, opacity: 0  };
 				slidesObjects[5].links.push(linkToCenter);
 				slidesObjects[5].nodes.push(node);
 				links.push(linkToCenter);
@@ -167,8 +165,8 @@ module.exports = () => {
 
 			if (organizationNotExists(linkOrganization._id)) {
 				allFiguresCount++;
-				const node = { id: linkOrganization._id, name: linkOrganization.name, activeSize: 25, inactiveSize: 10, nodeForce: 10, type: 'related', group: 4, color: '#3c5a6f', linksCount: 0, relationType: 'organization', icon: null, relationType2: 'Organization', contractsCount: linkOrganization.contracts_count };
-				const linkToCenter = { source: linkOrganization._id, target: 'contracts', type: 'related', hidden: true, linkStrength: 3, linkDistance: 9, color: '#706F74', dashed: false, opacity: 0, hideOnReset: true  };
+				const node = { id: linkOrganization._id, name: linkOrganization.name, activeSize: linkOrganization.contracts_count * 2 + 10, inactiveSize: 10, nodeForce: 10, type: 'related', group: 4, color: '#3c5a6f', linksCount: 0, relationType: 'organization', icon: null, relationType2: 'Organization', contractsCount: linkOrganization.contracts_count };
+				const linkToCenter = { source: linkOrganization._id, target: 'contracts', type: 'related', hidden: true, linkStrength: 3, linkDistance: 9, color: '#706F74', dashed: false, opacity: 0  };
 				slidesObjects[5].links.push(linkToCenter);
 				slidesObjects[5].nodes.push(node);
 				nodes.push(node);
@@ -187,6 +185,7 @@ module.exports = () => {
 					const shareholderName = shareholder.name;
 					const shareholderSimple = shareholder.simple;
 					const shareholderType = shareholder.type;
+					const shareholderContractsCount = shareholder.contracts_count || 0;
 					const typeColor = shareholder.type == "person" ? "#FC8917" : "#363E4E";
 					if (relatedFiguresStack[shareholderId] == undefined) {
 							relatedFiguresStack[shareholderId] = {count: 0, relationId: []};
@@ -200,8 +199,8 @@ module.exports = () => {
 
 					switch (relatedFiguresStack[shareholderId].count) {
 						case 0: {
-							relatedFiguresStack[shareholderId].node = { id: shareholderId, name: shareholderName, simple: shareholderSimple, activeSize: 25, inactiveSize: 10, topParentNode: false, nodeForce: 10, type: 'related', group: 4, color: typeColor, linksCount: 0, relationType: shareholderType, icon: null, relationType2: 'Shareholder' };
-							// relatedFiguresStack[shareholderId].linkToCenter = { source: shareholderId, target: 'contracts', type: 'related', hidden: true, linkStrength: 3, linkDistance: 12, color: '#706F74', dashed: false, opacity: 0, hideOnReset: true  };
+							relatedFiguresStack[shareholderId].node = { id: shareholderId, name: shareholderName, simple: shareholderSimple, activeSize: shareholderContractsCount * 2 + 10, inactiveSize: 10, topParentNode: false, nodeForce: 10, type: 'related', group: 4, color: typeColor, linksCount: 0, relationType: shareholderType, icon: null, relationType2: 'Shareholder' };
+							// relatedFiguresStack[shareholderId].linkToCenter = { source: shareholderId, target: 'contracts', type: 'related', hidden: true, linkStrength: 3, linkDistance: 12, color: '#706F74', dashed: false, opacity: 0  };
 							relatedFiguresStack[shareholderId].link = { source: shareholderId, target: organization._id, type: 'related', linkStrength: 3, linkDistance: 5, topParentNode: false, color: '#706F74', dashed: true, opacity: 1 };
 							
 							break;
@@ -234,6 +233,7 @@ module.exports = () => {
 					const boardId = board._id;
 					const boardName = board.name;
 					const boardSimple = board.simple;
+					const boardContractsCount = board.contracts_count || 0;
 					const boardType = board.name;
 					if (relatedFiguresStack[boardId] == undefined) {
 							relatedFiguresStack[boardId] = {count: 0, relationId: []};
@@ -247,8 +247,8 @@ module.exports = () => {
 
 					switch (relatedFiguresStack[boardId].count) {
 						case 0: {
-							relatedFiguresStack[boardId].node = { id: boardId, name: boardName, simple: boardSimple, activeSize: 25, inactiveSize: 10, topParentNode: false, nodeForce: 10, type: 'related', group: 4, color: '#EB639A', linksCount: 0, relationType: boardType, icon: null, relationType2: 'Board' };
-							// relatedFiguresStack[boardId].linkToCenter = { source: boardId, target: 'contracts', type: 'related', hidden: true, linkStrength: 3, linkDistance: 12, color: '#706F74', dashed: false, opacity: 0, hideOnReset: true  };
+							relatedFiguresStack[boardId].node = { id: boardId, name: boardName, simple: boardSimple, activeSize: boardContractsCount.contracts_count * 2 + 10, inactiveSize: 10, topParentNode: false, nodeForce: 10, type: 'related', group: 4, color: '#EB639A', linksCount: 0, relationType: boardType, icon: null, relationType2: 'Board' };
+							// relatedFiguresStack[boardId].linkToCenter = { source: boardId, target: 'contracts', type: 'related', hidden: true, linkStrength: 3, linkDistance: 12, color: '#706F74', dashed: false, opacity: 0  };
 							relatedFiguresStack[boardId].link = { source: boardId, target: organization._id, type: 'related', linkStrength: 3, linkDistance: 5, topParentNode: false, color: '#706F74', dashed: true, opacity: 1 };
 							
 							break;
@@ -296,11 +296,17 @@ module.exports = () => {
 			nodes.push(node);
 			slidesObjects[6].nodes.push(node);
 
-			suspectedOrganizations.forEach(suspectedOrganization => {
-				const link = { source: investigationId, target: suspectedOrganization._id, type: 'investigation', linkStrength: 2, linkDistance: 1, color: '#706F74', dashed: false, opacity: 0.6 };
+			if (investigation.suppliers[0] == "Grupo Aeroportuario De La Ciudad de México, S.A. de C.V.") {
+				const link = { source: investigationId, target: 'contracts', type: 'investigation', linkStrength: 4, linkDistance: 13, color: '#706F74', dashed: false, opacity: 0.6 };
 				slidesObjects[6].links.push(link);
 				links.push(link);
-			});
+			} else {
+				suspectedOrganizations.forEach(suspectedOrganization => {
+					const link = { source: investigationId, target: suspectedOrganization._id, type: 'investigation', linkStrength: 2, linkDistance: 1, color: '#706F74', dashed: false, opacity: 0.6 };
+					slidesObjects[6].links.push(link);
+					links.push(link);
+				});
+			}
 
 			const shareholders = Object.keys(relatedFiguresStack)
 				.filter(key => relatedFiguresStack[key].count > 1) /* Get only elements with more than one relation */
@@ -450,8 +456,7 @@ function setupD3() {
 			for (let l in graph.links) {
 	        	const link = graph.links[l];
 	        	link.selected = false;
-	        	if (link.hideOnReset) continue;
-	        	link.opacity = 0.6;
+	        	link.opacity = link.hidden ? 0 : 0.6;
 	        }
 
 	        for (let l in graph.nodes) {
@@ -907,14 +912,14 @@ function setupD3() {
 	            	case "organization":
 	            	case "related":
 			            globalTimers.push(
-			            	requestAnimationFrame((function(linkId,onlyParents) {
-					            return function() {showSelectedLinks(linkId, onlyParents)};
-			            	})(linkId, onlyParents))
-			            )
-			            globalTimers.push(
 			            	requestAnimationFrame((function(linkId,onlyChilds) {
 					            return function() {showSelectedLinks(linkId, onlyChilds)};
 			            	})(linkId, onlyChilds))
+			            )
+			            globalTimers.push(
+			            	requestAnimationFrame((function(linkId,onlyParents) {
+					            return function() {showSelectedLinks(linkId, onlyParents)};
+			            	})(linkId, onlyParents))
 			            )
 		            	break;
 		            case "all":
