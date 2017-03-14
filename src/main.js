@@ -1,4 +1,5 @@
 var images = [
+	require('./images/investigation_icon.svg'),
 	require('./images/colaboratorio-grey.svg'),
 	require('./images/mexicoleaks-grey.svg'),
 	require('./images/quienesquien-grey.svg'),

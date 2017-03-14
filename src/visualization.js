@@ -9,12 +9,6 @@ require('./css/main.scss');
 
 let nodes = [];
 let links = [];
-// const fs = -100;
-// const ld = 13;
-// const ls = 1;
-// const mn = 0;
-// const mx = 312;
-// const cr = 20;
 
 const fs = -350;
 const ls = 0.6;
@@ -23,15 +17,17 @@ const ld = 70;
 const mn = 0;
 const mx = 1000;
 const cr = 20;
-// const fs = -250;
-// const ls = 0.6;
-// const ld = 80;
+
 let node;
 let link;
 let label;
+let icon;
 let offset = 0;
 let graph;
 let zoomLevel;
+let resG;
+let svg;
+let zoom;
 const AppData = {
 	persons: [],
 	organizations: [],
@@ -54,8 +50,7 @@ module.exports = () => {
 		const contractsByTypes = getContractsByTypes(AppData.contracts);
 		const organizations = AppData.organizations;
 		const investigations = AppData.investigations;
-		const shareholdersStack = {};
-		const boardsStack = {};
+		const relatedFiguresStack = {};
 		const slidesObjects = [	null,
 			{nodes: [], links: []},
 			{nodes: [], links: []},
@@ -77,15 +72,14 @@ module.exports = () => {
 		})
 
 		const organizationsByNames = Object.keys(contractsByOrganizations).map(key => contractsByOrganizations[key]);
-		console.log(AppData.contracts)
-		console.log(organizationsByNames)
-		AppData.texts.contracts_amount_text = "$ " + (Math.round(contractsAmount/1000000)).toLocaleString() + " M";
+		window.algo = contractsByOrganizations
+		AppData.texts.contracts_amount_text = numberWithCommas((Math.round(contractsAmount/1000000)).toLocaleString());
 		AppData.texts.contracts_type_text = Object.keys(contractsByTypes).length;
 		AppData.texts.contracts_total_text = objectToArray(contractsByTypes).reduce(function(total, actual) {return total + Object.keys(actual.contracts).length}, 0);
 		AppData.texts.direct_adjudication_text = AppData.contracts.filter(contract => {return contract.procedure_type == "Adjudicación Directa Federal"}).length;
 		AppData.texts.direct_adjudication_percentage_text = (Math.ceil(AppData.contracts.filter(contract => {return contract.procedure_type == "Adjudicación Directa Federal"}).reduce((before, actual) => {return before + actual.amount }, 0)) / contractsAmount * 100 ).toFixed(2);
 		AppData.texts.suppliers_count_text = Object.keys(organizationsByNames).length;
-		AppData.texts.big_amount_contracts_text = AppData.contracts.filter(contract => {return contract.amount >= 1000000000}).length;
+		AppData.texts.big_amount_contracts_text = (AppData.contracts.filter(contract => {return contract.amount >= 1000000000}).length);
 		AppData.texts.big_amount_percentage_text = (Math.ceil(AppData.contracts.filter(contract => {return contract.amount >= 1000000000}).reduce((before, actual) => {return before + actual.amount }, 0)) / contractsAmount * 100 ).toFixed(2);
 		AppData.texts.big_amount_winners_text = Math.ceil(AppData.contracts.filter(contract => {return contract.amount >= 1000000000}).length );
 
@@ -99,12 +93,12 @@ module.exports = () => {
 		$('#big_amount_percentage').text(AppData.texts.big_amount_percentage_text);
 		$('#big_amount_winners').text(AppData.texts.big_amount_winners_text);
 
-		const node = { id: 'contracts', name: 'contracts', activeSize: contractsAmount / 1000000000, inactiveSize: 35, topParentNode: false, nodeForce: 10, type: 'all', group: 1, color: '#1ee6d3', linksCount: 0, label: "NAICM" };
+		const node = { id: 'contracts', name: 'contracts', activeSize: contractsAmount / 1000000000, inactiveSize: 35, topParentNode: false, nodeForce: 10, type: 'all', group: 1, color: '#1ee6d3', linksCount: 0, label: "NAICM", icon: null };
 		slidesObjects[1].nodes.push(node);
 		nodes.push(node);
 		for (let i in contractsByTypes) {
 			const contractByType = contractsByTypes[i];
-			const node = { id: contractByType.name, name: contractByType.name, activeSize: Math.pow(contractByType.amount,1/5) / 10, inactiveSize: 15, topParentNode: false, nodeForce: 10, type: 'contract_type', group: 2, color: '#3abdc3', linksCount: 0, contractsCount: Object.keys(contractByType.contracts).length, contractsAmount: contractByType.amount };
+			const node = { id: contractByType.name, name: contractByType.name, activeSize: Math.pow(contractByType.amount,1/5) / 10, inactiveSize: 15, topParentNode: false, nodeForce: 10, type: 'contract_type', group: 2, color: '#3abdc3', linksCount: 0, contractsCount: Object.keys(contractByType.contracts).length, contractsAmount: contractByType.amount, icon: null };
 			const link = { source: contractByType.name, target: 'contracts', type: 'contract_type', linkStrength: 2, linkDistance: 1, color: '#706F74', dashed: false, opacity: 0.6 };
 			slidesObjects[2].nodes.push(node);
 			slidesObjects[2].links.push(link);
@@ -112,13 +106,15 @@ module.exports = () => {
 			links.push(link);
 			for (let j in contractByType.contracts) {
 				const contract = contractByType.contracts[j];
-				const node = { id: contract._id, name: contract.title, amount: contract.amount, activeSize: Math.log(contract.amount) / 2, inactiveSize: 30, topParentNode: false, nodeForce: 0.6, type: 'contract', group: 3, color: '#438a9c', linksCount: 0, suppliersList: contract.suppliers.map(supplier => supplier.simple) };
+				const node = { id: contract._id, name: contract.title, amount: contract.amount, activeSize: Math.log(contract.amount) / 2, inactiveSize: 30, topParentNode: false, nodeForce: 0.6, type: 'contract', group: 3, color: '#438a9c', linksCount: 0, suppliersList: contract.suppliers.map(supplier => supplier.simple), icon: null };
 				const linkToCenter = { source: contract._id, target: 'contracts', type: 'contract', hidden: true, linkStrength: 3, linkDistance: 2.5, color: '#706F74', dashed: false, opacity: 0.6 };
-				const linkToContractType = { source: contract._id, target: contractByType.name, type: 'contract', linkStrength: 3, linkDistance: 2.5, color: '#706F74', dashed: false, opacity: 0 };
+				const linkToContractType = { source: contract._id, target: contractByType.name, type: 'contract', linkStrength: 3, linkDistance: 2.5, color: '#706F74', dashed: false, opacity: 0, hideOnReset: true };
 				slidesObjects[3].nodes.push(node);
 				slidesObjects[3].links.push(linkToCenter);
 				slidesObjects[3].links.push(linkToContractType);
 				nodes.push(node);
+				links.push(linkToCenter);
+				links.push(linkToContractType);
 				links.push(linkToCenter);
 				links.push(linkToContractType);
 			}
@@ -126,19 +122,19 @@ module.exports = () => {
 
 		for (let k in organizations) {
 			const organization = organizations[k];
-			const node = { id: organization._id, name: organization.name, activeSize: 15, inactiveSize: 10, topParentNode: !organization.parents, nodeForce: 10, type: 'organization', group: 4, color: '#3c5a6f', linksCount: 0, contractsCount: organization.contracts_count, contractsAmount: organization.contracts_amount,  };
+			const node = { id: organization._id, name: organization.name, activeSize: 15, inactiveSize: 10, nodeForce: 10, type: 'organization', group: 4, color: '#3c5a6f', linksCount: 0, contractsCount: organization.contracts_count, contractsAmount: organization.contracts_amount, icon: null  };
 			for (let j in AppData.contracts) {
 				const contract = AppData.contracts[j];
 
 				if (contract.suppliers && contract.suppliers.filter(supplier => {return supplier.simple == organization.simple}).length > 0) {
-					const link = { source: organization._id, target: contract._id, type: 'organization', linkStrength: 4, linkDistance: 1, topParentNode: !organization.parents, color: '#706F74', dashed: true, opacity: 1, name: organization.name };
+					const link = { source: organization._id, target: contract._id, type: 'organization', linkStrength: 4, linkDistance: 1, color: '#706F74', dashed: true, opacity: 1, name: organization.name };
 					slidesObjects[4].links.push(link);
 					links.push(link);
 					node.linksCount++;
 				}
 			}
 
-			const linkToCenter = { source: organization._id, target: 'contracts', type: 'organization', hidden: true, linkStrength: 4, linkDistance: 6, color: '#706F74', dashed: false, opacity: 0 };
+			const linkToCenter = { source: organization._id, target: 'contracts', type: 'organization', hidden: true, linkStrength: 4, linkDistance: 6, color: '#706F74', dashed: false, opacity: 0, hideOnReset: true  };
 			slidesObjects[4].links.push(linkToCenter);
 			links.push(linkToCenter);
 			slidesObjects[4].nodes.push(node);
@@ -147,121 +143,147 @@ module.exports = () => {
 
 		let allFiguresCount = 0;
 
-		function linkParents(linkId, organization) {
+		function linkParents(linkOrganization, organization) {
 			const parents = organization.parents;
 			const shareholders = organization.shareholders;
 			const boards = organization.board;
+
 			if (parents.length > 0) {
 				for (let p in parents) {
 					const parent = parents[p];
-					linkParents(organization._id, parent)
+					linkParents(organization, parent)
 				}
-			} else {
-				if (organizationNotExists(organization._id)) {
+			}
+
+			if (organizationNotExists(organization._id)) {
+				allFiguresCount++;
+				const node = { id: organization._id, name: organization.name, activeSize: 25, inactiveSize: 10, nodeForce: 10, type: 'related', group: 4, color: '#3c5a6f', linksCount: 0, relationType: 'organization', icon: null, relationType2: 'Organization' };
+				const linkToCenter = { source: organization._id, target: 'contracts', type: 'related', hidden: true, linkStrength: 3, linkDistance: 9, color: '#706F74', dashed: false, opacity: 0, hideOnReset: true  };
+				slidesObjects[5].links.push(linkToCenter);
+				slidesObjects[5].nodes.push(node);
+				links.push(linkToCenter);
+				nodes.push(node);
+			}
+
+			if (organizationNotExists(linkOrganization._id)) {
+				allFiguresCount++;
+				const node = { id: linkOrganization._id, name: linkOrganization.name, activeSize: 25, inactiveSize: 10, nodeForce: 10, type: 'related', group: 4, color: '#3c5a6f', linksCount: 0, relationType: 'organization', icon: null, relationType2: 'Organization' };
+				const linkToCenter = { source: linkOrganization._id, target: 'contracts', type: 'related', hidden: true, linkStrength: 3, linkDistance: 9, color: '#706F74', dashed: false, opacity: 0, hideOnReset: true  };
+				slidesObjects[5].links.push(linkToCenter);
+				slidesObjects[5].nodes.push(node);
+				nodes.push(node);
+				links.push(linkToCenter);
+			}
+
+			const link = { source: organization._id, target: linkOrganization._id, type: 'related', linkStrength: 3, linkDistance: 5, color: '#706F74', dashed: true, opacity: 1 };
+			slidesObjects[5].links.push(link);
+			links.push(link);
+
+			if (shareholders.length > 0) {
+				for (let s in shareholders) {
 					allFiguresCount++;
-					const node = { id: organization._id, name: organization.name, activeSize: 25, inactiveSize: 10, topParentNode: !organization.parents, nodeForce: 20, type: 'related', group: 4, color: '#3c5a6f', linksCount: 0, relationType: 'Organization' };
-					const linkToCenter = { source: organization._id, target: 'contracts', type: 'related', hidden: true, linkStrength: 3, linkDistance: 11, color: '#706F74', dashed: false, opacity: 0 };
-					slidesObjects[5].links.push(linkToCenter);
-					links.push(linkToCenter);
-					slidesObjects[5].nodes.push(node);
-					nodes.push(node);
-				}
-
-				const link = { source: organization._id, target: linkId, type: 'related', linkStrength: 4, linkDistance: 3, topParentNode: !organization.parents, color: '#706F74', dashed: true, opacity: 1 };
-				slidesObjects[5].links.push(link);
-				links.push(link);
-
-				if (shareholders.length > 0) {
-					for (let s in shareholders) {
-						allFiguresCount++;
-						const shareholder = shareholders[s];
-						const shareholderId = shareholder._id;
-						const shareholderName = shareholder.name;
-						const shareholderSimple = shareholder.simple;
-						const typeColor = shareholder.type == "person" ? "#FC8917" : "#363E4E";
-						if (shareholdersStack[shareholderId] == undefined) {
-								shareholdersStack[shareholderId] = {count: 0};
-						} else {
-							shareholdersStack[shareholderId].count++;
-						}
-
-						switch (shareholdersStack[shareholderId].count) {
-							case 0: {
-								shareholdersStack[shareholderId].node = { id: shareholderId, name: shareholderName, simple: shareholderSimple, activeSize: 25, inactiveSize: 10, topParentNode: false, nodeForce: 20, type: 'related', group: 4, color: typeColor, linksCount: 0, relationType: 'Shareholder' };
-								shareholdersStack[shareholderId].linkToCenter = { source: shareholderId, target: 'contracts', type: 'related', hidden: true, linkStrength: 3, linkDistance: 11, color: '#706F74', dashed: false, opacity: 0 };
-								shareholdersStack[shareholderId].link = { source: shareholderId, target: organization._id, type: 'related', linkStrength: 4, linkDistance: 3, topParentNode: false, color: '#706F74', dashed: true, opacity: 1 };
-								break;
-							}
-							case 1: {
-									const node = shareholdersStack[shareholderId].node;
-									slidesObjects[5].nodes.push(node);
-									nodes.push(node);
-									const linkToCenter = shareholdersStack[shareholderId].linkToCenter;
-									slidesObjects[5].links.push(linkToCenter);
-									links.push(linkToCenter);
-									const link = shareholdersStack[shareholderId].link;
-									slidesObjects[5].links.push(link);
-									links.push(link);
-									/* this continues to default, no brake statement */
-							}
-							default: {
-								const link = { source: shareholderId, target: organization._id, type: 'related', linkStrength: 4, linkDistance: 3, topParentNode: false, color: '#706F74', dashed: true, opacity: 1 };
-								slidesObjects[5].links.push(link);
-								links.push(link);
-							}
+					const shareholder = shareholders[s];
+					const shareholderId = shareholder._id;
+					const shareholderName = shareholder.name;
+					const shareholderSimple = shareholder.simple;
+					const shareholderType = shareholder.type;
+					const typeColor = shareholder.type == "person" ? "#FC8917" : "#363E4E";
+					if (relatedFiguresStack[shareholderId] == undefined) {
+							relatedFiguresStack[shareholderId] = {count: 0, relationId: []};
+							relatedFiguresStack[shareholderId].relationId.push(shareholderId + organization._id);
+					} else {
+						console.log(relatedFiguresStack[shareholderId].relationId, shareholderId + organization._id)
+						if (relatedFiguresStack[shareholderId].relationId.indexOf(shareholderId + organization._id) == -1) {
+							relatedFiguresStack[shareholderId].count++;
+							relatedFiguresStack[shareholderId].relationId.push(shareholderId + organization._id);
 						}
 					}
-				}
 
-				if (boards.length > 0) {
-					for (let s in boards) {
-						allFiguresCount++;
-						const board = boards[s];
-						const boardId = board._id;
-						const boardName = board.name;
-						const boardSimple = board.simple;
-						if (boardsStack[boardId] == undefined) {
-								boardsStack[boardId] = {count: 0};
-						} else {
-							boardsStack[boardId].count++;
+					switch (relatedFiguresStack[shareholderId].count) {
+						case 0: {
+							relatedFiguresStack[shareholderId].node = { id: shareholderId, name: shareholderName, simple: shareholderSimple, activeSize: 25, inactiveSize: 10, topParentNode: false, nodeForce: 10, type: 'related', group: 4, color: typeColor, linksCount: 0, relationType: shareholderType, icon: null, relationType2: 'Shareholder' };
+							// relatedFiguresStack[shareholderId].linkToCenter = { source: shareholderId, target: 'contracts', type: 'related', hidden: true, linkStrength: 3, linkDistance: 12, color: '#706F74', dashed: false, opacity: 0, hideOnReset: true  };
+							relatedFiguresStack[shareholderId].link = { source: shareholderId, target: organization._id, type: 'related', linkStrength: 3, linkDistance: 5, topParentNode: false, color: '#706F74', dashed: true, opacity: 1 };
+							
+							break;
 						}
-
-						switch (boardsStack[boardId].count) {
-							case 0: {
-								boardsStack[boardId].node = { id: boardId, name: boardName, simple: boardSimple, activeSize: 25, inactiveSize: 10, topParentNode: false, nodeForce: 20, type: 'related', group: 4, color: '#EB639A', linksCount: 0, relationType: 'Board' };
-								boardsStack[boardId].linkToCenter = { source: boardId, target: 'contracts', type: 'related', hidden: true, linkStrength: 3, linkDistance: 11, color: '#706F74', dashed: false, opacity: 0 };
-								boardsStack[boardId].link = { source: boardId, target: organization._id, type: 'related', linkStrength: 4, linkDistance: 3, topParentNode: false, color: '#706F74', dashed: true, opacity: 1 };
-								break;
-							}
-							case 1: {
-									const node = boardsStack[boardId].node;
-									slidesObjects[5].nodes.push(node);
-									nodes.push(node);
-									const linkToCenter = boardsStack[boardId].linkToCenter;
-									slidesObjects[5].links.push(linkToCenter);
-									links.push(linkToCenter);
-									const link = boardsStack[boardId].link;
-									slidesObjects[5].links.push(link);
-									links.push(link);
-									/* this continues to default, no brake statement */
-							}
-							default: {
-								const link = { source: boardId, target: organization._id, type: 'related', linkStrength: 4, linkDistance: 3, topParentNode: false, color: '#706F74', dashed: true, opacity: 1 };
+						case 1: {
+								const node = relatedFiguresStack[shareholderId].node;
+								slidesObjects[5].nodes.push(node);
+								nodes.push(node);
+								// const linkToCenter = relatedFiguresStack[shareholderId].linkToCenter;
+								// slidesObjects[5].links.push(linkToCenter);
+								// links.push(linkToCenter);
+								const link = relatedFiguresStack[shareholderId].link;
 								slidesObjects[5].links.push(link);
 								links.push(link);
-							}
+								/* this continues to default, no brake statement */
+						}
+						default: {
+							const link = { source: shareholderId, target: organization._id, type: 'related', linkStrength: 3, linkDistance: 5, topParentNode: false, color: '#706F74', dashed: true, opacity: 1 };
+							slidesObjects[5].links.push(link);
+							links.push(link);
 						}
 					}
 				}
 			}
+
+			if (boards.length > 0) {
+				for (let s in boards) {
+					allFiguresCount++;
+					const board = boards[s];
+					const boardId = board._id;
+					const boardName = board.name;
+					const boardSimple = board.simple;
+					const boardType = board.name;
+					if (relatedFiguresStack[boardId] == undefined) {
+							relatedFiguresStack[boardId] = {count: 0, relationId: []};
+							relatedFiguresStack[boardId].relationId.push(boardId + organization._id);
+					} else {
+						console.log(relatedFiguresStack[boardId].relationId, boardId + organization._id)
+						if (relatedFiguresStack[boardId].relationId.indexOf(boardId + organization._id) == -1) {
+							relatedFiguresStack[boardId].count++;
+							relatedFiguresStack[boardId].relationId.push(boardId + organization._id);
+						}
+					}
+
+					switch (relatedFiguresStack[boardId].count) {
+						case 0: {
+							relatedFiguresStack[boardId].node = { id: boardId, name: boardName, simple: boardSimple, activeSize: 25, inactiveSize: 10, topParentNode: false, nodeForce: 10, type: 'related', group: 4, color: '#EB639A', linksCount: 0, relationType: boardType, icon: null, relationType2: 'Board' };
+							// relatedFiguresStack[boardId].linkToCenter = { source: boardId, target: 'contracts', type: 'related', hidden: true, linkStrength: 3, linkDistance: 12, color: '#706F74', dashed: false, opacity: 0, hideOnReset: true  };
+							relatedFiguresStack[boardId].link = { source: boardId, target: organization._id, type: 'related', linkStrength: 3, linkDistance: 5, topParentNode: false, color: '#706F74', dashed: true, opacity: 1 };
+							
+							break;
+						}
+						case 1: {
+								const node = relatedFiguresStack[boardId].node;
+								slidesObjects[5].nodes.push(node);
+								nodes.push(node);
+								// const linkToCenter = relatedFiguresStack[boardId].linkToCenter;
+								// slidesObjects[5].links.push(linkToCenter);
+								// links.push(linkToCenter);
+								const link = relatedFiguresStack[boardId].link;
+								slidesObjects[5].links.push(link);
+								links.push(link);
+								/* this continues to default, no brake statement */
+						}
+						default: {
+							const link = { source: boardId, target: organization._id, type: 'related', linkStrength: 3, linkDistance: 5, topParentNode: false, color: '#706F74', dashed: true, opacity: 1 };
+							slidesObjects[5].links.push(link);
+							links.push(link);
+						}
+					}
+				}
+			}
+		
 		}
 
 		for (let k in organizations) {
 			const organization = organizations[k];
 			for (let p in organization.parents) {
 				const parent = organization.parents[p];
-				const linkId = organization._id;
-				linkParents(linkId, parent);
+				const linkOrganization = organization;
+				linkParents(linkOrganization, parent);
 			}
 		}
 
@@ -272,7 +294,7 @@ module.exports = () => {
 			const investigation = investigations[i];
 			const investigationId = investigation.title.toLowerCase().replace(/\s/g, "-") + "-" + investigation.date;
 			const suspectedOrganizations = organizations.filter(organization => investigation.suppliers.indexOf(organization.simple) > -1);
-			const node = { id: investigationId, name: investigation.title, activeSize: 15, inactiveSize: 15, nodeForce: 10, type: 'investigation', group: 6, color: '#FFCF40', linksCount: 0, url: investigation.link};
+			const node = { id: investigationId, name: investigation.title, activeSize: 15, inactiveSize: 15, nodeForce: 10, type: 'investigation', group: 6, color: '#FFCF40', linksCount: 0, url: investigation.link, icon: "src/images/investigation_icon.svg"};
 			nodes.push(node);
 			slidesObjects[6].nodes.push(node);
 
@@ -282,9 +304,9 @@ module.exports = () => {
 				links.push(link);
 			});
 
-			const shareholders = Object.keys(shareholdersStack)
-				.filter(key => shareholdersStack[key].count > 1) /* Get only elements with more than one relation */
-				.map(key => shareholdersStack[key]) /* Return objects instead of only ids */
+			const shareholders = Object.keys(relatedFiguresStack)
+				.filter(key => relatedFiguresStack[key].count > 1) /* Get only elements with more than one relation */
+				.map(key => relatedFiguresStack[key]) /* Return objects instead of only ids */
 				.filter(shareholder => investigation.suppliers.indexOf(shareholder.node.simple) > -1); /* Get only elements mentioned whithin the investigation */
 
 			shareholders.forEach(shareholder => {
@@ -294,9 +316,9 @@ module.exports = () => {
 				links.push(link);
 			});
 
-			const boards = Object.keys(boardsStack)
-				.filter(key => boardsStack[key].count > 1) /* Get only elements with more than one relation */
-				.map(key => boardsStack[key]) /* Return objects instead of only ids */
+			const boards = Object.keys(relatedFiguresStack)
+				.filter(key => relatedFiguresStack[key].count > 1) /* Get only elements with more than one relation */
+				.map(key => relatedFiguresStack[key]) /* Return objects instead of only ids */
 				.filter(board => investigation.suppliers.indexOf(board.node.simple) > -1); /* Get only elements mentioned whithin the investigation */
 
 			boards.forEach(board => {
@@ -343,18 +365,11 @@ function getContracts(cb) {
 				.done(response => {parallelCB(null, response.data);})
 				.fail(response => {parallelCB(null, []);});
 			},
-			// (parallelCB) => {
-			// 	$.get('https://q6fe3bea.herokuapp.com/api/v1/contracts?dependency=Grupo%20Aeroportuario%20De%20La%20Ciudad%20De%20M%C3%A9xico,%20S.A.%20de%20C.V.&limit=1000')
-			// 	.done(response => {parallelCB(null, []);})
-			// 	.fail(response => {parallelCB(null, []);});
-			// }
 		],
 		(err, results) => {
-			cb(null, {contracts: [...results[0]/*, ...results[1]*/]})
+			cb(null, {contracts: [...results[0]]})
 		}
 	);
-
-
 }
 
 function getOrganizations(params, cb) {
@@ -387,10 +402,19 @@ function getInvestigations(params, cb) {
 }
 
 function setupD3() {
-	const svg = d3.select("svg");
+	zoom = d3.zoom()
+    				.scaleExtent([0.1, 1])
+    				.on("zoom", zoomed);
+	svg = d3.select("svg")
+				.call(zoom);
 	const width = $('svg').width();
 	const height = $('svg').height();
 	const color = d3.scaleOrdinal(d3.schemeCategory20);
+
+	function zoomed() {
+		const stackcopado = `translate(${d3.event.transform.x},${d3.event.transform.y}) scale(${d3.event.transform.k})`;
+		resG.attr('transform', stackcopado);
+	}
 
 	/* ----- Force Setup ----- */
 	/* Charges */
@@ -406,8 +430,7 @@ function setupD3() {
 	const forceCenter = d3.forceCenter(width / 2 - offset, height / 2 - offset);
 	/* Collides */
 	const forceCollide = d3.forceCollide();
-		// forceCollide.radius(d => d.inactiveSize /** (1.2 + d.linksCount)*/);
-		forceCollide.iterations(1);
+	forceCollide.iterations(1);
 
 	/* Simulation Setup */
 	const simulation = d3.forceSimulation()
@@ -421,53 +444,25 @@ function setupD3() {
 	link = g.append("g").selectAll('link');
 	node = g.append("g").selectAll('node');
 	label = g.append("g").selectAll('.labelText');
+	icon = g.append("g").selectAll('.nodeIcon');
 
-	$('svg').on("mousedown", function() {
-		for (let l in graph.links) {
-        	const link = graph.links[l];
-        	link.lastOpacity = link.opacity;
-        	link.opacity = 1;
-        	link.selected = false;
-        }
+	$(document).on("keydown", function(evt) {
+		if (evt.keyCode == 27) {
+			draw(graph);
+			for (let l in graph.links) {
+	        	const link = graph.links[l];
+	        	link.selected = false;
+	        	if (link.hideOnReset) continue;
+	        	link.opacity = 0.6;
+	        }
 
-        for (let l in graph.nodes) {
-        	const node = graph.nodes[l];
-        	node.lastOpacity = node.opacity;
-        	node.opacity = 1;
-        	node.selected = false;
-        }
+	        for (let l in graph.nodes) {
+	        	const node = graph.nodes[l];
+	        	node.opacity = 1;
+	        	node.selected = false;
+	        }
+		}
 	})
-	// const shadow = g.append("defs");
-	// const filter = svg.append("filter");
-	// const feGaussianBlur = filter.append("feGaussianBlur");
-	// const feComponentTransfer = filter.append("feComponentTransfer");
-	// const feFuncA = feComponentTransfer.append("feFuncA");
-	// const feMerge = filter.append("feMerge");
-	// const feMergeNodeA = feMerge.append("feMergeNode");
-	// const feMergeNodeB = feMerge.append("feMergeNode");
-
-	/* Shadow */
-	// filter
-	// 	.attr("id","f3")
-	// 	.attr("x","-50%")
-	// 	.attr("y","-50%")
-	// 	.attr("width","200%")
-	// 	.attr("height","200%");
-	// feGaussianBlur
-	// 	.attr("in","SourceAlpha")
-	// 	.attr("stdDeviation","6")
-	// 	.attr("dx","20")
-	// 	.attr("dy","20")
-	// 	.attr("result","feGaussianBlur");
-
-	// feMergeNodeA
-	// 	.attr("in", "opacityShadow");
-	// feMergeNodeB
-	// 	.attr("in", "SourceGraphic");
-	// feFuncA
-	// 	.attr("type", "linear")
-	// 	.attr("slope", "0.3")
-	// 	.attr("result","opacityShadow");
 
 	function ticked() {
 		node
@@ -483,13 +478,24 @@ function setupD3() {
 		    .attr("y2", d => d.target.y + offset)
 		    .attr("opacity", d => d.opacity);
 
-		 label
+		label
 		    .attr("x", d => d.x + offset)
 		    .attr("y", d => d.y + offset)
 		    .attr("opacity", d => d.opacity);
+		
+		icon
+		    .attr("x", d => d.x + offset)
+		    .attr("y", d => d.y + offset)
+		    .attr("opacity", d => d.opacity)
+		    .attr("class", d => "nodes " + d.type + " " + (d.visibleNode ? "visible-node" : "invisible-node"));
 	}
 
-	window.addEventListener("resize", function() {draw(graph);});
+	window.addEventListener("resize", function() {
+		const newTranslateX = $('svg').width() / 2 * (1 - zoomLevel);
+		const newTranslateY = $('svg').height() / 2 * (1 - zoomLevel);
+		if (resG) svg.call(zoom.transform, d3.zoomIdentity.translate(newTranslateX, newTranslateY).scale(zoomLevel));
+		draw(graph);
+	});
 
 	const slide_1 = new Filter({property: 'type', operator: 'eq', expected: 'all'});
 	const slide_2 = new Filter({property: 'type', operator: 'eq', expected: 'contract_type'});
@@ -575,39 +581,49 @@ function setupD3() {
 		anchors: ['slide-1', 'slide-2', 'slide-3', 'slide-4', 'slide-5', 'slide-6'],
 	    menu: '#slidesMenu',
 		navigation: true,
-		// paddingBottom: '60px',
 		paddingTop: ($('.site-top-ribbon').height() + 60) + 'px',
     	scrollingSpeed: 300,
     	onLeave: (index, nextIndex) => {
 	    	$(`.info-container`).removeClass('slide-active slide-leaving');
 				$(`.slide-${index}`).removeClass('slide-active').addClass('slide-leaving');
 				AppData.actualSlide = nextIndex - 1;
+				let newZoom;
 				switch (nextIndex) {
 					case 1:
-						zoomLevel = 800;
+						newZoom = 1;
 						$('.labelText').addClass('active');
+						$('.visualization-down-arrow').removeClass('hidden');
 						break;
 					case 2:
-						zoomLevel = 1000;
+						newZoom = 0.5;
 						$('.labelText').removeClass('active');
+						$('.visualization-down-arrow').removeClass('hidden');
 						break;
 					case 3:
-						zoomLevel = 1500;
+						newZoom = 0.5;
 						$('.labelText').removeClass('active');
+						$('.visualization-down-arrow').removeClass('hidden');
 						break;
 					case 4:
-						zoomLevel = 2000;
+						newZoom = 0.4;
 						$('.labelText').removeClass('active');
+						$('.visualization-down-arrow').removeClass('hidden');
 						break;
 					case 5:
-						zoomLevel = 2500;
+						newZoom = 0.3;
 						$('.labelText').removeClass('active');
+						$('.visualization-down-arrow').removeClass('hidden');
 						break;
 					case 6:
-						zoomLevel = 2800;
+						newZoom = 0.2;
 						$('.labelText').removeClass('active');
+						$('.visualization-down-arrow').addClass('hidden');
 						break;
 				}
+				zoomLevel = newZoom;
+				const newTranslateX = $('svg').width() / 2 * (1 - zoomLevel);
+				const newTranslateY = $('svg').height() / 2 * (1 - zoomLevel);
+				if (resG) svg.call(zoom.transform, d3.zoomIdentity.translate(newTranslateX, newTranslateY).scale(zoomLevel));
 				goToSlide(nextIndex - 1);
 	    },
 		afterLoad: function(anchorLink, index){
@@ -619,7 +635,9 @@ function setupD3() {
 	$.fn.fullpage.moveTo('slide-2');
 	$.fn.fullpage.moveTo('slide-1');
 	$('.fullpage').animate({'opacity': 1});
-	// $('.slide-1').addClass('slide-active');
+	$('.visualization-down-arrow').click(() => {
+		$.fn.fullpage.moveSectionDown();
+	});
 
 	graph = {
 		nodes: setNodeSizeToType(objectToArray((new MathSet(nodes)).filter(slide_1).toObject()), 'all', 3),
@@ -631,7 +649,7 @@ function setupD3() {
 	function draw(graph) {
 		const container = $('svg');
 		const svg = $('svg');
-		const resG = $('.resizable-g');
+		resG = $('.resizable-g');
 		const width = container.width();
 		const height = container.height();
 		let scaleMin;
@@ -639,25 +657,12 @@ function setupD3() {
 		const tooltip = d3.select(".tooltip")
 				.attr("class", "tooltip")
 				.style("opacity", 0)
-				.on("mouseover", function() {tooltip.transition().duration(500).style("opacity", .98)})
-		        .on("mouseout", function() {tooltip.transition().duration(200).style("opacity", 0).style("pointer-events", "none")})
+				.on("mouseover", function() {tooltip.transition().duration(300).style("opacity", .98)})
+		        .on("mouseout", function() {tooltip.transition().duration(100).style("opacity", 0).style("pointer-events", "none")});
 		const tooltipLink = d3.select(".tooltip a")
-				.on("mouseover", function() {tooltip.transition().duration(500).style("opacity", .98)})
-		        .on("mouseout", function() {tooltip.transition().duration(200).style("opacity", 0).style("pointer-events", "none")})
-		        .on("click", function(evt) {evt.preventDefault()})
-
-		if($(window).width() < 420) {
-		    scaleMin = Math.min(width, height) / (zoomLevel - $(window).width());
-		} else {
-		    scaleMin = Math.min(width, height) / ((zoomLevel + 1000) - $(window).width());
-		}
-		const resGWidth = width/2 * (1 - scaleMin);
-		const resGHeight = height/2 * (1 - scaleMin);
-		offset = 0;
-
-	    const positioning = 'translate(' + resGWidth + 'px, ' + resGHeight + 'px) scale(' + scaleMin + ')';
-
-		resG.css('transform', positioning);
+				.on("mouseover", function() {tooltip.transition().duration(300).style("opacity", .98)})
+		        .on("mouseout", function() {tooltip.transition().duration(100).style("opacity", 0).style("pointer-events", "none")})
+		        .on("click", function(evt) {evt.preventDefault()});
 
 		const node_drag = d3.drag()
 	        .on("start", dragstart)
@@ -676,105 +681,183 @@ function setupD3() {
 	    }
 
 	    function dragend(d, i) {
-	        if (!d3.event.active) simulation.alphaTarget(0);
+	        if (!d3.event.active) simulation.alphaTarget(0.0001);
 			d.fx = null;
 			d.fy = null;
 	    }
 
-		node = node.data(graph.nodes)
+		node = node.data(graph.nodes.filter(d => d.icon == null));
 		node.exit().remove();
-		
 		node = node.enter().append("circle")
 			.attr("r", d => d.activeSize)
 			.attr("fill", d => d.color)
-			// .attr("filter", 'url(#f3)')
 			.attr("class", d => "nodes " + d.type + " " + (d.visibleNode ? "visible-node" : "invisible-node"))
-			.merge(node)
+			.merge(node);
+
+		attachEventsToNode(node);
+
+		node.each(d => {
+			if (d.type === 'all') {
+				d.fx = width / 2 - offset;
+				d.fy = height / 2 - offset;
+			} else {
+				d.fx = null;
+				d.fy = null;
+			}});
+
+		node.call(node_drag);
+
+		link = link.data(graph.links);
+		link.exit().remove();
+		link = link.enter().append("line")
+			.attr("class", d => "links " + d.type)
+			.attr("stroke-linecap", d => d.dashed ? "round" : "")
+			.attr("stroke-dasharray", d => d.dashed ? "1, 10" : "")
+			.attr("stroke-width", d => d.dashed ? "3" : "1")
+			.style("stroke", d=> d.color)
+			.attr("opacity", 0)
+			.merge(link);
+		
+		label = label.data(graph.nodes);
+		label.exit().remove();
+		label = label.enter().append("text")
+			.text(d => d.label)
+			.attr("class", d => "labelText")
+			.merge(label);
+
+		icon = icon.data(graph.nodes.filter(d => d.icon));
+		icon.exit().remove();
+		icon = icon.enter().append("image")
+			.attr("xlink:href", function(d) { return d.icon; })
+			.attr("width", "50px")
+			.attr("height", "50px")
+			.attr("transform", "translate(-25, -25)")
+			.attr("class", d => "nodes " + d.type + " " + (d.visibleNode ? "visible-node" : "invisible-node"))
+			.merge(icon);
+
+		attachEventsToNode(icon);
+
+		icon.each(d => {
+			if (d.type === 'all') {
+				d.fx = width / 2 - offset;
+				d.fy = height / 2 - offset;
+			} else {
+				d.fx = null;
+				d.fy = null;
+			}});
+
+		icon.call(node_drag);
+
+		forceManyBody.strength(d => fs * d.nodeForce);
+		forceLink.distance(d => ld * d.linkDistance);
+		forceLink.strength(d => ls * d.linkStrength * d.topParentNode ? 1 : 2);
+		forceCollide.radius(d => d.inactiveSize / 2);
+
+
+		simulation.nodes(graph.nodes);
+		simulation.force("link").links(graph.links);
+		simulation.force("center", d3.forceCenter(width / 2 - offset, height / 2 - offset))
+		simulation.alpha(0.2).restart();
+		link.each(d => {
+			d.target.visibleNode = true;
+			d.source.visibleNode = true;
+		});
+
+		function attachEventsToNode(node) {
+			node
 			.on("mouseover", function(d) {
 				const tooltipWidth = tooltipHTML.width() + 20;
 				const tooltipHeight = tooltipHTML.height() + 20;
 	            tooltip
 	            	.transition()
-	                .duration(200)
+	                .duration(300)
 	                .style("opacity", .98)
 	                .style("pointer-events", "initial");
 	            tooltip
 	            	.html( () => {
 	            		switch (d.type) {
-	            			case "all":
+	            			case "all": {
+	            				const contractsTotalText = AppData.texts.contracts_total_text;
+	            				const contractsAmountText = AppData.texts.contracts_amount_text;
 	            				return `
 	            				<p class="title">El Nuevo Aeropuerto Internacional de la Ciudad de México</p>
-								<p>Número de contratos: <span>${AppData.texts.contracts_total_text}</span></p>
-								<p>Importe contratado: <span>$${AppData.texts.contracts_amount_text}</span></p>
+								<p>Número de contratos: <span>${contractsTotalText}</span></p>
+								<p>Importe contratado: <span>$${contractsAmountText}</span></p>
 								`;
 	            				break;
-	            			case "contract_type":
+	            			}
+	            			case "contract_type": {
+	            				const contractsCountText = d.contractsCount;
+	            				const contractsAmountText = numberWithCommas((+d.contractsAmount).toFixed(0));
 	            				return `
 	            				<p class="title">${d.name}</p>
-								<p>Número de contratos: <span>${d.contractsCount}</span></p>
-								<p>Importe contratado: <span>$${d.contractsAmount}</span></p>
+								<p>Número de contratos: <span>${contractsCountText}</span></p>
+								<p>Importe contratado: <span>$${contractsAmountText}</span></p>
 								`;
 	            				break;
-	            			case "contract":
+	            			}
+	            			case "contract": {
+	            				const suppliersListHTML = d.suppliersList.map(supplier => `<li>${supplier}</li>`).join('')
+	            				const amountText = numberWithCommas((+d.amount).toFixed(0));
 	            				return `
 	            				<p class="title">${d.name}</p>
 	            				<span>Proveedores:</span>
-								<ul> ${d.suppliersList.map(supplier => `<li>${supplier}</li>`).join('')}</ul>
-								<p>Importe contratado: <span>$${d.amount}</span></p>
+								<ul> ${suppliersListHTML}</ul>
+								<p>Importe contratado: <span>$${amountText}</span></p>
 								`;
 	            				break;
-	            			case "organization":
+	            			}
+	            			case "organization": {
+	            				const nameText = d.name;
+	            				const contractsCountText = d.contractsCount;
+	            				const contractsAmount = numberWithCommas((+d.contractsAmount).toFixed(0));
 	            				return `
-	            				<p class="title">${d.name}</p>
-								<p>Número de contratos: <span>${d.contractsCount}</span></p>
-								<p>Importe contratado: <span>$${d.contractsAmount}</span></p>
+	            				<p class="title">${nameText}</p>
+								<p>Número de contratos: <span>${contractsCountText}</span></p>
+								<p>Importe contratado: <span>$${contractsAmount}</span></p>
 								`;
 	            				break;
-	            			case "related":
+	            			}
+	            			case "related": {
+	            				const nameText = d.name;
+	            				const typeText = d.relationType == "person" ? "persons" : "orgs";
 	            				return `
-	            				<p class="title">${d.name} [${d.relationType}]</p>
+	            				<p class="title">${nameText}</p>
 	            				<p>Más información en QuiénEsQuién.Wiki:</p>
-	            				<p><a href="https://quienesquien.wiki/orgs/${d.name}">https://quienesquien.wiki/orgs/${d.name}</a></p>
+	            				<p><a rel="noreferrer noopener" target="_blank" href="https://quienesquien.wiki/${typeText}/${nameText}">https://quienesquien.wiki/${typeText}/${nameText}</a></p>
 								`;
 	            				break;
-	            			case "investigation":
+	            			}
+	            			case "investigation": {
+	            				const nameText = d.name;
+	            				const urlText = d.url;
 	            				return `
-	            				<p class="title">${d.name}</p>
+	            				<p class="title">${nameText}</p>
 	            				<p>Más información en QuiénEsQuién.Wiki:</p>
-	            				<p><a href="${d.url}">${d.url}</a></p>
+	            				<p><a rel="noreferrer noopener" target="_blank" href="${urlText}">${urlText}</a></p>
 								`;
 	            				break;
-	            			default:
+	            			}
+	            			default: {
 	            				return "sin texto"
 	            				break;
+	            			}
 	            		}
 	            	})
-	                // .style("left", (d3.event.pageX + 30) + "px")
-	                // .style("top", (d3.event.pageY - 28) + "px");
+
 	                .style("left", (d3.event.pageX - tooltipWidth - 30) + "px")
 	                .style("top", (d3.event.pageY - tooltipHeight / 2) + "px");
-					// contracts_amount_text
-					// contracts_type_text
-					// contracts_total_text
-					// direct_adjudication_text
-					// direct_adjudication_percentage_text
-					// suppliers_count_text
-					// big_amount_contracts_text
-					// big_amount_percentage_text
-					// big_amount_winners_text
             })
             .on("mousemove", function(d) {
             	const tooltipWidth = tooltipHTML.width() + 20;
 				const tooltipHeight = tooltipHTML.height() + 20;
 	            tooltip
-	                // .style("left", (d3.event.pageX + 30) + "px")
-	                // .style("top", (d3.event.pageY - 28) + "px");
 	                .style("left", (d3.event.pageX - tooltipWidth - 30) + "px")
 	                .style("top", (d3.event.pageY - tooltipHeight / 2) + "px");
             })
 	        .on("mouseout", function(d) {
 	            tooltip.transition()
-	                .duration(500)
+	                .duration(100)
 	                .style("opacity", 0)
 	                .style("pointer-events", "initial");
 	        })
@@ -806,6 +889,7 @@ function setupD3() {
 	            	case "contract":
 	            	case "contract_type":
 	            	case "organization":
+	            	case "related":
 			            globalTimers.push(
 			            	requestAnimationFrame((function(linkId,onlyParents) {
 					            return function() {showSelectedLinks(linkId, onlyParents)};
@@ -852,14 +936,9 @@ function setupD3() {
 		            	const selectedLink = selectedLinks[l];
 		            	if (selectedLink.selected == true) {continue;}
 		            	if (selectedLink.hidden) {continue;}
-		            	// const linkType = onlyType == onlyParents ? selectedLink.target : selectedLink.source;
 		            	selectedLink.lastOpacity = selectedLink.opacity;
 		            	selectedLink.opacity = 1;
 		            	selectedLink.selected = true;
-
-		            	// showSelectedNodes(selectedLink.id);
-		            	// showSelectedLinks(selectedLink.id, onlyType);
-
 
 		            	const findOnlyParents = onlyType == onlyParents;
 	            		const iAmAChild = selectedLink.target;
@@ -881,15 +960,11 @@ function setupD3() {
 			            	})(selectedLink.target.id))
 			            )
 
-		            	// if (selectedLink.type == 'organization') {continue; }
-		            	// showSelectedLinks(selectedLink.source.id);
 		            	globalTimers.push(
 		            		requestAnimationFrame((function(linkTypeId, onlyType) {
 				            	return function() {showSelectedLinks(linkTypeId, onlyType);}
 			            	})(linkType.id, onlyType))
 			            )
-		            	// showSelectedLinks(linkType.id, onlyType);
-
 		            }
 	            }
 
@@ -906,52 +981,7 @@ function setupD3() {
 	            	}
 	            }
             });
-		node.each(d => {
-			if (d.type === 'all') {
-				d.fx = width / 2 - offset;
-				d.fy = height / 2 - offset;
-			} else {
-				d.fx = null;
-				d.fy = null;
-			}});
-
-		node
-			.call(node_drag);
-
-		link = link.data(graph.links);
-		link.exit().remove();
-		link = link.enter().append("line")
-			.attr("class", d => "links " + d.type)
-			.attr("stroke-linecap", d => d.dashed ? "round" : "")
-			.attr("stroke-dasharray", d => d.dashed ? "1, 10" : "")
-			.attr("stroke-width", d => d.dashed ? "3" : "1")
-			.style("stroke", d=> d.color)
-			.attr("opacity", 0)
-			.merge(link);
-		
-		label = label.data(graph.nodes);
-		label.exit().remove();
-		label = label.enter().append("text")
-			.text(d => d.label)
-			.attr("class", d => "labelText")
-			.merge(label);
-
-		forceManyBody.strength(d => fs * d.nodeForce);
-		// forceManyBody.distanceMax(mx);
-		// forceManyBody.distanceMin(mn);
-		forceLink.distance(d => ld * d.linkDistance);
-		forceLink.strength(d => ls * d.linkStrength * d.topParentNode ? 1 : 2);
-		forceCollide.radius(d => d.inactiveSize / 2 /** (1.2+ d.linksCount)*/);
-
-
-		simulation.nodes(graph.nodes);
-		simulation.force("link").links(graph.links);
-		simulation.force("center", d3.forceCenter(width / 2 - offset, height / 2 - offset))
-		simulation.alpha(0.2).restart();
-		link.each(d => {
-			d.target.visibleNode = true;
-			d.source.visibleNode = true;
-		});
+		}
 	}
 }
 
@@ -1005,3 +1035,9 @@ function redraw() {
       "translate(" + d3.event.translate + ")"
       + " scale(" + d3.event.scale + ")");
 }
+
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+

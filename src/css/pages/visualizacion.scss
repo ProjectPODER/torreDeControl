@@ -1,8 +1,17 @@
+@keyframes bounce {
+    0% {bottom:20px;}
+    25% {bottom: 15px;}
+    50% {bottom:20px;}
+    75% {bottom: 15px;}
+    100% {bottom:20px;}
+}
+
 @keyframes pulse {
     0% {opacity:0.05;}
     50% {opacity:0.25;}
     100% {opacity:0.05;}
 }
+
 .page-visualizacion .site-footer {
 	bottom: -210px;
 	transition: bottom ease 300ms;
@@ -31,6 +40,10 @@
 	padding: 10px 20px;
 	@media screen and (min-width: 0) and (max-width: $mobile-size) {
     	padding: 10px;
+  	}
+  	* {
+  		user-select: none;
+  		-webkit-user-select: none;
   	}
 }
 
@@ -237,6 +250,7 @@ div.tooltip .title {
 div.tooltip a {
 	pointer-events: initial;
 	color: #013E5C;
+	cursor: pointer;
 }
 
 .visualization-down-arrow {
@@ -253,4 +267,16 @@ div.tooltip a {
 	background-image: url('../images/scroll_down.svg');
 	background-size: cover;
 	animation: pulse 5s infinite;
+	z-index: 1003;
+	cursor: pointer;
+}
+
+.visualization-down-arrow.hidden {
+	display: none;
+}
+
+.visualization-down-arrow:hover {
+	opacity: 1;
+	animation: bounce 1s;
+
 }
