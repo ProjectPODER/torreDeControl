@@ -146,6 +146,12 @@
                   .contract-procedure-type {
                     @include span-columns(12 of 12);
                   }
+                  .contract-suppliers-title {
+                    @include span-columns(12 of 12);
+                  }
+                  .contract-suppliers-list {
+                    @include span-columns(12 of 12);
+                  }
                 }
                 .details-right {
                   @include span-columns(3);
@@ -575,6 +581,16 @@
                   }
                   .contract-procedure-type {
 
+                  }
+                  .contract-suppliers-title {
+                    margin-top: 10px;        
+                    margin-bottom: 4px;            
+                  }
+                  .contract-suppliers-list {
+                    text-transform: uppercase;
+                    padding-left: 19px;
+                    list-style: square;
+                    font-size: 12px;
                   }
                 }
                 .details-right {

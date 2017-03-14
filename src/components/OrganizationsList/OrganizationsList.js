@@ -58,8 +58,8 @@ class OrganizationsList extends React.Component {
 			const sortedContracts = contracts.sort((a, b) => {
 				const aTitle = a[0].value.suppliers[0].simple;
 				const bTitle = b[0].value.suppliers[0].simple;
-				const aId = a[0].value._id;
-				const bId = b[0].value._id;
+				const aId = a[0].key;
+				const bId = b[0].key;
 				if (aTitle < bTitle) return -10 * finalOrder;
 				if (aTitle > bTitle) return 10 * finalOrder;
 				if (aId < bId) return -1 * finalOrder;
@@ -73,8 +73,8 @@ class OrganizationsList extends React.Component {
 			const sortedContracts = contracts.sort((a, b) => {
 				const aCount = parseInt(a.length);
 				const bCount = parseInt(b.length);
-				const aId = a[0].value._id;
-				const bId = b[0].value._id;
+				const aId = a[0].key;
+				const bId = b[0].key;
 				if (aCount < bCount) return -10 * finalOrder;
 				if (aCount > bCount) return 10 * finalOrder;
 				if (aId < bId) return -1 * finalOrder;
@@ -88,8 +88,8 @@ class OrganizationsList extends React.Component {
 			const sortedContracts = contracts.sort((a, b) => {
 				const aAmount = a.reduce((semitotal, amount) => {return semitotal + amount.value.amount}, 0);
 				const bAmount = b.reduce((semitotal, amount) => {return semitotal + amount.value.amount}, 0);
-				const aId = a[0].value._id;
-				const bId = b[0].value._id;
+				const aId = a[0].key;
+				const bId = b[0].key;
 				if (aAmount < bAmount) return -10 * finalOrder;
 				if (aAmount > bAmount) return 10 * finalOrder;
 				if (aId < bId) return -1 * finalOrder;

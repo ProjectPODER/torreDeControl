@@ -98,7 +98,7 @@ module.exports = () => {
 		nodes.push(node);
 		for (let i in contractsByTypes) {
 			const contractByType = contractsByTypes[i];
-			const node = { id: contractByType.name, name: contractByType.name, activeSize: Math.pow(contractByType.amount,1/5) / 10, inactiveSize: 15, topParentNode: false, nodeForce: 10, type: 'contract_type', group: 2, color: '#3abdc3', linksCount: 0, contractsCount: Object.keys(contractByType.contracts).length, contractsAmount: contractByType.amount, icon: null };
+			const node = { id: contractByType.name, name: contractByType.name, activeSize: Math.pow(contractByType.amount,1/5) / 10, inactiveSize: 15, topParentNode: false, nodeForce: 10, type: 'contract_type', group: 2, color: '#3abdc3', linksCount: 0, contractsCount: Object.keys(contractByType.contracts).length, contractsAmount: contractByType.amount, icon: null, label: contractByType.name };
 			const link = { source: contractByType.name, target: 'contracts', type: 'contract_type', linkStrength: 2, linkDistance: 1, color: '#706F74', dashed: false, opacity: 0.6 };
 			slidesObjects[2].nodes.push(node);
 			slidesObjects[2].links.push(link);
@@ -157,7 +157,7 @@ module.exports = () => {
 
 			if (organizationNotExists(organization._id)) {
 				allFiguresCount++;
-				const node = { id: organization._id, name: organization.name, activeSize: 25, inactiveSize: 10, nodeForce: 10, type: 'related', group: 4, color: '#3c5a6f', linksCount: 0, relationType: 'organization', icon: null, relationType2: 'Organization' };
+				const node = { id: organization._id, name: organization.name, activeSize: 25, inactiveSize: 10, nodeForce: 10, type: 'related', group: 4, color: '#3c5a6f', linksCount: 0, relationType: 'organization', icon: null, relationType2: 'Organization', contractsCount: organization.contracts_count };
 				const linkToCenter = { source: organization._id, target: 'contracts', type: 'related', hidden: true, linkStrength: 3, linkDistance: 9, color: '#706F74', dashed: false, opacity: 0, hideOnReset: true  };
 				slidesObjects[5].links.push(linkToCenter);
 				slidesObjects[5].nodes.push(node);
@@ -167,7 +167,7 @@ module.exports = () => {
 
 			if (organizationNotExists(linkOrganization._id)) {
 				allFiguresCount++;
-				const node = { id: linkOrganization._id, name: linkOrganization.name, activeSize: 25, inactiveSize: 10, nodeForce: 10, type: 'related', group: 4, color: '#3c5a6f', linksCount: 0, relationType: 'organization', icon: null, relationType2: 'Organization' };
+				const node = { id: linkOrganization._id, name: linkOrganization.name, activeSize: 25, inactiveSize: 10, nodeForce: 10, type: 'related', group: 4, color: '#3c5a6f', linksCount: 0, relationType: 'organization', icon: null, relationType2: 'Organization', contractsCount: linkOrganization.contracts_count };
 				const linkToCenter = { source: linkOrganization._id, target: 'contracts', type: 'related', hidden: true, linkStrength: 3, linkDistance: 9, color: '#706F74', dashed: false, opacity: 0, hideOnReset: true  };
 				slidesObjects[5].links.push(linkToCenter);
 				slidesObjects[5].nodes.push(node);
@@ -192,7 +192,6 @@ module.exports = () => {
 							relatedFiguresStack[shareholderId] = {count: 0, relationId: []};
 							relatedFiguresStack[shareholderId].relationId.push(shareholderId + organization._id);
 					} else {
-						console.log(relatedFiguresStack[shareholderId].relationId, shareholderId + organization._id)
 						if (relatedFiguresStack[shareholderId].relationId.indexOf(shareholderId + organization._id) == -1) {
 							relatedFiguresStack[shareholderId].count++;
 							relatedFiguresStack[shareholderId].relationId.push(shareholderId + organization._id);
@@ -240,7 +239,6 @@ module.exports = () => {
 							relatedFiguresStack[boardId] = {count: 0, relationId: []};
 							relatedFiguresStack[boardId].relationId.push(boardId + organization._id);
 					} else {
-						console.log(relatedFiguresStack[boardId].relationId, boardId + organization._id)
 						if (relatedFiguresStack[boardId].relationId.indexOf(boardId + organization._id) == -1) {
 							relatedFiguresStack[boardId].count++;
 							relatedFiguresStack[boardId].relationId.push(boardId + organization._id);
@@ -479,8 +477,13 @@ function setupD3() {
 		    .attr("opacity", d => d.opacity);
 
 		label
-		    .attr("x", d => d.x + offset)
-		    .attr("y", d => d.y + offset)
+		    .attr("x", function(d) {	
+		    	return d.x - this.getBBox().width / 2;
+		    })
+		    .attr("y", function(d) {
+		    	const fontSize = parseInt(window.getComputedStyle(this, null).getPropertyValue("font-size").split('px')[0]);
+		    	return d.y - (this.getBBox().height) / 2 + fontSize;
+		    })
 		    .attr("opacity", d => d.opacity);
 		
 		icon
@@ -591,40 +594,51 @@ function setupD3() {
 				switch (nextIndex) {
 					case 1:
 						newZoom = 1;
-						$('.labelText').addClass('active');
+						updateVisualization();
+						$('.labelText.all').addClass('active');
+						$('.labelText.contract_type').removeClass('active');
 						$('.visualization-down-arrow').removeClass('hidden');
 						break;
 					case 2:
-						newZoom = 0.5;
-						$('.labelText').removeClass('active');
+						newZoom = 0.9;
+						updateVisualization();
+						$('.labelText.contract_type').addClass('active');
+						$('.labelText.all').removeClass('active');
 						$('.visualization-down-arrow').removeClass('hidden');
 						break;
 					case 3:
 						newZoom = 0.5;
+						updateVisualization();
 						$('.labelText').removeClass('active');
 						$('.visualization-down-arrow').removeClass('hidden');
 						break;
 					case 4:
 						newZoom = 0.4;
+						updateVisualization();
 						$('.labelText').removeClass('active');
 						$('.visualization-down-arrow').removeClass('hidden');
 						break;
 					case 5:
-						newZoom = 0.3;
+						newZoom = 0.2;
+						updateVisualization();
 						$('.labelText').removeClass('active');
 						$('.visualization-down-arrow').removeClass('hidden');
 						break;
 					case 6:
 						newZoom = 0.2;
+						updateVisualization();
 						$('.labelText').removeClass('active');
 						$('.visualization-down-arrow').addClass('hidden');
 						break;
 				}
-				zoomLevel = newZoom;
-				const newTranslateX = $('svg').width() / 2 * (1 - zoomLevel);
-				const newTranslateY = $('svg').height() / 2 * (1 - zoomLevel);
-				if (resG) svg.call(zoom.transform, d3.zoomIdentity.translate(newTranslateX, newTranslateY).scale(zoomLevel));
-				goToSlide(nextIndex - 1);
+
+				function updateVisualization() {
+					zoomLevel = newZoom;
+					const newTranslateX = $('svg').width() / 2 * (1 - zoomLevel);
+					const newTranslateY = $('svg').height() / 2 * (1 - zoomLevel);
+					if (resG) svg.call(zoom.transform, d3.zoomIdentity.translate(newTranslateX, newTranslateY).scale(zoomLevel));
+					goToSlide(nextIndex - 1);
+				}
 	    },
 		afterLoad: function(anchorLink, index){
 			$(`.slide-${index}`).addClass('slide-active');
@@ -722,16 +736,16 @@ function setupD3() {
 		label.exit().remove();
 		label = label.enter().append("text")
 			.text(d => d.label)
-			.attr("class", d => "labelText")
+			.attr("class", d => "labelText " + d.type)
 			.merge(label);
 
 		icon = icon.data(graph.nodes.filter(d => d.icon));
 		icon.exit().remove();
 		icon = icon.enter().append("image")
 			.attr("xlink:href", function(d) { return d.icon; })
-			.attr("width", "50px")
-			.attr("height", "50px")
-			.attr("transform", "translate(-25, -25)")
+			.attr("width", "80px")
+			.attr("height", "80px")
+			.attr("transform", "translate(-40, -40)")
 			.attr("class", d => "nodes " + d.type + " " + (d.visibleNode ? "visible-node" : "invisible-node"))
 			.merge(icon);
 
@@ -820,9 +834,11 @@ function setupD3() {
 	            			}
 	            			case "related": {
 	            				const nameText = d.name;
+	            				const contractsCount = d.contractsCount;
 	            				const typeText = d.relationType == "person" ? "persons" : "orgs";
 	            				return `
 	            				<p class="title">${nameText}</p>
+	            				<p>Contrtos: ${contractsCount}</p>
 	            				<p>Más información en QuiénEsQuién.Wiki:</p>
 	            				<p><a rel="noreferrer noopener" target="_blank" href="https://quienesquien.wiki/${typeText}/${nameText}">https://quienesquien.wiki/${typeText}/${nameText}</a></p>
 								`;

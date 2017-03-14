@@ -14,14 +14,23 @@
 }
 
 .labelText {
+	position: relative;
 	display: none;
     font-size: 60px;
-    transform: translate3d(-106px, 22px, 0);
+    line-height: 60px;
     pointer-events: none;
     fill: white;
     font-weight: 700;
     font-family: lato;
     &.active {
     	display: block;
+    }
+
+    &.contract_type {
+    	font-size: 12px;
+    	line-height: 12px;
+    	font-weight: 100;
+    	fill: $blue;
+    	transform: translate(0, 24px);
     }
 }
