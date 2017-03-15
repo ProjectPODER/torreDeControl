@@ -268,6 +268,7 @@ button {
 			max-width: 1024px;
 			@include media($mobile) {
 				background-color: $white;
+				z-index:0;
 		  }
 		.wg-navbar-menu {
 			margin: 0;
@@ -444,11 +445,16 @@ button {
 			@include omega;
 			text-align: center;
 			margin-top: 0px;
-			background-color: $white;
-			z-index: 1000;
+			padding:0px;
+			z-index:0;
 			.navbar-logo-link {
-				display:inline-block;
-				width:60%;
+				background-color: $white;
+				display:block;
+				padding:10px;
+				width:100%;
+				.torre-logo{
+					width:60%;
+				}
 			}
 			.mobile-section-name{
 				display: block;
