@@ -27,6 +27,10 @@ var images = [
 	require('./images/graphs/slide4.svg'),
 	require('./images/graphs/slide5.svg'),
 	require('./images/graphs/slide6.svg'),
+	require('./images/graphs/slide3.png'),
+	require('./images/graphs/slide4.png'),
+	require('./images/graphs/slide5.png'),
+	require('./images/graphs/slide6.png'),
 ];
 
 import $ from 'jquery';
