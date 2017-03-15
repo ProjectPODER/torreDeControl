@@ -208,7 +208,7 @@ module.exports = () => {
 						case 0: {
 							relatedFiguresStack[shareholderId].node = { id: shareholderId, name: shareholderName, simple: shareholderSimple, activeSize: shareholderContractsCount * 2 + 10, inactiveSize: 10, topParentNode: false, nodeForce: 10, type: 'related', group: 4, color: typeColor, linksCount: 0, relationType: shareholderType, icon: null, relationType2: 'Shareholder', contractsCount: shareholderContractsCount };
 							// relatedFiguresStack[shareholderId].linkToCenter = { source: shareholderId, target: 'contracts', type: 'related', hidden: true, linkStrength: 3, linkDistance: 12, color: '#706F74', dashed: false, opacity: 0  };
-							relatedFiguresStack[shareholderId].link = { source: shareholderId, target: organization._id, type: 'related', linkStrength: 3, linkDistance: 5, topParentNode: false, color: '#706F74', dashed: true, opacity: 1 };
+							relatedFiguresStack[shareholderId].link = { source: shareholderId, target: organization._id, type: 'related', linkStrength: 2, linkDistance: 3, topParentNode: false, color: '#706F74', dashed: true, opacity: 1 };
 
 							break;
 						}
@@ -225,7 +225,7 @@ module.exports = () => {
 								/* this continues to default, no brake statement */
 						}
 						default: {
-							const link = { source: shareholderId, target: organization._id, type: 'related', linkStrength: 3, linkDistance: 5, topParentNode: false, color: '#706F74', dashed: true, opacity: 1 };
+							const link = { source: shareholderId, target: organization._id, type: 'related', linkStrength: 2, linkDistance: 3, topParentNode: false, color: '#706F74', dashed: true, opacity: 1 };
 							slidesObjects[5].links.push(link);
 							links.push(link);
 						}
@@ -256,7 +256,7 @@ module.exports = () => {
 						case 0: {
 							relatedFiguresStack[boardId].node = { id: boardId, name: boardName, simple: boardSimple, activeSize: boardContractsCount * 2 + 10, inactiveSize: 10, topParentNode: false, nodeForce: 10, type: 'related', group: 4, color: '#EB639A', linksCount: 0, relationType: boardType, icon: null, relationType2: 'Board', contractsCount: boardContractsCount };
 							// relatedFiguresStack[boardId].linkToCenter = { source: boardId, target: 'contracts', type: 'related', hidden: true, linkStrength: 3, linkDistance: 12, color: '#706F74', dashed: false, opacity: 0  };
-							relatedFiguresStack[boardId].link = { source: boardId, target: organization._id, type: 'related', linkStrength: 3, linkDistance: 5, topParentNode: false, color: '#706F74', dashed: true, opacity: 1 };
+							relatedFiguresStack[boardId].link = { source: boardId, target: organization._id, type: 'related', linkStrength: 2, linkDistance: 3, topParentNode: false, color: '#706F74', dashed: true, opacity: 1 };
 
 							break;
 						}
@@ -273,7 +273,7 @@ module.exports = () => {
 								/* this continues to default, no brake statement */
 						}
 						default: {
-							const link = { source: boardId, target: organization._id, type: 'related', linkStrength: 3, linkDistance: 5, topParentNode: false, color: '#706F74', dashed: true, opacity: 1 };
+							const link = { source: boardId, target: organization._id, type: 'related', linkStrength: 2, linkDistance: 3, topParentNode: false, color: '#706F74', dashed: true, opacity: 1 };
 							slidesObjects[5].links.push(link);
 							links.push(link);
 						}
@@ -466,19 +466,19 @@ function setupFullPage(){
 						$('.visualization-down-arrow').removeClass('hidden');
 						break;
 					case 4:
-						newZoom = isMobile ? 0.2 : 0.4;
+						newZoom = isMobile ? 0.2 : 0.3;
 						triggerUpdate(newZoom, nextIndex);
 						$('.labelText').removeClass('active');
 						$('.visualization-down-arrow').removeClass('hidden');
 						break;
 					case 5:
-						newZoom = isMobile ? 0.17 : 0.3;
+						newZoom = isMobile ? 0.17 : 0.20;
 						triggerUpdate(newZoom, nextIndex);
 						$('.labelText').removeClass('active');
 						$('.visualization-down-arrow').removeClass('hidden');
 						break;
 					case 6:
-						newZoom = isMobile ? 0.15 : 0.3;
+						newZoom = isMobile ? 0.15 : 0.20;
 						triggerUpdate(newZoom, nextIndex);
 						$('.labelText').removeClass('active');
 						$('.visualization-down-arrow').addClass('hidden');
@@ -692,8 +692,7 @@ function setupD3() {
 
 	document.addEventListener("update:visualization", updateVisualization);
 	function updateVisualization(evt) {
-		console.log(evt.detail)
-		const zoomLevel = evt.detail.newZoom;
+		zoomLevel = evt.detail.newZoom;
 		const nextIndex = evt.detail.nextIndex;
 		const newTranslateX = $('svg').width() / 2 * (1 - zoomLevel);
 		const newTranslateY = $('svg').height() / 2 * (1 - zoomLevel);
