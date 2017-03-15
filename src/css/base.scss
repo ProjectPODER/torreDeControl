@@ -204,6 +204,7 @@ button {
 							height:24px;
 							&.link-quienesquien{
 								height:32px;
+								max-width: 100%;
 							}
 						}
 		    	}
@@ -474,7 +475,7 @@ button {
 			.nav-legend {
 				@include span-columns(12 of 12);
 				text-align: center;
-				margin: 10px;
+				margin: 10px auto;
 				display: block;
 				color: $grey;
 			}
