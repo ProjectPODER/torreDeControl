@@ -199,7 +199,7 @@ module.exports = () => {
 
 					switch (relatedFiguresStack[shareholderId].count) {
 						case 0: {
-							relatedFiguresStack[shareholderId].node = { id: shareholderId, name: shareholderName, simple: shareholderSimple, activeSize: shareholderContractsCount * 2 + 10, inactiveSize: 10, topParentNode: false, nodeForce: 10, type: 'related', group: 4, color: typeColor, linksCount: 0, relationType: shareholderType, icon: null, relationType2: 'Shareholder' };
+							relatedFiguresStack[shareholderId].node = { id: shareholderId, name: shareholderName, simple: shareholderSimple, activeSize: shareholderContractsCount * 2 + 10, inactiveSize: 10, topParentNode: false, nodeForce: 10, type: 'related', group: 4, color: typeColor, linksCount: 0, relationType: shareholderType, icon: null, relationType2: 'Shareholder', contractsCount: shareholderContractsCount };
 							// relatedFiguresStack[shareholderId].linkToCenter = { source: shareholderId, target: 'contracts', type: 'related', hidden: true, linkStrength: 3, linkDistance: 12, color: '#706F74', dashed: false, opacity: 0  };
 							relatedFiguresStack[shareholderId].link = { source: shareholderId, target: organization._id, type: 'related', linkStrength: 3, linkDistance: 5, topParentNode: false, color: '#706F74', dashed: true, opacity: 1 };
 							
@@ -247,7 +247,7 @@ module.exports = () => {
 
 					switch (relatedFiguresStack[boardId].count) {
 						case 0: {
-							relatedFiguresStack[boardId].node = { id: boardId, name: boardName, simple: boardSimple, activeSize: boardContractsCount.contracts_count * 2 + 10, inactiveSize: 10, topParentNode: false, nodeForce: 10, type: 'related', group: 4, color: '#EB639A', linksCount: 0, relationType: boardType, icon: null, relationType2: 'Board' };
+							relatedFiguresStack[boardId].node = { id: boardId, name: boardName, simple: boardSimple, activeSize: boardContractsCount * 2 + 10, inactiveSize: 10, topParentNode: false, nodeForce: 10, type: 'related', group: 4, color: '#EB639A', linksCount: 0, relationType: boardType, icon: null, relationType2: 'Board', contractsCount: boardContractsCount };
 							// relatedFiguresStack[boardId].linkToCenter = { source: boardId, target: 'contracts', type: 'related', hidden: true, linkStrength: 3, linkDistance: 12, color: '#706F74', dashed: false, opacity: 0  };
 							relatedFiguresStack[boardId].link = { source: boardId, target: organization._id, type: 'related', linkStrength: 3, linkDistance: 5, topParentNode: false, color: '#706F74', dashed: true, opacity: 1 };
 							
@@ -828,7 +828,7 @@ function setupD3() {
 	            			}
 	            			case "organization": {
 	            				const nameText = d.name;
-	            				const contractsCountText = d.contractsCount;
+	            				const contractsCountText = d.contractsCount || "Desconocido";
 	            				const contractsAmount = numberWithCommas((+d.contractsAmount).toFixed(0));
 	            				return `
 	            				<p class="title">${nameText}</p>
@@ -839,11 +839,11 @@ function setupD3() {
 	            			}
 	            			case "related": {
 	            				const nameText = d.name;
-	            				const contractsCount = d.contractsCount;
+	            				const contractsCount = d.contractsCount || "Desconocido";
 	            				const typeText = d.relationType == "person" ? "persons" : "orgs";
 	            				return `
 	            				<p class="title">${nameText}</p>
-	            				<p>Contrtos: ${contractsCount}</p>
+	            				<p>Contratos: ${contractsCount}</p>
 	            				<p>Más información en QuiénEsQuién.Wiki:</p>
 	            				<p><a rel="noreferrer noopener" target="_blank" href="https://quienesquien.wiki/${typeText}/${nameText}">https://quienesquien.wiki/${typeText}/${nameText}</a></p>
 								`;
