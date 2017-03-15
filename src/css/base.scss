@@ -446,24 +446,36 @@ button {
 			text-align: center;
 			margin-top: 0px;
 			padding:0px;
-			z-index:0;
+			z-index:1;
+			position: fixed;
+			background-color: $white;
 			.navbar-logo-link {
 				background-color: $white;
-				display:block;
+				display:inline-block;
 				padding:10px;
-				width:100%;
+				max-width: 180px;
 				.torre-logo{
-					width:60%;
+					width: 100%;
 				}
 			}
-			.mobile-section-name{
+			.mobile-section-name {
 				display: block;
 				color: $orange;
 				text-transform: uppercase;
+				position: fixed;
+			    left: 0;
+			    right: 0;
+			    z-index: 1;
+			    background: white;
 			}
-	    .torre-logo-tablet{
-	      display:none;
-	    }
+		    .torre-logo-tablet {
+		      display:none;
+		    }
+		}
+		&.state-active {
+			.mobile-section-name{
+				text-indent: -1000px;
+			}
 		}
 		.wg-navbar {
 			padding-top: 60px;

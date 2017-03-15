@@ -347,6 +347,21 @@ module.exports = () => {
 
 		if (isMobile){
 			$('.graph-container').remove();
+			_hideText();
+			$('.info-wrapper').click(_hideText);
+			$('.mobile-graph-container').click(_hideVisualization);
+
+			document.addEventListener("update:visualization", _hideText);
+			
+			function _hideVisualization(evt) {
+				$('.mobile-graph-container').addClass('hidden')
+				$('.info-wrapper').removeClass('hidden')
+			}
+
+			function _hideText(evt) {
+				$('.info-wrapper').addClass('hidden')
+				$('.mobile-graph-container').removeClass('hidden')
+			}
 		} else {
 			$('.mobile-graph-container').remove();
 			nodes = [...slidesObjects[1].nodes, ...slidesObjects[2].nodes, ...slidesObjects[3].nodes, ...slidesObjects[4].nodes, ...slidesObjects[5].nodes, ...slidesObjects[6].nodes];
