@@ -487,7 +487,7 @@ function setupD3() {
 		    .attr("opacity", d => d.opacity);
 
 		label
-		    .attr("x", function(d) {	
+		    .attr("x", function(d) {
 		    	return d.x - this.getBBox().width / 2;
 		    })
 		    .attr("y", function(d) {
@@ -593,8 +593,8 @@ function setupD3() {
 	$('#fullpage').fullpage({
 		anchors: ['slide-1', 'slide-2', 'slide-3', 'slide-4', 'slide-5', 'slide-6'],
 	    menu: '#slidesMenu',
-		navigation: true,
-		paddingTop: ($('.site-top-ribbon').height() + 60) + 'px',
+		navigation: isMobile ? false : true,
+		paddingTop: isMobile ? '0px' : ($('.site-top-ribbon').height() + 60) + 'px',
     	scrollingSpeed: 300,
     	onLeave: (index, nextIndex) => {
 	    	$(`.info-container`).removeClass('slide-active slide-leaving');
@@ -603,39 +603,39 @@ function setupD3() {
 				let newZoom;
 				switch (nextIndex) {
 					case 1:
-						newZoom = 1;
+						newZoom = isMobile ? 0.8 : 1;
 						updateVisualization();
 						$('.labelText.all').addClass('active');
 						$('.labelText.contract_type').removeClass('active');
 						$('.visualization-down-arrow').removeClass('hidden');
 						break;
 					case 2:
-						newZoom = 0.9;
+						newZoom = isMobile ? 0.9 : 1;
 						updateVisualization();
 						$('.labelText.contract_type').addClass('active');
 						$('.labelText.all').removeClass('active');
 						$('.visualization-down-arrow').removeClass('hidden');
 						break;
 					case 3:
-						newZoom = 0.5;
+						newZoom = isMobile ? 0.5 : 0.5;
 						updateVisualization();
 						$('.labelText').removeClass('active');
 						$('.visualization-down-arrow').removeClass('hidden');
 						break;
 					case 4:
-						newZoom = 0.4;
+						newZoom = isMobile ? 0.2 : 0.4;
 						updateVisualization();
 						$('.labelText').removeClass('active');
 						$('.visualization-down-arrow').removeClass('hidden');
 						break;
 					case 5:
-						newZoom = 0.2;
+						newZoom = isMobile ? 0.17 : 0.3;
 						updateVisualization();
 						$('.labelText').removeClass('active');
 						$('.visualization-down-arrow').removeClass('hidden');
 						break;
 					case 6:
-						newZoom = 0.2;
+						newZoom = isMobile ? 0.15 : 0.3;
 						updateVisualization();
 						$('.labelText').removeClass('active');
 						$('.visualization-down-arrow').addClass('hidden');
