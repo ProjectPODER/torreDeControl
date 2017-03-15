@@ -89,7 +89,7 @@ class SearchFilters extends React.Component {
 					</div>
 					<div className="filter-box filter-date">
 						<div>
-							<span className="filter-title">Rango de fechas <i className="filter-tip"><span className="tooltip-info">Encuentra los contratos activos entre dos fechas.</span></i></span>
+							<span className="filter-title">Rango de fechas <i className="filter-tip"><span className="tooltip-info tooltip-info-date">Encuentra los contratos activos entre dos fechas.</span></i></span>
 						</div>
 						<DatePicker type="date" disabled={disabledInputs} selected={fromDate} onChange={this.changeFromDateHandler} className="filter-input filter-input-from" placeholderText="desde" defaultValue={fromDate} />
 						<DatePicker type="date" disabled={disabledInputs} selected={toDate} onChange={this.changeToDateHandler} className="filter-input filter-input-to" placeholderText="hasta" defaultValue={toDate} />

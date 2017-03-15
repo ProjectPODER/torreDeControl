@@ -473,6 +473,7 @@ function setupD3() {
 	})
 
 	function ticked() {
+		const BBox = {width: 0, height: 0};
 		node
 		    .attr("cx", d => d.x + offset)
 		    .attr("cy", d => d.y + offset)
@@ -492,7 +493,7 @@ function setupD3() {
 		    })
 		    .attr("y", function(d) {
 		    	const fontSize = parseInt(window.getComputedStyle(this, null).getPropertyValue("font-size").split('px')[0]);
-		    	return d.y - (this.getBBox().height) / 2 + fontSize;
+	    		return d.y - this.getBBox().height / 2 + fontSize;
 		    })
 		    .attr("opacity", d => d.opacity);
 
@@ -1053,7 +1054,7 @@ function objectToArray(obj) {
 
 function setNodeSizeToType(nodes, type, value) {
 	return nodes;
-	return nodes.map(node => node.type !== type ? {...node, value} : node);
+	// return nodes.map(node => node.type !== type ? {...node, value} : node);
 }
 
 function redraw() {

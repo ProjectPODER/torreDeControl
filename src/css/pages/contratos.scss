@@ -331,7 +331,13 @@
                 @include set-font($font-xs);
                 z-index: 100;
                 @media screen and (min-width: 0) and (max-width: $mobile-size) {
-                  transform: translateX(-38%);
+                  transform: translateX(-50%);
+                }
+
+                &.tooltip-info-date {
+                  @media screen and (min-width: 0) and (max-width: $mobile-size) {
+                    transform: translateX(-40%);
+                  }                  
                 }
                 &:before {
                   content: '';
@@ -346,9 +352,6 @@
                   border-style: solid;
                   border-width: 0 6px 6px 6px;
                   border-color: transparent transparent $light-orange transparent;
-                  @media screen and (min-width: 0) and (max-width: $mobile-size) {
-                    left: 38%;
-                  }
                 }
               }
               &:before {
@@ -390,6 +393,7 @@
         border-bottom: 1px solid $orange;
         margin-bottom: 10px;
         .sort-options-list {
+          position: relative;
           margin-bottom: 5px;
           @include set-font($font-xs);
           .sort-by-count {
@@ -397,7 +401,6 @@
           }
           .sort-by-amount {
             text-align: center;
-            position: relative;
             .tooltip-info {
               font-weight: 400px;
               position: absolute;
@@ -417,21 +420,24 @@
               @include set-font($font-xs);
               z-index: 100;
               @media screen and (min-width: 0) and (max-width: $mobile-size) {
-                transform: translateX(-38%);
+                bottom: 40px;
+                left: 0;
+                transform: translateX(0);
+                top: auto;
               }
               &:before {
                 content: '';
                 position: absolute;
-                top: -6px;
-                left: 50%;
-                transform: translateX(-50%);
+                bottom: -6px;
+                left: auto;
+                right: 0;
                 display: block;
                 z-index: -1;
                 width: 0;
                 height: 0;
                 border-style: solid;
-                border-width: 0 6px 6px 6px;
-                border-color: transparent transparent $light-orange transparent;
+                border-width: 6px 6px 0 6px;
+                border-color: $light-orange transparent transparent transparent;
                 @media screen and (min-width: 0) and (max-width: $mobile-size) {
                   left: 38%;
                 }
@@ -449,12 +455,18 @@
           }
           .sort-options-item {
             cursor: pointer;
+            @media screen and (min-width: 0) and (max-width: $mobile-size) {
+              font-size: 13px;
+            }
             &.active {
               font-weight: 600;
             }
             .arrows {
               margin-left: 12px;
               position: relative;
+              @media screen and (min-width: 0) and (max-width: $mobile-size) {
+                font-size: 10px;
+              }
               .arrow-top,
               .arrow-bottom {
                 position: absolute;
@@ -471,10 +483,16 @@
               }
               .arrow-top {
                 top: -3px;
+                @media screen and (min-width: 0) and (max-width: $mobile-size) {
+                  top: -6px;
+                }
                 // transform: rotate(-90deg);
               }
               .arrow-bottom {
                 bottom: -3px;
+                @media screen and (min-width: 0) and (max-width: $mobile-size) {
+                  bottom: -6px;
+                }
                 // transform: rotate(90deg);
               }
             }

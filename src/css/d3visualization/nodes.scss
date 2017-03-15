@@ -15,7 +15,7 @@
 
 .labelText {
 	position: relative;
-	display: none;
+	visibility: hidden;
     font-size: 60px;
     line-height: 60px;
     pointer-events: none;
@@ -23,7 +23,7 @@
     font-weight: 700;
     font-family: lato;
     &.active {
-    	display: block;
+    	visibility: visible;
     }
 
     &.contract_type {
