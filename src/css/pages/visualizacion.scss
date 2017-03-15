@@ -188,6 +188,15 @@
 	}
 	@include media($mobile){
 		.info-container {
+			.mobile-graph-container{
+				position:absolute;
+				height:100%;
+				width: 100%;
+				img{
+					width: 100%;
+					height:100%;
+				}
+			}
 			.info-wrapper {
 				@include span-columns(12);
 				height:100%;

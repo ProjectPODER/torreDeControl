@@ -44,6 +44,8 @@ let tooltipHTML;
 const globalTimers = [];
 const requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.msRequestAnimationFrame || window.oRequestAnimationFrame;
 const cancelAnimationFrame = window.cancelAnimationFrame || window.webkitCancelAnimationFrame || window.mozCancelAnimationFrame || window.msCancelAnimationFrame || window.oCancelAnimationFrame;
+
+
 module.exports = () => {
 	window.jQuery = $;
 	getData(data => {
@@ -343,13 +345,17 @@ module.exports = () => {
 			return organizationWithId.length == 0;
 		}
 
-		nodes = [...slidesObjects[1].nodes, ...slidesObjects[2].nodes, ...slidesObjects[3].nodes, ...slidesObjects[4].nodes, ...slidesObjects[5].nodes, ...slidesObjects[6].nodes];
-		links = [...slidesObjects[1].links, ...slidesObjects[2].links, ...slidesObjects[3].links, ...slidesObjects[4].links, ...slidesObjects[5].links, ...slidesObjects[6].links];
-		setupD3();
-		window.graph = {nodes, links};
+		if (isMobile){
+			$('.graph-container').remove();
+		} else {
+			$('.mobile-graph-container').remove();
+			nodes = [...slidesObjects[1].nodes, ...slidesObjects[2].nodes, ...slidesObjects[3].nodes, ...slidesObjects[4].nodes, ...slidesObjects[5].nodes, ...slidesObjects[6].nodes];
+			links = [...slidesObjects[1].links, ...slidesObjects[2].links, ...slidesObjects[3].links, ...slidesObjects[4].links, ...slidesObjects[5].links, ...slidesObjects[6].links];
+			setupD3();
+			window.graph = {nodes, links};
+		}
+		setupFullPage();
 	});
-
-
 };
 
 function getData(cb) {
@@ -411,6 +417,84 @@ function getInvestigations(params, cb) {
 	})
 }
 
+function setupFullPage(){
+	$('#fullpage').fullpage({
+		anchors: ['slide-1', 'slide-2', 'slide-3', 'slide-4', 'slide-5', 'slide-6'],
+	  menu: '#slidesMenu',
+		navigation: isMobile ? false : true,
+		paddingTop: isMobile ? '0px' : ($('.site-top-ribbon').height() + 60) + 'px',
+    	scrollingSpeed: 300,
+    	onLeave: (index, nextIndex) => {
+	    	$(`.info-container`).removeClass('slide-active slide-leaving');
+				$(`.slide-${index}`).removeClass('slide-active').addClass('slide-leaving');
+				AppData.actualSlide = nextIndex - 1;
+				let newZoom;
+				switch (nextIndex) {
+					case 1:
+						newZoom = isMobile ? 0.8 : 1;
+						triggerUpdate(newZoom, nextIndex);
+						$('.labelText.all').addClass('active');
+						$('.labelText.contract_type').removeClass('active');
+						$('.visualization-down-arrow').removeClass('hidden');
+						break;
+					case 2:
+						newZoom = isMobile ? 0.9 : 1;
+						triggerUpdate(newZoom, nextIndex);
+						$('.labelText.contract_type').addClass('active');
+						$('.labelText.all').removeClass('active');
+						$('.visualization-down-arrow').removeClass('hidden');
+						break;
+					case 3:
+						newZoom = isMobile ? 0.5 : 0.5;
+						triggerUpdate(newZoom, nextIndex);
+						$('.labelText').removeClass('active');
+						$('.visualization-down-arrow').removeClass('hidden');
+						break;
+					case 4:
+						newZoom = isMobile ? 0.2 : 0.4;
+						triggerUpdate(newZoom, nextIndex);
+						$('.labelText').removeClass('active');
+						$('.visualization-down-arrow').removeClass('hidden');
+						break;
+					case 5:
+						newZoom = isMobile ? 0.17 : 0.3;
+						triggerUpdate(newZoom, nextIndex);
+						$('.labelText').removeClass('active');
+						$('.visualization-down-arrow').removeClass('hidden');
+						break;
+					case 6:
+						newZoom = isMobile ? 0.15 : 0.3;
+						triggerUpdate(newZoom, nextIndex);
+						$('.labelText').removeClass('active');
+						$('.visualization-down-arrow').addClass('hidden');
+						break;
+				}
+	    },
+		afterLoad: function(anchorLink, index){
+			$(`.slide-${index}`).addClass('slide-active');
+		}
+	});
+
+	function triggerUpdate(newZoom, nextIndex){
+		if (window.CustomEvent) {
+			let event = new CustomEvent("update:visualization", {
+				detail: { newZoom: newZoom, nextIndex: nextIndex },
+				bubbles: true,
+				cancelable: true
+			});
+
+			document.dispatchEvent(event);
+		}
+	}
+
+	$.fn.fullpage.moveTo('slide-2');
+	$.fn.fullpage.moveTo('slide-1');
+	$('.fullpage').animate({'opacity': 1});
+	$('.visualization-down-arrow').click(() => {
+		$.fn.fullpage.moveSectionDown();
+	});
+}
+
 function setupD3() {
 	zoom = d3.zoom()
     				.scaleExtent([0.1, 1])
@@ -448,7 +532,7 @@ function setupD3() {
 		.force("link", forceLink)
 		.force("center", forceCenter)
 		.force("collide", forceCollide)
-	    .on("tick", ticked);
+	  .on("tick", ticked);
 
 	let g = svg.append("g").attr("class", 'resizable-g');
 	link = g.append("g").selectAll('link');
@@ -474,8 +558,6 @@ function setupD3() {
 	})
 
 	function ticked() {
-		if (isMobile && simulation.alpha() < 0.17) simulation.stop();
-
 		node
 		    .attr("cx", d => d.x + offset)
 		    .attr("cy", d => d.y + offset)
@@ -593,78 +675,16 @@ function setupD3() {
 		}
 	}
 
-	$('#fullpage').fullpage({
-		anchors: ['slide-1', 'slide-2', 'slide-3', 'slide-4', 'slide-5', 'slide-6'],
-	    menu: '#slidesMenu',
-		navigation: isMobile ? false : true,
-		paddingTop: isMobile ? '0px' : ($('.site-top-ribbon').height() + 60) + 'px',
-    	scrollingSpeed: 300,
-    	onLeave: (index, nextIndex) => {
-	    	$(`.info-container`).removeClass('slide-active slide-leaving');
-				$(`.slide-${index}`).removeClass('slide-active').addClass('slide-leaving');
-				AppData.actualSlide = nextIndex - 1;
-				let newZoom;
-				switch (nextIndex) {
-					case 1:
-						newZoom = isMobile ? 0.8 : 1;
-						updateVisualization();
-						$('.labelText.all').addClass('active');
-						$('.labelText.contract_type').removeClass('active');
-						$('.visualization-down-arrow').removeClass('hidden');
-						break;
-					case 2:
-						newZoom = isMobile ? 0.9 : 1;
-						updateVisualization();
-						$('.labelText.contract_type').addClass('active');
-						$('.labelText.all').removeClass('active');
-						$('.visualization-down-arrow').removeClass('hidden');
-						break;
-					case 3:
-						newZoom = isMobile ? 0.5 : 0.5;
-						updateVisualization();
-						$('.labelText').removeClass('active');
-						$('.visualization-down-arrow').removeClass('hidden');
-						break;
-					case 4:
-						newZoom = isMobile ? 0.2 : 0.4;
-						updateVisualization();
-						$('.labelText').removeClass('active');
-						$('.visualization-down-arrow').removeClass('hidden');
-						break;
-					case 5:
-						newZoom = isMobile ? 0.17 : 0.3;
-						updateVisualization();
-						$('.labelText').removeClass('active');
-						$('.visualization-down-arrow').removeClass('hidden');
-						break;
-					case 6:
-						newZoom = isMobile ? 0.15 : 0.3;
-						updateVisualization();
-						$('.labelText').removeClass('active');
-						$('.visualization-down-arrow').addClass('hidden');
-						break;
-				}
-
-				function updateVisualization() {
-					zoomLevel = newZoom;
-					const newTranslateX = $('svg').width() / 2 * (1 - zoomLevel);
-					const newTranslateY = $('svg').height() / 2 * (1 - zoomLevel);
-					if (resG) svg.call(zoom.transform, d3.zoomIdentity.translate(newTranslateX, newTranslateY).scale(zoomLevel));
-					goToSlide(nextIndex - 1);
-				}
-	    },
-		afterLoad: function(anchorLink, index){
-			$(`.slide-${index}`).addClass('slide-active');
-		}
-
-	});
-
-	$.fn.fullpage.moveTo('slide-2');
-	$.fn.fullpage.moveTo('slide-1');
-	$('.fullpage').animate({'opacity': 1});
-	$('.visualization-down-arrow').click(() => {
-		$.fn.fullpage.moveSectionDown();
-	});
+	document.addEventListener("update:visualization", updateVisualization);
+	function updateVisualization(evt) {
+		console.log(evt.detail)
+		const zoomLevel = evt.detail.newZoom;
+		const nextIndex = evt.detail.nextIndex;
+		const newTranslateX = $('svg').width() / 2 * (1 - zoomLevel);
+		const newTranslateY = $('svg').height() / 2 * (1 - zoomLevel);
+		if (resG) svg.call(zoom.transform, d3.zoomIdentity.translate(newTranslateX, newTranslateY).scale(zoomLevel));
+		goToSlide(nextIndex - 1);
+	}
 
 	graph = {
 		nodes: setNodeSizeToType(objectToArray((new MathSet(nodes)).filter(slide_1).toObject()), 'all', 3),
@@ -680,38 +700,37 @@ function setupD3() {
 		const width = container.width();
 		const height = container.height();
 		let scaleMin;
+		let tooltip;
+		let tooltipLink;
 
-		const tooltip = d3.select(".tooltip")
-				.attr("class", "tooltip")
-				.style("opacity", 0)
-				.on("mouseover", function() {tooltip.transition().duration(300).style("opacity", .98)})
-		        .on("mouseout", function() {tooltip.transition().duration(100).style("opacity", 0).style("pointer-events", "none")});
-		const tooltipLink = d3.select(".tooltip a")
-				.on("mouseover", function() {tooltip.transition().duration(300).style("opacity", .98)})
-		        .on("mouseout", function() {tooltip.transition().duration(100).style("opacity", 0).style("pointer-events", "none")})
-		        .on("click", function(evt) {evt.preventDefault()});
+		if (isDesktop){
+			tooltip = d3.select(".tooltip")
+									.attr("class", "tooltip")
+									.style("opacity", 0)
+									.on("mouseover", function() {tooltip.transition().duration(300).style("opacity", .98)})
+			        		.on("mouseout", function() {tooltip.transition().duration(100).style("opacity", 0).style("pointer-events", "none")});
+			tooltipLink = d3.select(".tooltip a")
+											.on("mouseover", function() {tooltip.transition().duration(300).style("opacity", .98)})
+			        				.on("mouseout", function() {tooltip.transition().duration(100).style("opacity", 0).style("pointer-events", "none")})
+			        				.on("click", function(evt) {evt.preventDefault()});
+		}
 
-		const node_drag = d3.drag()
-	        .on("start", dragstart)
-	        .on("drag", dragmove)
-	        .on("end", dragend);
-
-	    function dragstart(d, i) {
-	        if (!d3.event.active) simulation.alphaTarget(0.2).restart();
+    function dragstart(d, i) {
+			if (!d3.event.active) simulation.alphaTarget(0.2).restart();
 			d.fx = d.x;
 			d.fy = d.y;
-	    }
+    }
 
-	    function dragmove(d, i) {
-	        d.fx = d3.event.x;
+    function dragmove(d, i) {
+    	d.fx = d3.event.x;
 			d.fy = d3.event.y;
-	    }
+    }
 
-	    function dragend(d, i) {
-	        if (!d3.event.active) simulation.alphaTarget(0.0001);
+    function dragend(d, i) {
+    	if (!d3.event.active) simulation.alphaTarget(0.0001);
 			d.fx = null;
 			d.fy = null;
-	    }
+    }
 
 		node = node.data(graph.nodes.filter(d => d.icon == null));
 		node.exit().remove();
@@ -721,7 +740,7 @@ function setupD3() {
 			.attr("class", d => "nodes " + d.type + " " + (d.visibleNode ? "visible-node" : "invisible-node"))
 			.merge(node);
 
-		attachEventsToNode(node);
+		if (isDesktop) attachEventsToNode(node);
 
 		node.each(d => {
 			if (d.type === 'all') {
@@ -731,8 +750,6 @@ function setupD3() {
 				d.fx = null;
 				d.fy = null;
 			}});
-
-		node.call(node_drag);
 
 		link = link.data(graph.links);
 		link.exit().remove();
@@ -762,7 +779,16 @@ function setupD3() {
 			.attr("class", d => "nodes " + d.type + " " + (d.visibleNode ? "visible-node" : "invisible-node"))
 			.merge(icon);
 
-		attachEventsToNode(icon);
+		if (isDesktop) attachEventsToNode(icon);
+
+		if (isDesktop) {
+			const node_drag = d3.drag()
+		        .on("start", dragstart)
+		        .on("drag", dragmove)
+		        .on("end", dragend);
+			node.call(node_drag)
+			icon.call(node_drag)
+		}
 
 		icon.each(d => {
 			if (d.type === 'all') {
@@ -773,7 +799,6 @@ function setupD3() {
 				d.fy = null;
 			}});
 
-		icon.call(node_drag);
 
 		forceManyBody.strength(d => fs * d.nodeForce);
 		forceLink.distance(d => ld * d.linkDistance);
