@@ -58,7 +58,7 @@ module.exports = () => {
 			{nodes: [], links: []},
 			{nodes: [], links: []},
 			{nodes: [], links: []}
-		];		
+		];
 
 		var contractsByOrganizations = []
 		AppData.contracts.forEach(function(contract){
@@ -204,7 +204,7 @@ module.exports = () => {
 							relatedFiguresStack[shareholderId].node = { id: shareholderId, name: shareholderName, simple: shareholderSimple, activeSize: 25, inactiveSize: 10, topParentNode: false, nodeForce: 10, type: 'related', group: 4, color: typeColor, linksCount: 0, relationType: shareholderType, icon: null, relationType2: 'Shareholder' };
 							// relatedFiguresStack[shareholderId].linkToCenter = { source: shareholderId, target: 'contracts', type: 'related', hidden: true, linkStrength: 3, linkDistance: 12, color: '#706F74', dashed: false, opacity: 0, hideOnReset: true  };
 							relatedFiguresStack[shareholderId].link = { source: shareholderId, target: organization._id, type: 'related', linkStrength: 3, linkDistance: 5, topParentNode: false, color: '#706F74', dashed: true, opacity: 1 };
-							
+
 							break;
 						}
 						case 1: {
@@ -252,7 +252,7 @@ module.exports = () => {
 							relatedFiguresStack[boardId].node = { id: boardId, name: boardName, simple: boardSimple, activeSize: 25, inactiveSize: 10, topParentNode: false, nodeForce: 10, type: 'related', group: 4, color: '#EB639A', linksCount: 0, relationType: boardType, icon: null, relationType2: 'Board' };
 							// relatedFiguresStack[boardId].linkToCenter = { source: boardId, target: 'contracts', type: 'related', hidden: true, linkStrength: 3, linkDistance: 12, color: '#706F74', dashed: false, opacity: 0, hideOnReset: true  };
 							relatedFiguresStack[boardId].link = { source: boardId, target: organization._id, type: 'related', linkStrength: 3, linkDistance: 5, topParentNode: false, color: '#706F74', dashed: true, opacity: 1 };
-							
+
 							break;
 						}
 						case 1: {
@@ -275,7 +275,7 @@ module.exports = () => {
 					}
 				}
 			}
-		
+
 		}
 
 		for (let k in organizations) {
@@ -482,7 +482,7 @@ function setupD3() {
 		    .attr("x", d => d.x + offset)
 		    .attr("y", d => d.y + offset)
 		    .attr("opacity", d => d.opacity);
-		
+
 		icon
 		    .attr("x", d => d.x + offset)
 		    .attr("y", d => d.y + offset)
@@ -717,7 +717,7 @@ function setupD3() {
 			.style("stroke", d=> d.color)
 			.attr("opacity", 0)
 			.merge(link);
-		
+
 		label = label.data(graph.nodes);
 		label.exit().remove();
 		label = label.enter().append("text")
