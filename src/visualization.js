@@ -5,7 +5,12 @@ import async from 'async';
 import Filter from './filters.js';
 import MathSet from './sets.js';
 import Fullpage from 'fullpage.js';
+import MobileDetect from 'mobile-detect';
 require('./css/main.scss');
+
+const md = new MobileDetect(window.navigator.userAgent);
+const isMobile = md.mobile();
+const isDesktop = !md.mobile();
 
 let nodes = [];
 let links = [];
