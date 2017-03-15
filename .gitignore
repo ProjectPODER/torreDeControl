@@ -3,3 +3,5 @@ dist
 npm-debug.log
 bower_components
 .idea/
+.DS_Store
+*.ai
