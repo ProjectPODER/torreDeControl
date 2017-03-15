@@ -239,7 +239,7 @@ module.exports = () => {
 					const boardName = board.name;
 					const boardSimple = board.simple;
 					const boardContractsCount = board.contracts_count || 0;
-					const boardType = board.name;
+					const boardType = board.type;
 					if (relatedFiguresStack[boardId] == undefined) {
 							relatedFiguresStack[boardId] = {count: 0, relationId: []};
 							relatedFiguresStack[boardId].relationId.push(boardId + organization._id);
@@ -806,7 +806,7 @@ function setupD3() {
 	            				return `
 	            				<p class="title">El Nuevo Aeropuerto Internacional de la Ciudad de México</p>
 								<p>Número de contratos: <span>${contractsTotalText}</span></p>
-								<p>Importe contratado: <span>$${contractsAmountText}</span></p>
+								<p>Importe contratado: <span>$${contractsAmountText}M</span></p>
 								`;
 	            				break;
 	            			}
@@ -846,6 +846,7 @@ function setupD3() {
 	            				const nameText = d.name;
 	            				const contractsCount = d.contractsCount || "Desconocido";
 	            				const typeText = d.relationType == "person" ? "persons" : "orgs";
+	            				console.log(d)
 	            				return `
 	            				<p class="title">${nameText}</p>
 	            				<p>Contratos: ${contractsCount}</p>
