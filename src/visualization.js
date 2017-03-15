@@ -404,7 +404,8 @@ function getOrganizations(params, cb) {
 }
 
 function getInvestigations(params, cb) {
-	$.get('data/investigation.json')
+	const timestamp = (new Date()).getTime();
+	$.get('data/investigation.json?v=' + timestamp)
 	.done(response => {
 		cb(null, {...params, investigations: response});
 	})
@@ -473,7 +474,8 @@ function setupD3() {
 	})
 
 	function ticked() {
-		const BBox = {width: 0, height: 0};
+		if (isMobile && simulation.alpha() < 0.17) simulation.stop();
+
 		node
 		    .attr("cx", d => d.x + offset)
 		    .attr("cy", d => d.y + offset)
@@ -743,7 +745,7 @@ function setupD3() {
 			.attr("opacity", 0)
 			.merge(link);
 
-		label = label.data(graph.nodes);
+		label = label.data(graph.nodes.filter(d => d.label));
 		label.exit().remove();
 		label = label.enter().append("text")
 			.text(d => d.label)
