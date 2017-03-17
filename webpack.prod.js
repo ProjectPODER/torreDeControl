@@ -130,7 +130,6 @@ module.exports = {
 	    new ExtractTextPlugin("[name].css"),
         new CopyWebpackPlugin([
             { from: 'favicons', to: 'favicons' },
-            { from: 'data', to: 'data' },
             { from: 'mailserver', to: 'mailserver' },
         ]),
         new webpack.optimize.UglifyJsPlugin({
