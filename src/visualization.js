@@ -336,21 +336,18 @@ module.exports = () => {
 		if (isMobile){
 			$('.graph-container').remove();
 			$('.visualization-desktop').remove();
-			// _hideText();
-			// $('.info-wrapper').click(_hideText);
-			// $('.mobile-graph-container').click(_hideVisualization);
 
-			// document.addEventListener("update:visualization", _hideText);
-			
-			// function _hideVisualization(evt) {
-			// 	$('.mobile-graph-container').addClass('hidden')
-			// 	$('.info-wrapper').removeClass('hidden')
-			// }
-
-			// function _hideText(evt) {
-			// 	$('.info-wrapper').addClass('hidden')
-			// 	$('.mobile-graph-container').removeClass('hidden')
-			// }
+			document.addEventListener("update:visualization", updateVisualization);
+			function updateVisualization(evt) {
+				const nextIndex = evt.detail.nextIndex - 1;
+				const graphsMappers = [ 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6];
+				$('.mobile-graph-container').removeClass('active');
+				$(`.graph-slide-${graphsMappers[nextIndex]}`).addClass('active');
+				nextIndex % 2 ? $('.mobile-graph-container').addClass('transparent') : $('.mobile-graph-container').removeClass('transparent');
+				if (nextIndex == 10) {
+					$('.visualization-down-arrow').addClass('hidden');
+				}
+			}
 		} else {
 			$('.mobile-graph-container').remove();
 			$('.visualization-mobile').remove();
@@ -437,70 +434,66 @@ function getInvestigations(params, cb) {
 
 function setupFullPage(){
 	const anchors = isMobile ?
-		['slide-1', 'slide-2', 'slide-3', 'slide-4', 'slide-5', 'slide-6', 'slide-7', 'slide-8', 'slide-9', 'slide-10', 'slide-11', 'slide-12'] :
+		['slide-1', 'slide-2', 'slide-3', 'slide-4', 'slide-5', 'slide-6', 'slide-7', 'slide-8', 'slide-9', 'slide-10', 'slide-11'] :
 		['slide-1', 'slide-2', 'slide-3', 'slide-4', 'slide-5', 'slide-6'];
 
 	$('#fullpage').fullpage({
-		anchors: ['slide-1', 'slide-2', 'slide-3', 'slide-4', 'slide-5', 'slide-6'],
+		anchors: anchors,
 	  menu: '#slidesMenu',
 		navigation: isMobile ? false : true,
 		paddingTop: isMobile ? '0px' : ($('.site-top-ribbon').height() + 60) + 'px',
-    	scrollingSpeed: 300,
-    	onLeave: (index, nextIndex) => {
-	    	$(`.info-container`).removeClass('slide-active slide-leaving');
-				$(`.slide-${index}`).removeClass('slide-active').addClass('slide-leaving');
-				AppData.actualSlide = nextIndex - 1;
-				let newZoom;
+    scrollingSpeed: 300,
+  	onLeave: (index, nextIndex, direction) => {
+    	$(`.info-container`).removeClass('slide-active slide-leaving');
+			$(`.slide-${index}`).removeClass('slide-active').addClass('slide-leaving');
+			AppData.actualSlide = nextIndex - 1;
+			let newZoom;
+			$('.visualization-down-arrow').removeClass('hidden');
+			if (isDesktop) {
+				$('.labelText').removeClass('active');
 				switch (nextIndex) {
 					case 1:
-						newZoom = isMobile ? 0.8 : 1;
-						triggerUpdate(newZoom, nextIndex);
+						newZoom = 1;
+						triggerUpdate(index, nextIndex, newZoom);
 						$('.labelText.all').addClass('active');
-						$('.labelText.contract_type').removeClass('active');
-						$('.visualization-down-arrow').removeClass('hidden');
+						$('.labelText.contract_type').addClass('active');
 						break;
 					case 2:
-						newZoom = isMobile ? 0.9 : 1;
-						triggerUpdate(newZoom, nextIndex);
+						newZoom = 1;
+						triggerUpdate(index, nextIndex, newZoom);
 						$('.labelText.contract_type').addClass('active');
-						$('.labelText.all').removeClass('active');
-						$('.visualization-down-arrow').removeClass('hidden');
 						break;
 					case 3:
-						newZoom = isMobile ? 0.5 : 0.5;
-						triggerUpdate(newZoom, nextIndex);
-						$('.labelText').removeClass('active');
-						$('.visualization-down-arrow').removeClass('hidden');
+						newZoom = 0.5;
+						triggerUpdate(index, nextIndex, newZoom);
 						break;
 					case 4:
-						newZoom = isMobile ? 0.2 : 0.3;
-						triggerUpdate(newZoom, nextIndex);
-						$('.labelText').removeClass('active');
-						$('.visualization-down-arrow').removeClass('hidden');
+						newZoom = 0.3;
+						triggerUpdate(index, nextIndex, newZoom);
 						break;
 					case 5:
-						newZoom = isMobile ? 0.17 : 0.20;
-						triggerUpdate(newZoom, nextIndex);
-						$('.labelText').removeClass('active');
-						$('.visualization-down-arrow').removeClass('hidden');
+						newZoom =  0.20;
+						triggerUpdate(index, nextIndex, newZoom);
 						break;
 					case 6:
-						newZoom = isMobile ? 0.15 : 0.20;
-						triggerUpdate(newZoom, nextIndex);
-						$('.labelText').removeClass('active');
+						newZoom =  0.20;
+						triggerUpdate(index, nextIndex, newZoom);
 						$('.visualization-down-arrow').addClass('hidden');
 						break;
 				}
-	    },
+			} else {
+				triggerUpdate(index, nextIndex, newZoom);
+			}
+    },
 		afterLoad: function(anchorLink, index){
 			$(`.slide-${index}`).addClass('slide-active');
 		}
 	});
 
-	function triggerUpdate(newZoom, nextIndex){
+	function triggerUpdate(index, nextIndex, newZoom){
 		if (window.CustomEvent) {
 			let event = new CustomEvent("update:visualization", {
-				detail: { newZoom: newZoom, nextIndex: nextIndex },
+				detail: { newZoom, nextIndex, index },
 				bubbles: true,
 				cancelable: true
 			});
