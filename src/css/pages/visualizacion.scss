@@ -270,6 +270,10 @@
 						line-height: 28px;
 						margin-bottom:5px;
 						color: $blue;
+						&.middle-text-big {
+							font-size: 200px;
+							line-height: 120px;
+						}
 						span{
 							color: $blue;
 						}

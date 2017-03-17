@@ -9,8 +9,8 @@ import MobileDetect from 'mobile-detect';
 require('./css/main.scss');
 
 const md = new MobileDetect(window.navigator.userAgent);
-const isMobile = md.mobile();
-const isDesktop = !md.mobile();
+const isMobile = md.phone();
+const isDesktop = !md.phone();
 
 let nodes = [];
 let links = [];
@@ -89,16 +89,6 @@ module.exports = () => {
 		AppData.texts.big_amount_contracts_text = (AppData.contracts.filter(contract => {return contract.amount >= 1000000000}).length);
 		AppData.texts.big_amount_percentage_text = (Math.ceil(AppData.contracts.filter(contract => {return contract.amount >= 1000000000}).reduce((before, actual) => {return before + actual.amount }, 0)) / contractsAmount * 100 ).toFixed(2);
 		AppData.texts.big_amount_winners_text = Math.ceil(AppData.contracts.filter(contract => {return contract.amount >= 1000000000}).length );
-
-		$('#contracts_amount').text(AppData.texts.contracts_amount_text);
-		$('#contracts_type').text(AppData.texts.contracts_type_text);
-		$('#contracts_total').text(AppData.texts.contracts_total_text);
-		$('#direct_adjudication').text(AppData.texts.direct_adjudication_text);
-		$('#direct_adjudication_percentage').text(AppData.texts.direct_adjudication_percentage_text);
-		$('#suppliers_count').text(AppData.texts.suppliers_count_text);
-		$('#big_amount_contracts').text(AppData.texts.big_amount_contracts_text);
-		$('#big_amount_percentage').text(AppData.texts.big_amount_percentage_text);
-		$('#big_amount_winners').text(AppData.texts.big_amount_winners_text);
 
 		const node = { id: 'contracts', name: 'contracts', activeSize: contractsAmount / 1000000000, inactiveSize: 35, topParentNode: false, nodeForce: 10, type: 'all', group: 1, color: '#1ee6d3', linksCount: 0, label: "NAICM", icon: null };
 		slidesObjects[1].nodes.push(node);
@@ -292,8 +282,6 @@ module.exports = () => {
 			}
 		}
 
-		$('#slide_5_count').text(allFiguresCount);
-
 		/* Investigations */
 		for (let i in investigations) {
 			const investigation = investigations[i];
@@ -347,28 +335,43 @@ module.exports = () => {
 
 		if (isMobile){
 			$('.graph-container').remove();
-			_hideText();
-			$('.info-wrapper').click(_hideText);
-			$('.mobile-graph-container').click(_hideVisualization);
+			$('.visualization-desktop').remove();
+			// _hideText();
+			// $('.info-wrapper').click(_hideText);
+			// $('.mobile-graph-container').click(_hideVisualization);
 
-			document.addEventListener("update:visualization", _hideText);
+			// document.addEventListener("update:visualization", _hideText);
 			
-			function _hideVisualization(evt) {
-				$('.mobile-graph-container').addClass('hidden')
-				$('.info-wrapper').removeClass('hidden')
-			}
+			// function _hideVisualization(evt) {
+			// 	$('.mobile-graph-container').addClass('hidden')
+			// 	$('.info-wrapper').removeClass('hidden')
+			// }
 
-			function _hideText(evt) {
-				$('.info-wrapper').addClass('hidden')
-				$('.mobile-graph-container').removeClass('hidden')
-			}
+			// function _hideText(evt) {
+			// 	$('.info-wrapper').addClass('hidden')
+			// 	$('.mobile-graph-container').removeClass('hidden')
+			// }
 		} else {
 			$('.mobile-graph-container').remove();
+			$('.visualization-mobile').remove();
 			nodes = [...slidesObjects[1].nodes, ...slidesObjects[2].nodes, ...slidesObjects[3].nodes, ...slidesObjects[4].nodes, ...slidesObjects[5].nodes, ...slidesObjects[6].nodes];
 			links = [...slidesObjects[1].links, ...slidesObjects[2].links, ...slidesObjects[3].links, ...slidesObjects[4].links, ...slidesObjects[5].links, ...slidesObjects[6].links];
 			setupD3();
 			window.graph = {nodes, links};
 		}
+
+		$('#contracts_amount').text(AppData.texts.contracts_amount_text);
+		$('#contracts_type').text(AppData.texts.contracts_type_text);
+		$('#contracts_total').text(AppData.texts.contracts_total_text);
+		$('#direct_adjudication').text(AppData.texts.direct_adjudication_text);
+		$('#direct_adjudication_percentage').text(AppData.texts.direct_adjudication_percentage_text);
+		$('#suppliers_count').text(AppData.texts.suppliers_count_text);
+		$('#big_amount_contracts').text(AppData.texts.big_amount_contracts_text);
+		$('#big_amount_percentage').text(AppData.texts.big_amount_percentage_text);
+		$('#big_amount_winners').text(AppData.texts.big_amount_winners_text);
+		$('#slide_5_count').text(allFiguresCount);
+		$('#slide_6_count').text(investigations.length || 0);
+
 		setupFullPage();
 	});
 };
@@ -433,6 +436,10 @@ function getInvestigations(params, cb) {
 }
 
 function setupFullPage(){
+	const anchors = isMobile ?
+		['slide-1', 'slide-2', 'slide-3', 'slide-4', 'slide-5', 'slide-6', 'slide-7', 'slide-8', 'slide-9', 'slide-10', 'slide-11', 'slide-12'] :
+		['slide-1', 'slide-2', 'slide-3', 'slide-4', 'slide-5', 'slide-6'];
+
 	$('#fullpage').fullpage({
 		anchors: ['slide-1', 'slide-2', 'slide-3', 'slide-4', 'slide-5', 'slide-6'],
 	  menu: '#slidesMenu',
