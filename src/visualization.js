@@ -183,7 +183,7 @@ module.exports = () => {
 					const shareholderSimple = shareholder.simple;
 					const shareholderType = shareholder.type;
 					const shareholderContractsCount = shareholder.contracts_count || 0;
-					const typeColor = shareholder.type == "person" ? "#FC8917" : "#363E4E";
+					const typeColor = shareholder.type == "person" ? "#EB639A" : "#363E4E";
 					if (relatedFiguresStack[shareholderId] == undefined) {
 							relatedFiguresStack[shareholderId] = {count: 0, relationId: []};
 							relatedFiguresStack[shareholderId].relationId.push(shareholderId + organization._id);
@@ -231,6 +231,7 @@ module.exports = () => {
 					const boardName = board.name;
 					const boardSimple = board.simple;
 					const boardContractsCount = board.contracts_count || 0;
+					const typeColor = board.type == "person" ? "#EB639A" : "#363E4E";
 					const boardType = board.type;
 					if (relatedFiguresStack[boardId] == undefined) {
 							relatedFiguresStack[boardId] = {count: 0, relationId: []};
@@ -244,7 +245,7 @@ module.exports = () => {
 
 					switch (relatedFiguresStack[boardId].count) {
 						case 0: {
-							relatedFiguresStack[boardId].node = { id: boardId, name: boardName, simple: boardSimple, activeSize: boardContractsCount * 2 + 10, inactiveSize: 10, topParentNode: false, nodeForce: 10, type: 'related', group: 4, color: '#EB639A', linksCount: 0, relationType: boardType, icon: null, relationType2: 'Board', contractsCount: boardContractsCount };
+							relatedFiguresStack[boardId].node = { id: boardId, name: boardName, simple: boardSimple, activeSize: boardContractsCount * 2 + 10, inactiveSize: 10, topParentNode: false, nodeForce: 10, type: 'related', group: 4, color: typeColor, linksCount: 0, relationType: boardType, icon: null, relationType2: 'Board', contractsCount: boardContractsCount };
 							// relatedFiguresStack[boardId].linkToCenter = { source: boardId, target: 'contracts', type: 'related', hidden: true, linkStrength: 3, linkDistance: 12, color: '#706F74', dashed: false, opacity: 0  };
 							relatedFiguresStack[boardId].link = { source: boardId, target: organization._id, type: 'related', linkStrength: 2, linkDistance: 3, topParentNode: false, color: '#706F74', dashed: true, opacity: 1 };
 
