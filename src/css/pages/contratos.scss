@@ -146,6 +146,12 @@
                   .contract-procedure-type {
                     @include span-columns(12 of 12);
                   }
+                  .contract-suppliers-title {
+                    @include span-columns(12 of 12);
+                  }
+                  .contract-suppliers-list {
+                    @include span-columns(12 of 12);
+                  }
                 }
                 .details-right {
                   @include span-columns(3);
@@ -174,19 +180,21 @@
           .wg-modal-body {
             @include span-columns(8);
             @include shift(2);
-              @media screen and (min-width: 0) and (max-width: $mobile-size) {
-                @include span-columns(12);
-                @include shift(0);
-              }
+            height:auto;
+            @media screen and (min-width: 0) and (max-width: $mobile-size) {
+              @include span-columns(12);
+              @include shift(0);
+            }
             .info-form {
               @include span-columns(8 of 8);
               .wg-modal-close-button {
               }
               .wg-modal-title {
-                @include fill-parent();
+                @include row();
               }
               .wg-modal-info {
-                @include fill-parent();
+                @include row();
+                margin-bottom:0px;
                 .modal-legend {
                   @include span-columns(6 of 8);
                   @include shift(1);
@@ -203,17 +211,20 @@
                       @include fill-parent();
                     }
                   }
-                }  
+                }
               }
               .wg-modal-actions {
+                @include row();
                 .send-info-button {
                   @include span-columns(2 of 8);
-                  &.button-cancel {
-                    @include shift(4);
-                  }
-                  &.button-send {
-                    @include omega(4);
-                  }
+                  @include shift(3);
+                }
+              }
+              .tor-message{
+                @include row();
+                .modal-legend {
+                  @include span-columns(6 of 8);
+                  @include shift(1);
                 }
               }
             }
@@ -236,6 +247,9 @@
         &.visible {
           display: block;
         }
+        .ellipsis {
+          @include set-font($font-md);
+        }
         .pagination-item {
           background-color: transparent;
           border: none;
@@ -243,7 +257,7 @@
           margin: 4px;
           cursor: pointer;
           font-family: Rajdhani;
-          @include set-font($font-xs);
+          @include set-font($font-sm);
           &.active {
             font-weight: 600;
           }
@@ -317,7 +331,13 @@
                 @include set-font($font-xs);
                 z-index: 100;
                 @media screen and (min-width: 0) and (max-width: $mobile-size) {
-                  transform: translateX(-38%);
+                  transform: translateX(-50%);
+                }
+
+                &.tooltip-info-date {
+                  @media screen and (min-width: 0) and (max-width: $mobile-size) {
+                    transform: translateX(-40%);
+                  }                  
                 }
                 &:before {
                   content: '';
@@ -332,9 +352,6 @@
                   border-style: solid;
                   border-width: 0 6px 6px 6px;
                   border-color: transparent transparent $light-orange transparent;
-                  @media screen and (min-width: 0) and (max-width: $mobile-size) {
-                    left: 38%;
-                  }
                 }
               }
               &:before {
@@ -376,6 +393,7 @@
         border-bottom: 1px solid $orange;
         margin-bottom: 10px;
         .sort-options-list {
+          position: relative;
           margin-bottom: 5px;
           @include set-font($font-xs);
           .sort-by-count {
@@ -383,15 +401,72 @@
           }
           .sort-by-amount {
             text-align: center;
+            .tooltip-info {
+              font-weight: 400px;
+              position: absolute;
+              left: 50%;
+              top: 22px;
+              height: auto;
+              width: 300px;
+              transform: translateX(-50%);
+              background-color: $white-grey;
+              border: 1px solid $light-grey;
+              border-top-color: $light-orange;
+              box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+              padding: 10px;
+              color: $grey;
+              opacity: 0;
+              pointer-events: none;
+              @include set-font($font-xs);
+              z-index: 100;
+              @media screen and (min-width: 0) and (max-width: $mobile-size) {
+                bottom: 40px;
+                left: 0;
+                transform: translateX(0);
+                top: auto;
+              }
+              &:before {
+                content: '';
+                position: absolute;
+                bottom: -6px;
+                left: auto;
+                right: 0;
+                display: block;
+                z-index: -1;
+                width: 0;
+                height: 0;
+                border-style: solid;
+                border-width: 6px 6px 0 6px;
+                border-color: $light-orange transparent transparent transparent;
+                @media screen and (min-width: 0) and (max-width: $mobile-size) {
+                  left: 38%;
+                }
+              }
+            }
+            &:hover {
+                &:before {
+                  opacity: 1;
+                }
+                .tooltip-info {
+                  opacity: 1;
+                  pointer-events: initial;
+                }
+              }
           }
           .sort-options-item {
             cursor: pointer;
+            @media screen and (min-width: 0) and (max-width: $mobile-size) {
+              font-size: 13px;
+            }
             &.active {
               font-weight: 600;
             }
             .arrows {
               margin-left: 12px;
               position: relative;
+              @media screen and (min-width: 0) and (max-width: $mobile-size) {
+                font-size: 10px;
+              }
               .arrow-top,
               .arrow-bottom {
                 position: absolute;
@@ -408,10 +483,16 @@
               }
               .arrow-top {
                 top: -3px;
+                @media screen and (min-width: 0) and (max-width: $mobile-size) {
+                  top: -6px;
+                }
                 // transform: rotate(-90deg);
               }
               .arrow-bottom {
                 bottom: -3px;
+                @media screen and (min-width: 0) and (max-width: $mobile-size) {
+                  bottom: -6px;
+                }
                 // transform: rotate(90deg);
               }
             }
@@ -568,6 +649,16 @@
                   .contract-procedure-type {
 
                   }
+                  .contract-suppliers-title {
+                    margin-top: 10px;        
+                    margin-bottom: 4px;            
+                  }
+                  .contract-suppliers-list {
+                    text-transform: uppercase;
+                    padding-left: 19px;
+                    list-style: square;
+                    font-size: 12px;
+                  }
                 }
                 .details-right {
                   .contract-start-date {
@@ -612,7 +703,7 @@
             height: auto;
           }
           .info-form {
-            overflow-y: scroll;
+            // overflow-y: hidden;
             height: 100%;
             .wg-modal-close-button {
               &:before {
@@ -630,6 +721,8 @@
               .modal-legend {
                 color: $blue;
                 @include set-font($font-xs);
+                line-height: 19px;
+                text-align:center;
                 &:last-of-type {
                   margin-bottom: 25px;
                 }
@@ -638,7 +731,7 @@
                 .field-row-wrapper {
                   position: relative;
                   .field-row-input {
-                    margin-bottom: 30px;
+                    margin-bottom: 10px;
                     &.field-textarea {
                       height: 100px;
                     }
@@ -653,7 +746,8 @@
               }
             }
             .wg-modal-actions {
-              position: static;
+              margin:0px;
+              position:relative;
               .send-info-button {
                 @include set-font($font-xxs);
                 text-transform: uppercase;
@@ -674,6 +768,17 @@
                   &:hover {
                     background-color: $light-orange;
                   }
+                }
+              }
+            }
+            .tor-message{
+              margin-top:20px;
+              text-align:center;
+              a{
+                text-decoration:none;
+                font-weight:600;
+                &:hover{
+                  text-decoration:underline;
                 }
               }
             }
@@ -716,7 +821,7 @@
           }
         }
       }
-      
+
     }
-  } 
+  }
 }

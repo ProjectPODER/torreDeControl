@@ -39,7 +39,7 @@ module.exports = {
                 loader: 'style-loader!css-loader?'
             },
             {
-                test: /\.(jpg|png)$/,
+                test: /\.(jpg|png|svg)$/,
                 loader: 'file-loader?name=[path][name].[ext]?[hash]',
             }
 		]
@@ -129,14 +129,40 @@ module.exports = {
         }),
         new HandlebarsPlugin({
             // path to main hbs template
-            entry: path.join(process.cwd(), "metodologia.hbs"),
+            entry: path.join(process.cwd(), "sobre_el_proyecto.hbs"),
             // filepath to result
-            output: path.join(process.cwd(), "metodologia.html"),
+            output: path.join(process.cwd(), "sobre_el_proyecto.html"),
             // data passed to main hbs template: `main-template(data)`
             // data: require("./app/data/project.json"),
 
             // globbed path to partials, where folder/filename is unique
-            
+
+            // // register custom helpers. May be either a function or a glob-pattern
+            // helpers: {
+            //     nameOfHbsHelper: Function.prototype,
+            //     projectHelpers: path.join(process.cwd(), "app", "helpers", "*.helper.js")
+            // },
+
+            // hooks
+            partials: [
+                path.join(process.cwd(), "templates", "*.hbs")
+            ],
+            onBeforeSetup: function (Handlebars) {},
+            onBeforeAddPartials: function (Handlebars, partialsMap) {},
+            onBeforeCompile: function (Handlebars, templateContent) {},
+            onBeforeRender: function (Handlebars, data) {},
+            onBeforeSave: function (Handlebars, resultHtml) {},
+            onDone: function (Handlebars) {}
+        }),
+        new HandlebarsPlugin({
+            // path to main hbs template
+            entry: path.join(process.cwd(), "iframe-prensa.hbs"),
+            // filepath to result
+            output: path.join(process.cwd(), "iframe-prensa.html"),
+            // data passed to main hbs template: `main-template(data)`
+            // data: require("./app/data/project.json"),
+
+            // globbed path to partials, where folder/filename is unique
 
             // // register custom helpers. May be either a function or a glob-pattern
             // helpers: {
@@ -163,7 +189,8 @@ module.exports = {
             path.resolve(__dirname, 'index.html'),
             path.resolve(__dirname, 'contratos.html'),
             path.resolve(__dirname, 'investigacion.html'),
-            path.resolve(__dirname, 'metodologia.html'),
+            path.resolve(__dirname, 'sobre_el_proyecto.html'),
+            path.resolve(__dirname, 'iframe-prensa.html'),
         ]),
         new CopyWebpackPlugin([
             { from: 'favicons', to: 'src/favicons' }

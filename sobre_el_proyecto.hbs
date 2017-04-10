@@ -2,24 +2,25 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Document</title>
+	<title>Torre de control - Sobre el proyecto</title>
 	<link href="https://fonts.googleapis.com/css?family=Rajdhani|Roboto:300,400" rel="stylesheet">
-	<script type="text/javascript" src="dist/bundle.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	{{> templates/favicon}}
+	<script src="dist/bundle.js"></script>
+	{{> templates/analytics}}
 </head>
-<body class="page-metodologia">
+<body class="page-sobre_el_proyecto">
 	<div class="main-container">
 		<!-- header -->
 		{{> templates/topribbon}}
-		{{> templates/header metodologia="active"}}
+		{{> templates/header sobre_el_proyecto="active" section_name="Sobre el proyecto"}}
 		<!-- end of header -->
 
 
-		<!-- body: metodologias -->		
+		<!-- body: sobre_el_proyecto -->
 		<section class="site-content">
-			<h1 class="content-title">Metodología</h1>
 			{{> templates/article_text_left}}
-			{{> templates/article_text_right}}
+			{{!-- {{> templates/article_text_right}} --}}
 		</section>
 		<!-- end of body -->
 

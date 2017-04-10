@@ -1,4 +1,36 @@
 .nodes {
-  stroke: #f0f0f0;
-  stroke-width: 1.5px;
+	display: none;
+	cursor: pointer;
+	stroke: #f0f0f0;
+	stroke-width: 1.5px;
+	-webkit-transition: opacity ease 300ms;
+	-moz-transition: opacity ease 300ms;
+	-ms-transition: opacity ease 300ms;
+	-o-transition: opacity ease 300ms;
+	transition: opacity ease 300ms;
+	&.visible-node {
+		display: block;
+	}
+}
+
+.labelText {
+	position: relative;
+	visibility: hidden;
+    font-size: 60px;
+    line-height: 60px;
+    pointer-events: none;
+    fill: white;
+    font-weight: 700;
+    font-family: lato;
+    &.active {
+    	visibility: visible;
+    }
+
+    &.contract_type {
+    	font-size: 12px;
+    	line-height: 12px;
+    	font-weight: 100;
+    	fill: $blue;
+    	transform: translate(0, 24px);
+    }
 }

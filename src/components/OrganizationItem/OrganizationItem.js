@@ -12,7 +12,7 @@ import { bindActionCreators } from 'redux';
 
 class OrganizationItem extends React.Component {
 	static propTypes = {
-		
+
 	}
 
 	tabClick = (tab) => {

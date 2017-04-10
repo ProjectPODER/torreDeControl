@@ -1,3 +1,38 @@
+var images = [
+	require('./images/investigation_icon.svg'),
+	require('./images/colaboratorio-grey.svg'),
+	require('./images/mexicoleaks-grey.svg'),
+	require('./images/quienesquien-grey.svg'),
+	require('./images/peruleaks-grey.svg'),
+	require('./images/rindecuentas-grey.svg'),
+	require('./images/scroll_down.svg'),
+	require('./images/colaboratorio.svg'),
+	require('./images/hivos.svg'),
+	require('./images/mexicoleaks.svg'),
+	require('./images/peruleaks.svg'),
+	require('./images/poder-white.png'),
+	require('./images/poder.svg'),
+	require('./images/quienesquien.svg'),
+	require('./images/rindecuentas.svg'),
+	require('./images/torre-small-white.svg'),
+	require('./images/torre-small.svg'),
+	require('./images/torre.svg'),
+	require('./images/wingu.svg'),
+	require('./images/tw.svg'),
+	require('./images/animal-politico.svg'),
+	require('./images/serapaz-trazo.svg'),
+	require('./images/graphs/slide1.svg'),
+	require('./images/graphs/slide2.svg'),
+	require('./images/graphs/slide3.svg'),
+	require('./images/graphs/slide4.svg'),
+	require('./images/graphs/slide5.svg'),
+	require('./images/graphs/slide6.svg'),
+	require('./images/graphs/slide3.png'),
+	require('./images/graphs/slide4.png'),
+	require('./images/graphs/slide5.png'),
+	require('./images/graphs/slide6.png'),
+];
+
 import $ from 'jquery';
 import visualization from './visualization.js';
 import contracts from './contracts.js';

@@ -2,98 +2,31 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Document</title>
-	<link href="https://fonts.googleapis.com/css?family=Rajdhani|Roboto:300,400" rel="stylesheet">
-	<script type="text/javascript" src="dist/bundle.js"></script>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png">
-	<link rel="icon" type="image/png" href="/favicons/favicon-32x32.png" sizes="32x32">
-	<link rel="icon" type="image/png" href="/favicons/favicon-16x16.png" sizes="16x16">
-	<link rel="manifest" href="/favicons/manifest.json">
-	<link rel="mask-icon" href="/favicons/safari-pinned-tab.svg" color="#5bbad5">
+	<title>Torre de control</title>
+	<link href="https://fonts.googleapis.com/css?family=Rajdhani|Roboto:300,400|Lato:400,700" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	{{> templates/favicon}}
 	<meta name="theme-color" content="#ffffff">
+	<script src="dist/bundle.js"></script>
+	{{> templates/analytics}}
 </head>
 <body class="page-visualizacion fixed-page">
 	<div class="main-container">
 
 		<!-- header -->
 		{{> templates/topribbon}}
-		{{> templates/header index="active"}}
+		{{> templates/header index="active" section_name="Visualización"}}
 		<!-- end of header -->
 
-		<!-- body: visualización -->		
-
-		<div class="graph-container">
-			<svg></svg>
-		</div>
-		<ul id="slidesMenu" class="slides-menu">
-		    <li class="slides-menu-item" data-menuanchor="slide-1" class="active"><a class="slides-menu-item-link" href="#slide-1"></a></li>
-		    <li class="slides-menu-item" data-menuanchor="slide-2"><a class="slides-menu-item-link" href="#slide-2"></a></li>
-		    <li class="slides-menu-item" data-menuanchor="slide-3"><a class="slides-menu-item-link" href="#slide-3"></a></li>
-		    <li class="slides-menu-item" data-menuanchor="slide-4"><a class="slides-menu-item-link" href="#slide-4"></a></li>
-		</ul>
-		<div id="fullpage" class="fullpage">
-			<div class="visualization-container">
-				<div class="section info-container slide-active slide-1 fp-auto-height">
-					<div class="info-wrapper">
-						<div class="info-data">
-							<p class="top-text">Un valor<br>total de</p>
-							<p class="middle-text" id="contracts_amount">147</p>
-							<p class="bottom-text">equivale a la suma <br>de los contratos</p>
-						</div>
-						<div class="info-abstract">
-							<h2 class="abstract-title">Total de contratos</h2>
-							<p class="abstract-body">Es un hecho establecido hace semasiado tiempo que un lector se distraera con el contenido del texto de un sitio mientras mira su diseño. El punto de usar Lorem ipsum.</p>
-						</div>
-					</div>
-				</div>
-				<div class="section info-container slide-2 fp-auto-height">
-					<div class="info-wrapper">
-						<div class="info-data">
-							<p class="top-text">Los tipos <br>de contratos son</p>
-							<p class="middle-text" id="contracts_type">147</p>
-							<p class="bottom-text">Y cada contrato pertenece<br>a uno de estos tipos</p>
-						</div>
-						<div class="info-abstract">
-							<h2 class="abstract-title">Tipos de contratos</h2>
-							<p class="abstract-body">Es un hecho establecido hace semasiado tiempo que un lector se distraera con el contenido del texto de un sitio mientras mira su diseño. El punto de usar Lorem ipsum.</p>
-						</div>
-					</div>
-				</div>
-				<div class="section info-container slide-3 fp-auto-height">
-					<div class="info-wrapper">
-						<div class="info-data">
-							<p class="top-text">Lorem <br>Loremipsum</p>
-							<p class="middle-text" id="contracts_total">147</p>
-							<p class="bottom-text">contratos del <br><strong>NACIM</strong></p>
-						</div>
-						<div class="info-abstract">
-							<h2 class="abstract-title">Total de contratos</h2>
-							<p class="abstract-body">Es un hecho establecido hace semasiado tiempo que un lector se distraera con el contenido del texto de un sitio mientras mira su diseño. El punto de usar Lorem ipsum.</p>
-						</div>
-					</div>
-				</div>
-				<div class="section info-container slide-4 fp-auto-height">
-					<div class="info-wrapper">
-						<div class="info-data">
-							<p class="top-text">Lorem <br>Loremipsum</p>
-							<p class="middle-text" id="contracts_total">147</p>
-							<p class="bottom-text">contratos del <br><strong>NACIM</strong></p>
-						</div>
-						<div class="info-abstract">
-							<h2 class="abstract-title">Total de contratos</h2>
-							<p class="abstract-body">Es un hecho establecido hace semasiado tiempo que un lector se distraera con el contenido del texto de un sitio mientras mira su diseño. El punto de usar Lorem ipsum.</p>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-
+		<!-- body: visualización -->
+		{{> templates/visualization}}
 		<!-- end of body -->
 
 		<!-- footer -->
 		{{> templates/footer}}
 		<!-- end of footer -->
 	</div>
+	<div class="tooltip"></div>
+
 </body>
 </html>

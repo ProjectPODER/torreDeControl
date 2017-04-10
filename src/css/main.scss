@@ -9,15 +9,16 @@
 @import "components/header";
 @import "components/modal";
 
+/* base */
+@import "base";
+
 /* D3 visualization */
 @import "d3visualization/nodes";
 @import "d3visualization/links";
 
-/* base */
-@import "base";
-
 /* pages */
 @import "pages/visualizacion";
-@import "pages/metodologia";
+@import "pages/sobre_el_proyecto";
 @import "pages/investigacion";
 @import "pages/contratos";
+@import "pages/iframe";

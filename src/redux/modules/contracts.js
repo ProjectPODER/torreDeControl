@@ -189,7 +189,6 @@ export default function reducer(state = initialState, action = {}) {
       };
     }
     case SEND_CONTACT_INFO_SUCCESS: {
-      console.log(action)
       return {
         ...state,
         sendInfoData: {
@@ -243,9 +242,10 @@ export function changeSortCriteria(newCriteria) {
 }
 
 export function getContractsList() {
+  const endpointUrl = 'http://ec2-54-83-139-8.compute-1.amazonaws.com'; // TO-DO: Al igual en en visualization.js:282 esto seria mejor si es un constante global pero no queria ponerla donde
   return {
     types: [GET_CONTRACTS_LIST, GET_CONTRACTS_LIST_SUCCESS, GET_CONTRACTS_LIST_FAIL],
-    promise: () => $.get('https://www.quienesquien.wiki/api/v1/contracts?dependency=Grupo%20Aeroportuario%20De%20La%20Ciudad%20De%20M%C3%A9xico,%20S.A.%20de%20C.V.&limit=1000')
+    promise: () => $.get(endpointUrl + '/api/v1/contracts')
   };
 }
 
@@ -309,6 +309,6 @@ export function setInfoData(data) {
 export function sendContactMail(data) {
   return {
     types: [SEND_CONTACT_INFO, SEND_CONTACT_INFO_SUCCESS, SEND_CONTACT_INFO_FAIL],
-    promise: () => $.post('message.php', data)
+    promise: () => $.post('mailserver/message.php', data)
   };
 }

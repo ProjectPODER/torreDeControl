@@ -1,4 +1,9 @@
 .links {
   stroke: #999;
   stroke-opacity: 0.6;
+  -webkit-transition: opacity ease 300ms;
+  -moz-transition: opacity ease 300ms;
+  -ms-transition: opacity ease 300ms;
+  -o-transition: opacity ease 300ms;
+  transition: opacity ease 300ms;
 }

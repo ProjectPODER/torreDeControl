@@ -20,17 +20,18 @@ $font-md: 20;
 $font-lg: 48;
 $font-xl: 70;
 
-
-$mobile-size:420px;
+$mobile-size:580px;
 $tablet-size:720px;
 $desktop-size:960px;
 $largedesktop-size:1050px;
 
 // Bourbon Neat Breakpoints
 $mobile: new-breakpoint(min-width 0 max-width $mobile-size, 12);
-$tablet: new-breakpoint(min-width $mobile-size max-width $tablet-size, 12);
-$desktop: new-breakpoint(min-width $tablet-size max-width $desktop-size, 12);
+$tablet: new-breakpoint(min-width $mobile-size+1 max-width $tablet-size, 12);
+$desktop: new-breakpoint(min-width $tablet-size+1 max-width $desktop-size, 12);
 $largedesktop: new-breakpoint(min-width $desktop-size max-width $largedesktop-size, 12);
+
+$until-desktop: new-breakpoint(min-width 0 max-width $desktop-size, 12);
 
 @keyframes example {
     from {background-color: red;}
@@ -110,7 +111,7 @@ button {
 }
 
 .site-content {
-	@media screen and (min-width: 0) and (max-width: $mobile-size) {
+	@include media($mobile) {
 		padding-top: 80px !important;
 	}
 }
@@ -144,16 +145,12 @@ button {
 .site-top-ribbon {
 	@include span-columns(12);
 	.ribbon-item {
-		@include span-columns(6);
+		@include row();
 		.ribbon-link {
-			@include span-columns(4);
-		}
-	}
-	.ribbon-right {
-		@include span-columns(5);
-		@include shift(1);
-		.ribbon-link {
-			@include span-columns(4 of 12);
+			@include span-columns(3 of 18);
+			&:last-child{
+				@include omega
+			}
 		}
 	}
 }
@@ -165,9 +162,12 @@ button {
 	padding: 10px 0;
 	height: 50px;
 	overflow: hidden;
-	@media screen and (min-width: 0) and (max-width: $mobile-size) {
+	position: relative;
+	z-index: 1002;
+	@include media($mobile) {
 		display: none;
 		height: 0;
+		padding-bottom: 10px;
 	}
 
 	.ribbon-item {
@@ -175,25 +175,45 @@ button {
 		.ribbon-link {
 		    text-decoration: none;
 		    color: #006b8d;
-		    margin: 0 auto;
-		    text-align: center;
 		    position: relative;
 		    height: 100%;
+		    &.link-desktop{
+					@include media($mobile) {
+		    		display:none;
+						height: 0;
+					}
+	    	}
 		    img {
 		    	width: 100%;
 		    	position: absolute;
 		    	left: 50%;
 		    	top: 50%;
 		    	transform: translate3d(-50%, -50%, 0);
+		    	&.link-desktop{
+						@include media($mobile) {
+			    		display:none;
+							height: 0;
+						}
+		    	}
+		    	&.link-mobile{
+		    		display:none;
+						height: 0;
+						@include media($mobile) {
+							display: inline-block;
+							height: auto;
+							height:24px;
+							&.link-quienesquien{
+								height:32px;
+								max-width: 100%;
+							}
+						}
+		    	}
 		    }
 		    .link-quienesquien {
 		    	max-width: 101px;
 		    }
 		    .link-colaboratorio {
-		    	max-width: 122px;
-		    }
-		    .link-colaboratorio {
-		    	max-width: 103px;
+		    	max-width: 140px;
 		    }
 		    .link-rindecuentas {
 		    	max-width: 140px;
@@ -213,15 +233,14 @@ button {
 }
 
 .site-header {
-	@include header(60);
+	@include header(48);
 	@include span-columns(12);
-	background-color: $white;
 	position: relative;
-	z-index: 1;
+	z-index: 1100;
 	margin-bottom: 20px;
 	.wg-navbar-logo {
-		@include span-columns(4);
-		margin-top: 4px;
+		@include span-columns(3);
+		// margin-top: 4px;
 		.navbar-logo-link {
 			display: inline-block;
 			@include fill-parent;
@@ -229,68 +248,28 @@ button {
 			position: relative;
 			z-index: 1000;
 		}
-		
 		.torre-logo {
 			width: 100%;
 			max-height: 30px;
-			@media screen and (min-width: 0) and (max-width: $desktop-size) {
-			    display: none;
-		    }
 		}
-		.torre-logo-small {
-			width: 100%;
-			max-height: 30px;
+		.torre-logo-tablet{
+	    display:none;
+	  }
+		.mobile-section-name{
 			display: none;
-			max-width: 28px;
-			min-width: 20px;
-			margin-left: 10px;
-			@media screen and (min-width: 0) and (max-width: $desktop-size) {
-			    display: block;
-		    }
-		    @media screen and (min-width: 0) and (max-width: $mobile-size) {
-				margin-top: 4px;
-		    }
-			transition: opacity 0.1s ease 0.2s;
-		    position: absolute;
-		    top: 0;
-		    left: 0;
-		}
-		.torre-logo-grey {
-			opacity: 1;
-		}
-		.torre-logo-white {
-			opacity: 0;
 		}
 	}
 	.wg-navbar-menu-button span {
 		background-color: $grey;
 		transition: all 0.2s ease;
 	}
-	&.state-active {
-		.torre-logo-grey {
-			@media screen and (min-width: 0) and (max-width: $mobile-size) {
-				opacity: 0;
-			    transition: opacity 0.2s ease;
-			}
-		}
-		.torre-logo-white {
-			@media screen and (min-width: 0) and (max-width: $mobile-size) {
-				opacity: 1;
-			    transition: opacity 0.2s ease;
-			}
-		}
-		.wg-navbar-menu-button span {
-			background-color: $white;
-			transition: background-color 0.1s ease 0.2s, transform 0.3s ease;
-		}
-	}
 	.wg-navbar {
-			@include span-columns(8);
+			@include span-columns(9);
 			max-width: 1024px;
-			background-color: $white;
-			@media screen and (min-width: 0) and (max-width: $mobile-size) {
-				background-color: $blue;
-		    }
+			@include media($mobile) {
+				background-color: $white;
+				z-index:0;
+		  }
 		.wg-navbar-menu {
 			margin: 0;
 			.wg-navbar-item {
@@ -300,9 +279,10 @@ button {
 					text-transform: uppercase;
 					text-decoration: none;
 					font-size: 20px;
-					@media screen and (min-width: 0) and (max-width: $mobile-size) {
+					@include ellipsis;
+					@include media($mobile) {
 						padding: 8px;
-						color: $white;
+						color: $blue;
 					}
 					&:before {
 						content: '';
@@ -313,7 +293,7 @@ button {
 						left: 35%;
 						right: 35%;
 						opacity: 0;
-						@media screen and (min-width: 0) and (max-width: $mobile-size) {
+						@include media($mobile) {
 							bottom: 3px;
 						}
 					}
@@ -334,6 +314,9 @@ button {
 		.nav-separator {
 			display: none;
 		}
+		.mobile-icons {
+			display: none;
+		}
 		.mobile-social {
 			display: none;
 		}
@@ -345,11 +328,12 @@ button {
 			height: auto;
 			overflow: visible;
 			width: 100%;
-			position: initial;
+			position: relative;
+			z-index: 1100;
 			background-color: transparent;
-			@media screen and (min-width: 0) and (max-width: $mobile-size) {
+			@include media($mobile) {
 				display: block;
-				padding: 0;
+				padding-bottom: 10px;
 			}
 			.ribbon-item {
 				float: none;
@@ -367,9 +351,6 @@ button {
 					overflow: visible;
 					width: 100%;
 					position: initial;
-					.link-poder {
-						display: none;
-					}
 					img {
 						position: initial;
 						transform: none;
@@ -401,11 +382,17 @@ button {
 	}
 }
 
-@media screen and (min-width: 0) and (max-width: $desktop-size) {
-    .site-header {
-		.wg-navbar-logo {
+@include media($tablet) {
+  .site-header {
+  	.wg-navbar-logo {
 			@include span-columns(1 of 12);
-		}
+	  	.torre-logo{
+	  		display:none
+	  	}
+	  	.torre-logo-tablet{
+	      display:block;
+	    }
+	  }
 		.wg-navbar {
 			@include span-columns(11 of 12);
 			.wg-navbar-menu {
@@ -419,42 +406,112 @@ button {
 	}
 }
 
-@media screen and (min-width: 0) and (max-width: $mobile-size) {
+@include media($desktop) {
+  .site-header {
+  	.wg-navbar-logo {
+			@include span-columns(1 of 12);
+	  	.torre-logo{
+	  		display:none
+	  	}
+	  	.torre-logo-tablet{
+	      display:block;
+	    }
+	  }
+		.wg-navbar {
+			@include span-columns(11 of 12);
+			.wg-navbar-menu {
+				.wg-navbar-item {
+					a {
+						@include set-font($font-sm);
+						@include ellipsis;
+					}
+				}
+			}
+		}
+  }
+}
+
+@include media($mobile) {
 	.site-header {
 		position: fixed;
 		top: 0;
 		left: 0;
 		right: 0;
-		z-index: 1001;
+		z-index: 1004;
+		height:68px;
+		border-bottom:2px solid rgba($grey, .3);
 		.wg-navbar-logo {
-			margin: 0;
-			@include span-columns(8 of 12);
+			@include span-columns(12);
+			@include omega;
+			text-align: center;
+			margin-top: 0px;
+			padding:0px;
+			z-index:1;
+			position: fixed;
+			background-color: $white;
+			.navbar-logo-link {
+				background-color: $white;
+				display:inline-block;
+				padding:10px;
+				max-width: 180px;
+				.torre-logo{
+					width: 100%;
+				}
+			}
+			.mobile-section-name {
+				display: block;
+				color: $orange;
+				text-transform: uppercase;
+				position: fixed;
+			    left: 0;
+			    right: 0;
+			    z-index: 1;
+			    background: white;
+			}
+		    .torre-logo-tablet {
+		      display:none;
+		    }
+		}
+		&.state-active {
+			.mobile-section-name{
+				text-indent: -1000px;
+			}
 		}
 		.wg-navbar {
 			padding-top: 60px;
 			@include span-columns(12 of 12);
+			overflow-y: scroll;
+			overflow-x: hidden;
 			.wg-navbar-menu {
 				margin: 0;
 				.wg-navbar-item {
-					display: block;
 					width: 100%;
+					display: block;
 					margin-bottom: 10px;
 				}
 			}
 			.nav-legend {
 				@include span-columns(12 of 12);
 				text-align: center;
-				margin: 10px;
+				margin: 10px auto;
 				display: block;
-				color: $white;
+				color: $grey;
 			}
 			.nav-separator {
 				display: block;
-				height: 2px;
-				background: $white;
+				height: 1px;
+				background: rgba($grey, .3);
 				float: left;
 				width: 80%;
-				margin: 0 10%;
+				margin: 20px 10%;
+			}
+			.mobile-icons{
+				display: block;
+				text-align: center;
+				.organization-link{
+					display: inline-block;
+					margin: 0 5px;
+				}
 			}
 			.mobile-social {
 				@include span-columns(12 of 12);
@@ -474,13 +531,23 @@ button {
 }
 
 .site-footer {
+	.site-development {
+		@include outer-container;
+		.sponsor-item {
+			@include span-columns(1 of 5);
+		}
+	}
+}
+
+.site-footer {
 	width: 100%;
-	height: 60px;
-	background-color: $light-grey;
+	height: 200px;
+	background-color: $white;
 	z-index: 1;
 	padding: 10px 50px;
-	@media screen and (min-width: 0) and (max-width: $mobile-size) {
-		padding: 10px;
+	@include media($mobile) {
+		display:none;
+		height: 0px;
 	}
 	.fixed-page & {
 		bottom: 0;
@@ -495,36 +562,53 @@ button {
 	.site-development {
 		.developed-by,
 		.sponsored-by {
-			@include span-columns(6);
 			color: $black;
-			@media screen and (min-width: 0) and (max-width: $mobile-size) {
+			@include media($mobile) {
 				@include set-font($font-xxs);
 			}
 			.developed-title ,
 			.sponsored-title {
-				@media screen and (min-width: 0) and (max-width: $mobile-size) {
+				font-weight: 600;
+				margin-bottom: 10px;
+				display: block;
+				@include media($mobile) {
 					display: block;
 					margin-bottom: 10px;
 				}
 			}
 			.organization-link {
+				display: block;
+				min-height: 52px;
 				.organization-logo {
 					max-width: 80px;
 					max-height: 40px;
-					margin: 0 10px;
+					margin: 10px;
 					vertical-align: middle;
-					@media screen and (min-width: 0) and (max-width: $mobile-size) {
+					@include media($mobile) {
 						max-width: 50px;
 						max-height: 20px;
 					}
 				}
+				.logo-animal-politico {
+					position: relative;
+					top: -10px;
+				}
+				.logo-hivos{
+					position: relative;
+					top: -7px;
+    			max-height: 35px;
+				}
 			}
 			.organization-link:first-of-type {
 				.organization-logo {
-					@media screen and (min-width: 0) and (max-width: $mobile-size) {
+					@include media($mobile) {
 						margin-left: 0;
 					}
 				}
+			}
+			.sitemap-link {
+				display: block;
+				text-decoration:none;
 			}
 		}
 
@@ -534,45 +618,51 @@ button {
 
 		.developed-by {
 		    margin-top: 10px;
-		    @media screen and (min-width: 0) and (max-width: $mobile-size) {
+		    @include media($mobile) {
 			    margin-top: 0;
 		    }
 		}
-		
+
+		.sponsor-item {
+			text-align: center;
+		}
+
 	}
 	.site-social {
 		span {
 			color: $black;
 		}
-		
+
 	}
 }
 
 .react-datepicker__tether-element-attached-bottom.react-datepicker__tether-element {
-	margin: 5% auto !important;
-	width: 90%;
-	transform: initial !important;
-	top: 0 !important;
-	left: 0 !important;
-	bottom: 0;
-	right: 0;
-	position: fixed !important;
+	@include media($mobile) {
+		margin: 10% auto !important;
+		width: 90%;
+		transform: initial !important;
+		top: 0 !important;
+		left: 0 !important;
+		bottom: 0;
+		right: 0;
+		position: fixed !important;
+	}
 }
 .react-datepicker,
 .react-datepicker__month-container,
 .react-datepicker_month {
-	@media screen and (min-width: 0) and (max-width: $mobile-size) {
+	@include media($mobile) {
 		width: 100%;
 	}
 }
 .react-datepicker__triangle {
-	@media screen and (min-width: 0) and (max-width: $mobile-size) {
+	@include media($mobile) {
 		display: none;
-	}	
+	}
 }
-	
+
 .react-datepicker_day {
-	@media screen and (min-width: 0) and (max-width: $mobile-size) {
+	@include media($mobile) {
 		padding: 5%;
 	}
 }

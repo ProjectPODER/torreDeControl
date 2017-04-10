@@ -13,8 +13,8 @@ require('react-datepicker/dist/react-datepicker.css')
     dispatch => bindActionCreators({filterChange, paginationGoToStart}, dispatch))
 class SearchFilters extends React.Component {
 	static propTypes = {
-		fromAmount: PropTypes.number,
-		toAmount: PropTypes.number,
+		fromAmount: PropTypes.string,
+		toAmount: PropTypes.string,
 		contractType: PropTypes.string,
 		procedureType: PropTypes.string,
 		fromDate: PropTypes.instanceOf(moment),
@@ -67,7 +67,6 @@ class SearchFilters extends React.Component {
 								<option value="todos">-Todos-</option>
 								<option value="Adquisiciones">Adquisiciones</option>
 								<option value="Arrendamientos">Arrendamientos</option>
-								<option value="Arrendamientos">Arrendamientos</option>
 								<option value="Obra Pública">Obra Pública</option>
 								<option value="Servicios">Servicios</option>
 								<option value="Servicios Relacionados con la OP">Servicios Relacionados con la OP</option>
@@ -82,6 +81,7 @@ class SearchFilters extends React.Component {
 							<select disabled={disabledInputs} name="procedureType" id="" className="filter-input" defaultValue={procedureType} onChange={this.changeFieldHandler}>
 								<option value="todos">-Todos-</option>
 								<option value="Adjudicación Directa Federal">Adjudicación Directa Federal</option>
+								<option value="Convenio">Convenio</option>
 								<option value="Invitación a Cuando Menos 3 Personas">Invitación a Cuando Menos 3 Personas</option>
 								<option value="Licitación Pública">Licitación Pública</option>
 							</select>
@@ -89,7 +89,7 @@ class SearchFilters extends React.Component {
 					</div>
 					<div className="filter-box filter-date">
 						<div>
-							<span className="filter-title">Rango de fechas <i className="filter-tip"><span className="tooltip-info">Encuentra los contratos activos entre dos fechas.</span></i></span>
+							<span className="filter-title">Rango de fechas <i className="filter-tip"><span className="tooltip-info tooltip-info-date">Encuentra los contratos activos entre dos fechas.</span></i></span>
 						</div>
 						<DatePicker type="date" disabled={disabledInputs} selected={fromDate} onChange={this.changeFromDateHandler} className="filter-input filter-input-from" placeholderText="desde" defaultValue={fromDate} />
 						<DatePicker type="date" disabled={disabledInputs} selected={toDate} onChange={this.changeToDateHandler} className="filter-input filter-input-to" placeholderText="hasta" defaultValue={toDate} />

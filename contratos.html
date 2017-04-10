@@ -2,103 +2,160 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Document</title>
+	<title>Torre de control - Contratos</title>
 	<link href="https://fonts.googleapis.com/css?family=Rajdhani|Roboto:300,400" rel="stylesheet">
-	<script type="text/javascript" src="dist/bundle.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	  <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png">
+	  <link rel="shortcut icon" type="image/png" href="/favicons/favicon-32x32.png" sizes="32x32">
+	  <link rel="manifest" href="/favicons/manifest.json">
+	  <link rel="mask-icon" href="/favicons/safari-pinned-tab.svg" color="#5bbad5">
+	<script src="dist/bundle.js"></script>
+	<script>
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	
+	  ga('create', 'UA-93473946-1', 'auto');
+	  ga('send', 'pageview');
+	
+	</script>
 </head>
 <body class="page-contracts">
 	<div class="main-container">
 		<!-- header -->
-		<ul class="site-top-ribbon">
-			<li class="ribbon-item">
-				<a class="ribbon-link" href="http://projectpoder.org/es/" target="_blank" rel="noopener noreferrer">
-					<img class="link-poder" style="width:115px;" src="src/images/poder-white.png" scale="0">
-				</a>	
+		<div class="site-top-ribbon">
+			<div class="ribbon-item">
+				<a class="link-desktop ribbon-link" href="http://projectpoder.org/es/" target="_blank" rel="noopener noreferrer">
+					<img class="link-desktop link-poder" style="width:115px;" src="src/images/poder-white.png" scale="0">
+				</a>
 				<a class="ribbon-link" href="https://www.rindecuentas.org/" target="_blank"  rel="noopener noreferrer">
-					<img class="link-rindecuentas" src="src/images/rindecuentas.svg" scale="0">
+					<img class="link-desktop link-rindecuentas" src="src/images/rindecuentas.svg" scale="0">
+					<img class="link-mobile" src="src/images/rindecuentas-grey.svg" scale="0">
 				</a>
 				<a class="ribbon-link" href="https://www.colaboratorio.org/" target="_blank"  rel="noopener noreferrer">
-					<img class="link-colaboratorio" src="src/images/colaboratorio.svg" scale="0">
-				</a>				
-			</li>
-			<li class="ribbon-item ribbon-right">
-				<a class="ribbon-link" href="https://www.quienesquien.wiki/" target="_blank" rel="noopener noreferrer">
-					<img class="link-quienesquien" src="src/images/quienesquien.svg" scale="0">
+					<img class="link-desktop link-colaboratorio" src="src/images/colaboratorio.svg" scale="0">
+					<img class="link-mobile" src="src/images/colaboratorio-grey.svg" scale="0">
 				</a>
-				<a class="ribbon-link" href="https://mexicoleaks.mx/enviar-para.php?r=poder" target="_blank" rel="noopener noreferrer">
-					<img class="link-mexicoleaks" src="src/images/mexicoleaks.svg" scale="0">
-				</a>							
+				<a class="ribbon-link" href="https://www.quienesquien.wiki/" target="_blank" rel="noopener noreferrer">
+					<img class="link-desktop link-quienesquien" src="src/images/quienesquien.svg" scale="0">
+					<img class="link-mobile link-quienesquien" src="src/images/quienesquien-grey.svg" scale="0">
+				</a>
+				<a class="ribbon-link" href="https://mexicoleaks.mx/" target="_blank" rel="noopener noreferrer">
+					<img class="link-desktop link-mexicoleaks" src="src/images/mexicoleaks.svg" scale="0">
+					<img class="link-mobile" src="src/images/mexicoleaks-grey.svg" scale="0">
+				</a>
 				<a class="ribbon-link" href="https://leaks.pe/" target="_blank" rel="noopener noreferrer">
-					<img class="link-peruleaks" class="peru" src="src/images/peruleaks.svg" scale="0">
-				</a>	
-			</li>
-		</ul>
+					<img class="link-desktop link-peruleaks" class="peru" src="src/images/peruleaks.svg" scale="0">
+					<img class="link-mobile" src="src/images/peruleaks-grey.svg" scale="0">
+				</a>
+			</div>
+		</div>
 		<header class="site-header">
-			<div class="wg-navbar-logo"><a class="navbar-logo-link" href="#">
-			<img class="torre-logo" src="src/images/torre.svg" alt="Torre de Control">
-			<img class="torre-logo-small torre-logo-grey" src="src/images/torre-small.svg" alt="Torre de Control">
-			<img class="torre-logo-small torre-logo-white" src="src/images/torre-small-white.svg" alt="Torre de Control">
-			</a></div>
 			<div class="wg-navbar-menu-button">
 				<span class="line"></span>
 				<span class="line"></span>
 				<span class="line"></span>
 			</div>
+			<div class="wg-navbar-logo">
+				<a class="navbar-logo-link" href="index.html">
+					<img class="torre-logo" src="src/images/torre.svg" alt="Torre de Control">
+					<img class="torre-logo-tablet torre-logo-grey" src="src/images/torre-small.svg" alt="Torre de Control">
+				</a>
+				<div class="mobile-section-name">Contratos</div>
+			</div>
 			<navbar class="wg-navbar">
 				<ul class="wg-navbar-menu">
 					<li class="wg-navbar-item"><a class="" href="index.html">Visualización</a></li>
 					<li class="wg-navbar-item"><a class="active" href="contratos.html">Contratos</a></li>
-					<li class="wg-navbar-item"><a class="" href="metodologia.html">Metodología</a></li>
 					<li class="wg-navbar-item"><a class="" href="investigacion.html">Investigaciones</a></li>
+					<li class="wg-navbar-item"><a class="" href="sobre_el_proyecto.html">Sobre el proyecto</a></li>
 				</ul>
 				<div class="nav-separator"></div>
 				<span class="nav-legend">Contamos con otros proyectos</span>
-				<ul class="site-top-ribbon">
-					<li class="ribbon-item">
-						<a class="ribbon-link" href="http://projectpoder.org/es/" target="_blank" rel="noopener noreferrer">
-							<img class="link-poder" style="width:115px;" src="src/images/poder-white.png" scale="0">
-						</a>	
+				<div class="site-top-ribbon">
+					<div class="ribbon-item">
+						<a class="link-desktop ribbon-link" href="http://projectpoder.org/es/" target="_blank" rel="noopener noreferrer">
+							<img class="link-desktop link-poder" style="width:115px;" src="src/images/poder-white.png" scale="0">
+						</a>
 						<a class="ribbon-link" href="https://www.rindecuentas.org/" target="_blank"  rel="noopener noreferrer">
-							<img class="link-rindecuentas" src="src/images/rindecuentas.svg" scale="0">
+							<img class="link-desktop link-rindecuentas" src="src/images/rindecuentas.svg" scale="0">
+							<img class="link-mobile" src="src/images/rindecuentas-grey.svg" scale="0">
 						</a>
 						<a class="ribbon-link" href="https://www.colaboratorio.org/" target="_blank"  rel="noopener noreferrer">
-							<img class="link-colaboratorio" src="src/images/colaboratorio.svg" scale="0">
-						</a>				
-					</li>
-					<li class="ribbon-item ribbon-right">
-						<a class="ribbon-link" href="https://www.quienesquien.wiki/" target="_blank" rel="noopener noreferrer">
-							<img class="link-quienesquien" src="src/images/quienesquien.svg" scale="0">
+							<img class="link-desktop link-colaboratorio" src="src/images/colaboratorio.svg" scale="0">
+							<img class="link-mobile" src="src/images/colaboratorio-grey.svg" scale="0">
 						</a>
-						<a class="ribbon-link" href="https://mexicoleaks.mx/enviar-para.php?r=poder" target="_blank" rel="noopener noreferrer">
-							<img class="link-mexicoleaks" src="src/images/mexicoleaks.svg" scale="0">
-						</a>							
+						<a class="ribbon-link" href="https://www.quienesquien.wiki/" target="_blank" rel="noopener noreferrer">
+							<img class="link-desktop link-quienesquien" src="src/images/quienesquien.svg" scale="0">
+							<img class="link-mobile link-quienesquien" src="src/images/quienesquien-grey.svg" scale="0">
+						</a>
+						<a class="ribbon-link" href="https://mexicoleaks.mx/" target="_blank" rel="noopener noreferrer">
+							<img class="link-desktop link-mexicoleaks" src="src/images/mexicoleaks.svg" scale="0">
+							<img class="link-mobile" src="src/images/mexicoleaks-grey.svg" scale="0">
+						</a>
 						<a class="ribbon-link" href="https://leaks.pe/" target="_blank" rel="noopener noreferrer">
-							<img class="link-peruleaks" class="peru" src="src/images/peruleaks.svg" scale="0">
-						</a>	
-					</li>
-				</ul>
+							<img class="link-desktop link-peruleaks" class="peru" src="src/images/peruleaks.svg" scale="0">
+							<img class="link-mobile" src="src/images/peruleaks-grey.svg" scale="0">
+						</a>
+					</div>
+				</div>
 				<div class="nav-separator"></div>
+				<span class="nav-legend">Desarrollado por</span>
+				<ul class="mobile-icons">
+					<li class="organization-link"><a href="http://projectpoder.org/es/" target="_blank" rel="noopener noreferrer"><img src="src/images/poder.svg" alt="Poder" height="16px"></a></li>
+					<li class="organization-link"><a href="http://www.winguweb.org/" target="_blank" rel="noopener noreferrer"><img src="src/images/wingu.svg" alt="Wingu" height="16px"></a></li>
+				</ul>
+				<span class="nav-legend">Colaboran</span>
+				<ul class="mobile-icons">
+					<li class="organization-link"><a href="http://projectpoder.org/es/" target="_blank" rel="noopener noreferrer"><img src="src/images/animal-politico.svg" alt="Animal Político" height="24px"></a></li>
+					<li class="organization-link"><a href="http://www.winguweb.org/" target="_blank" rel="noopener noreferrer"><img src="src/images/serapaz-trazo.svg" alt="Serpaz Trazo" height="24px"></a></li>
+				</ul>
+				<span class="nav-legend">Con el apoyo de</span>
+				<ul class="mobile-icons">
+					<li class="organization-link"><a href="http://projectpoder.org/es/" target="_blank" rel="noopener noreferrer"><img src="src/images/hivos.svg" alt="Hivos" height="32px"></a></li>
+				</ul>
 				<span class="nav-legend">Seguinos en nuestras redes</span>
 				<ul class="mobile-social">
-					<li class="social-item item-fb"><a href="#">fb</a></li>
-					<li class="social-item item-tw"><a href="#">tw</a></li>
+					<li class="social-item item-tw"><a href="https://twitter.com/projectpoder"><img src="src/images/tw.svg" alt="Twitter"></a></li>
 				</ul>
 			</navbar>
 		</header>
 		<!-- end of header -->
 
 
-		<!-- body: contratos -->		
+		<!-- body: contratos -->
 		<section class="site-content" id="contracts_page"></section>
 		<!-- end of body -->
 
 
 		<!-- footer -->
 		<footer class="site-footer">
-			<div class="site-development">
-				<p class="developed-by"><span class="developed-title">Desarrollado por</span> <a class="organization-link" href="#"><img src="src/images/poder.svg" alt="" class="organization-logo"></a> y <a class="organization-link" href="#"><img src="src/images/wingu.svg" alt="" class="organization-logo"></a></p>
-				<p class="sponsored-by"><span class="sponsored-title">Con el apoyo de</span> <a class="organization-link" href="#"><img src="src/images/hivos.svg" alt="" class="organization-logo"></a></p>
+			<div class="site-development col-sm-12">
+				<p class="sponsor-item developed-by">
+					<span class="developed-title">La Torre de control</span>
+					<a class="sitemap-link" href="/">Visualización</a>
+					<a class="sitemap-link" href="/contratos.html">Contratos</a>
+					<a class="sitemap-link" href="/investigacion.html">Investigaciones</a>
+					<a class="sitemap-link" href="/sobre_el_proyecto.html">Sobre el proyecto</a>
+				</p>
+		
+				<p class="sponsor-item developed-by"><span class="developed-title">Desarrollado por</span>
+					<a class="organization-link" href="#"><img src="src/images/poder.svg" alt="Poder" class="organization-logo"></a>
+					<a class="organization-link" href="#"><img src="src/images/wingu.svg" alt="Wingu" class="organization-logo"></a>
+				</p>
+		
+				<p class="sponsor-item developed-by"><span class="developed-title">Colaboran</span>
+					<a class="organization-link" href="#"><img src="src/images/animal-politico.svg" alt="Animal Político" class="organization-logo logo-animal-politico"></a>
+					<a class="organization-link" href="#"><img src="src/images/serapaz-trazo.svg" alt="Serpaz Trazo" class="organization-logo"></a>
+				</p>
+		
+				<p class="sponsor-item developed-by"><span class="developed-title">Con el apoyo de</span>
+					<a class="organization-link" href="#"><img src="src/images/hivos.svg" alt="Hivos" class="organization-logo logo-hivos"></a>
+				</p>
+				<p class="sponsor-item developed-by"><span class="developed-title">Síguenos en</span>
+					<a class="organization-link" href="https://twitter.com/projectpoder"><img src="src/images/tw.svg" alt="Twitter" class="organization-logo"></a>
+				</p>
 			</div>
 		</footer>
 		<!-- end of footer -->

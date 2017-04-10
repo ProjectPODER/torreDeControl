@@ -2,20 +2,22 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Document</title>
+	<title>Torre de control - Contratos</title>
 	<link href="https://fonts.googleapis.com/css?family=Rajdhani|Roboto:300,400" rel="stylesheet">
-	<script type="text/javascript" src="dist/bundle.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	{{> templates/favicon}}
+	<script src="dist/bundle.js"></script>
+	{{> templates/analytics}}
 </head>
 <body class="page-contracts">
 	<div class="main-container">
 		<!-- header -->
 		{{> templates/topribbon}}
-		{{> templates/header contratos="active"}}
+		{{> templates/header contratos="active" section_name="Contratos"}}
 		<!-- end of header -->
 
 
-		<!-- body: contratos -->		
+		<!-- body: contratos -->
 		<section class="site-content" id="contracts_page"></section>
 		<!-- end of body -->
 

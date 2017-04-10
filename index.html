@@ -2,177 +2,363 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Document</title>
-	<link href="https://fonts.googleapis.com/css?family=Rajdhani|Roboto:300,400" rel="stylesheet">
-	<script type="text/javascript" src="dist/bundle.js"></script>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png">
-	<link rel="icon" type="image/png" href="/favicons/favicon-32x32.png" sizes="32x32">
-	<link rel="icon" type="image/png" href="/favicons/favicon-16x16.png" sizes="16x16">
-	<link rel="manifest" href="/favicons/manifest.json">
-	<link rel="mask-icon" href="/favicons/safari-pinned-tab.svg" color="#5bbad5">
+	<title>Torre de control</title>
+	<link href="https://fonts.googleapis.com/css?family=Rajdhani|Roboto:300,400|Lato:400,700" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	  <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png">
+	  <link rel="shortcut icon" type="image/png" href="/favicons/favicon-32x32.png" sizes="32x32">
+	  <link rel="manifest" href="/favicons/manifest.json">
+	  <link rel="mask-icon" href="/favicons/safari-pinned-tab.svg" color="#5bbad5">
 	<meta name="theme-color" content="#ffffff">
+	<script src="dist/bundle.js"></script>
+	<script>
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	
+	  ga('create', 'UA-93473946-1', 'auto');
+	  ga('send', 'pageview');
+	
+	</script>
 </head>
 <body class="page-visualizacion fixed-page">
 	<div class="main-container">
 
 		<!-- header -->
-		<ul class="site-top-ribbon">
-			<li class="ribbon-item">
-				<a class="ribbon-link" href="http://projectpoder.org/es/" target="_blank" rel="noopener noreferrer">
-					<img class="link-poder" style="width:115px;" src="src/images/poder-white.png" scale="0">
-				</a>	
+		<div class="site-top-ribbon">
+			<div class="ribbon-item">
+				<a class="link-desktop ribbon-link" href="http://projectpoder.org/es/" target="_blank" rel="noopener noreferrer">
+					<img class="link-desktop link-poder" style="width:115px;" src="src/images/poder-white.png" scale="0">
+				</a>
 				<a class="ribbon-link" href="https://www.rindecuentas.org/" target="_blank"  rel="noopener noreferrer">
-					<img class="link-rindecuentas" src="src/images/rindecuentas.svg" scale="0">
+					<img class="link-desktop link-rindecuentas" src="src/images/rindecuentas.svg" scale="0">
+					<img class="link-mobile" src="src/images/rindecuentas-grey.svg" scale="0">
 				</a>
 				<a class="ribbon-link" href="https://www.colaboratorio.org/" target="_blank"  rel="noopener noreferrer">
-					<img class="link-colaboratorio" src="src/images/colaboratorio.svg" scale="0">
-				</a>				
-			</li>
-			<li class="ribbon-item ribbon-right">
-				<a class="ribbon-link" href="https://www.quienesquien.wiki/" target="_blank" rel="noopener noreferrer">
-					<img class="link-quienesquien" src="src/images/quienesquien.svg" scale="0">
+					<img class="link-desktop link-colaboratorio" src="src/images/colaboratorio.svg" scale="0">
+					<img class="link-mobile" src="src/images/colaboratorio-grey.svg" scale="0">
 				</a>
-				<a class="ribbon-link" href="https://mexicoleaks.mx/enviar-para.php?r=poder" target="_blank" rel="noopener noreferrer">
-					<img class="link-mexicoleaks" src="src/images/mexicoleaks.svg" scale="0">
-				</a>							
+				<a class="ribbon-link" href="https://www.quienesquien.wiki/" target="_blank" rel="noopener noreferrer">
+					<img class="link-desktop link-quienesquien" src="src/images/quienesquien.svg" scale="0">
+					<img class="link-mobile link-quienesquien" src="src/images/quienesquien-grey.svg" scale="0">
+				</a>
+				<a class="ribbon-link" href="https://mexicoleaks.mx/" target="_blank" rel="noopener noreferrer">
+					<img class="link-desktop link-mexicoleaks" src="src/images/mexicoleaks.svg" scale="0">
+					<img class="link-mobile" src="src/images/mexicoleaks-grey.svg" scale="0">
+				</a>
 				<a class="ribbon-link" href="https://leaks.pe/" target="_blank" rel="noopener noreferrer">
-					<img class="link-peruleaks" class="peru" src="src/images/peruleaks.svg" scale="0">
-				</a>	
-			</li>
-		</ul>
+					<img class="link-desktop link-peruleaks" class="peru" src="src/images/peruleaks.svg" scale="0">
+					<img class="link-mobile" src="src/images/peruleaks-grey.svg" scale="0">
+				</a>
+			</div>
+		</div>
 		<header class="site-header">
-			<div class="wg-navbar-logo"><a class="navbar-logo-link" href="#">
-			<img class="torre-logo" src="src/images/torre.svg" alt="Torre de Control">
-			<img class="torre-logo-small torre-logo-grey" src="src/images/torre-small.svg" alt="Torre de Control">
-			<img class="torre-logo-small torre-logo-white" src="src/images/torre-small-white.svg" alt="Torre de Control">
-			</a></div>
 			<div class="wg-navbar-menu-button">
 				<span class="line"></span>
 				<span class="line"></span>
 				<span class="line"></span>
 			</div>
+			<div class="wg-navbar-logo">
+				<a class="navbar-logo-link" href="index.html">
+					<img class="torre-logo" src="src/images/torre.svg" alt="Torre de Control">
+					<img class="torre-logo-tablet torre-logo-grey" src="src/images/torre-small.svg" alt="Torre de Control">
+				</a>
+				<div class="mobile-section-name">Visualización</div>
+			</div>
 			<navbar class="wg-navbar">
 				<ul class="wg-navbar-menu">
 					<li class="wg-navbar-item"><a class="active" href="index.html">Visualización</a></li>
 					<li class="wg-navbar-item"><a class="" href="contratos.html">Contratos</a></li>
-					<li class="wg-navbar-item"><a class="" href="metodologia.html">Metodología</a></li>
 					<li class="wg-navbar-item"><a class="" href="investigacion.html">Investigaciones</a></li>
+					<li class="wg-navbar-item"><a class="" href="sobre_el_proyecto.html">Sobre el proyecto</a></li>
 				</ul>
 				<div class="nav-separator"></div>
 				<span class="nav-legend">Contamos con otros proyectos</span>
-				<ul class="site-top-ribbon">
-					<li class="ribbon-item">
-						<a class="ribbon-link" href="http://projectpoder.org/es/" target="_blank" rel="noopener noreferrer">
-							<img class="link-poder" style="width:115px;" src="src/images/poder-white.png" scale="0">
-						</a>	
+				<div class="site-top-ribbon">
+					<div class="ribbon-item">
+						<a class="link-desktop ribbon-link" href="http://projectpoder.org/es/" target="_blank" rel="noopener noreferrer">
+							<img class="link-desktop link-poder" style="width:115px;" src="src/images/poder-white.png" scale="0">
+						</a>
 						<a class="ribbon-link" href="https://www.rindecuentas.org/" target="_blank"  rel="noopener noreferrer">
-							<img class="link-rindecuentas" src="src/images/rindecuentas.svg" scale="0">
+							<img class="link-desktop link-rindecuentas" src="src/images/rindecuentas.svg" scale="0">
+							<img class="link-mobile" src="src/images/rindecuentas-grey.svg" scale="0">
 						</a>
 						<a class="ribbon-link" href="https://www.colaboratorio.org/" target="_blank"  rel="noopener noreferrer">
-							<img class="link-colaboratorio" src="src/images/colaboratorio.svg" scale="0">
-						</a>				
-					</li>
-					<li class="ribbon-item ribbon-right">
-						<a class="ribbon-link" href="https://www.quienesquien.wiki/" target="_blank" rel="noopener noreferrer">
-							<img class="link-quienesquien" src="src/images/quienesquien.svg" scale="0">
+							<img class="link-desktop link-colaboratorio" src="src/images/colaboratorio.svg" scale="0">
+							<img class="link-mobile" src="src/images/colaboratorio-grey.svg" scale="0">
 						</a>
-						<a class="ribbon-link" href="https://mexicoleaks.mx/enviar-para.php?r=poder" target="_blank" rel="noopener noreferrer">
-							<img class="link-mexicoleaks" src="src/images/mexicoleaks.svg" scale="0">
-						</a>							
+						<a class="ribbon-link" href="https://www.quienesquien.wiki/" target="_blank" rel="noopener noreferrer">
+							<img class="link-desktop link-quienesquien" src="src/images/quienesquien.svg" scale="0">
+							<img class="link-mobile link-quienesquien" src="src/images/quienesquien-grey.svg" scale="0">
+						</a>
+						<a class="ribbon-link" href="https://mexicoleaks.mx/" target="_blank" rel="noopener noreferrer">
+							<img class="link-desktop link-mexicoleaks" src="src/images/mexicoleaks.svg" scale="0">
+							<img class="link-mobile" src="src/images/mexicoleaks-grey.svg" scale="0">
+						</a>
 						<a class="ribbon-link" href="https://leaks.pe/" target="_blank" rel="noopener noreferrer">
-							<img class="link-peruleaks" class="peru" src="src/images/peruleaks.svg" scale="0">
-						</a>	
-					</li>
-				</ul>
+							<img class="link-desktop link-peruleaks" class="peru" src="src/images/peruleaks.svg" scale="0">
+							<img class="link-mobile" src="src/images/peruleaks-grey.svg" scale="0">
+						</a>
+					</div>
+				</div>
 				<div class="nav-separator"></div>
+				<span class="nav-legend">Desarrollado por</span>
+				<ul class="mobile-icons">
+					<li class="organization-link"><a href="http://projectpoder.org/es/" target="_blank" rel="noopener noreferrer"><img src="src/images/poder.svg" alt="Poder" height="16px"></a></li>
+					<li class="organization-link"><a href="http://www.winguweb.org/" target="_blank" rel="noopener noreferrer"><img src="src/images/wingu.svg" alt="Wingu" height="16px"></a></li>
+				</ul>
+				<span class="nav-legend">Colaboran</span>
+				<ul class="mobile-icons">
+					<li class="organization-link"><a href="http://projectpoder.org/es/" target="_blank" rel="noopener noreferrer"><img src="src/images/animal-politico.svg" alt="Animal Político" height="24px"></a></li>
+					<li class="organization-link"><a href="http://www.winguweb.org/" target="_blank" rel="noopener noreferrer"><img src="src/images/serapaz-trazo.svg" alt="Serpaz Trazo" height="24px"></a></li>
+				</ul>
+				<span class="nav-legend">Con el apoyo de</span>
+				<ul class="mobile-icons">
+					<li class="organization-link"><a href="http://projectpoder.org/es/" target="_blank" rel="noopener noreferrer"><img src="src/images/hivos.svg" alt="Hivos" height="32px"></a></li>
+				</ul>
 				<span class="nav-legend">Seguinos en nuestras redes</span>
 				<ul class="mobile-social">
-					<li class="social-item item-fb"><a href="#">fb</a></li>
-					<li class="social-item item-tw"><a href="#">tw</a></li>
+					<li class="social-item item-tw"><a href="https://twitter.com/projectpoder"><img src="src/images/tw.svg" alt="Twitter"></a></li>
 				</ul>
 			</navbar>
 		</header>
 		<!-- end of header -->
 
-		<!-- body: visualización -->		
-
-		<div class="graph-container">
-			<svg></svg>
-		</div>
-		<ul id="slidesMenu" class="slides-menu">
-		    <li class="slides-menu-item" data-menuanchor="slide-1" class="active"><a class="slides-menu-item-link" href="#slide-1"></a></li>
-		    <li class="slides-menu-item" data-menuanchor="slide-2"><a class="slides-menu-item-link" href="#slide-2"></a></li>
-		    <li class="slides-menu-item" data-menuanchor="slide-3"><a class="slides-menu-item-link" href="#slide-3"></a></li>
-		    <li class="slides-menu-item" data-menuanchor="slide-4"><a class="slides-menu-item-link" href="#slide-4"></a></li>
-		</ul>
-		<div id="fullpage" class="fullpage">
-			<div class="visualization-container">
-				<div class="section info-container slide-active slide-1 fp-auto-height">
-					<div class="info-wrapper">
-						<div class="info-data">
-							<p class="top-text">Un valor<br>total de</p>
-							<p class="middle-text" id="contracts_amount">147</p>
-							<p class="bottom-text">equivale a la suma <br>de los contratos</p>
-						</div>
-						<div class="info-abstract">
-							<h2 class="abstract-title">Total de contratos</h2>
-							<p class="abstract-body">Es un hecho establecido hace semasiado tiempo que un lector se distraera con el contenido del texto de un sitio mientras mira su diseño. El punto de usar Lorem ipsum.</p>
-						</div>
-					</div>
-				</div>
-				<div class="section info-container slide-2 fp-auto-height">
-					<div class="info-wrapper">
-						<div class="info-data">
-							<p class="top-text">Los tipos <br>de contratos son</p>
-							<p class="middle-text" id="contracts_type">147</p>
-							<p class="bottom-text">Y cada contrato pertenece<br>a uno de estos tipos</p>
-						</div>
-						<div class="info-abstract">
-							<h2 class="abstract-title">Tipos de contratos</h2>
-							<p class="abstract-body">Es un hecho establecido hace semasiado tiempo que un lector se distraera con el contenido del texto de un sitio mientras mira su diseño. El punto de usar Lorem ipsum.</p>
-						</div>
-					</div>
-				</div>
-				<div class="section info-container slide-3 fp-auto-height">
-					<div class="info-wrapper">
-						<div class="info-data">
-							<p class="top-text">Lorem <br>Loremipsum</p>
-							<p class="middle-text" id="contracts_total">147</p>
-							<p class="bottom-text">contratos del <br><strong>NACIM</strong></p>
-						</div>
-						<div class="info-abstract">
-							<h2 class="abstract-title">Total de contratos</h2>
-							<p class="abstract-body">Es un hecho establecido hace semasiado tiempo que un lector se distraera con el contenido del texto de un sitio mientras mira su diseño. El punto de usar Lorem ipsum.</p>
-						</div>
-					</div>
-				</div>
-				<div class="section info-container slide-4 fp-auto-height">
-					<div class="info-wrapper">
-						<div class="info-data">
-							<p class="top-text">Lorem <br>Loremipsum</p>
-							<p class="middle-text" id="contracts_total">147</p>
-							<p class="bottom-text">contratos del <br><strong>NACIM</strong></p>
-						</div>
-						<div class="info-abstract">
-							<h2 class="abstract-title">Total de contratos</h2>
-							<p class="abstract-body">Es un hecho establecido hace semasiado tiempo que un lector se distraera con el contenido del texto de un sitio mientras mira su diseño. El punto de usar Lorem ipsum.</p>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-
+		<!-- body: visualización -->
+		  <div class="graph-container">
+		    <svg width="100%" height="100%"></svg>
+		  </div>
+		  <ul id="slidesMenu" class="slides-menu">
+		      <li class="slides-menu-item" data-menuanchor="slide-1" class="active"><a class="slides-menu-item-link" href="#slide-1"></a></li>
+		      <li class="slides-menu-item" data-menuanchor="slide-2"><a class="slides-menu-item-link" href="#slide-2"></a></li>
+		      <li class="slides-menu-item" data-menuanchor="slide-3"><a class="slides-menu-item-link" href="#slide-3"></a></li>
+		      <li class="slides-menu-item" data-menuanchor="slide-4"><a class="slides-menu-item-link" href="#slide-4"></a></li>
+		      <li class="slides-menu-item" data-menuanchor="slide-5"><a class="slides-menu-item-link" href="#slide-5"></a></li>
+		      <li class="slides-menu-item" data-menuanchor="slide-6"><a class="slides-menu-item-link" href="#slide-6"></a></li>
+		  </ul>
+		
+		
+		  <div class="mobile-graphs-container">
+		    <div class="mobile-graph-container graph-slide-1">
+		      <img class="svg" width="100%" src="src/images/graphs/slide1.svg" />
+		    </div>
+		    <div class="mobile-graph-container graph-slide-2">
+		      <img class="svg" width="100%" src="src/images/graphs/slide2.svg" />
+		    </div>
+		    <div class="mobile-graph-container graph-slide-3">
+		      <img class="png" src="src/images/graphs/slide3.png" />
+		    </div>
+		    <div class="mobile-graph-container graph-slide-4">
+		      <img class="png" src="src/images/graphs/slide4.png" />
+		    </div>
+		    <div class="mobile-graph-container graph-slide-5">
+		      <img class="png" src="src/images/graphs/slide5.png" />
+		    </div>
+		  </div>
+		  <div id="fullpage" class="fullpage">
+		    <div class="visualization-container visualization-desktop">
+		      <div class="section info-container slide-active slide-1 fp-auto-height">
+		        <div class="info-wrapper">
+		          <div class="info-data">
+		            <p class="top-text">La contratación empezó en</p>
+		            <p class="middle-text">2012</p>
+		            <p class="bottom-text">con los primeros estudios</p>
+		          </div>
+		          <div class="info-abstract">
+		            <h2 class="abstract-title">El Nuevo Aeropuerto Internacional de la Ciudad de México</h2>
+		            <p class="abstract-body">La construcción del NAICM es el proyecto de obra pública estrella del sexenio de Peña Nieto y uno de los que conlleva más gasto de la década.</p>
+		          </div>
+		        </div>
+		      </div>
+		      <div class="section info-container slide-2 fp-auto-height">
+		        <div class="info-wrapper">
+		          <div class="info-data">
+		            <p class="top-text">Se han contratado</p>
+		            <p class="middle-text">$<span id="contracts_amount"></span> M</p>
+		            <p class="bottom-text">para la realización del megaproyecto</p>
+		          </div>
+		          <div class="info-abstract">
+		            <h2 class="abstract-title little-title">Tres organismos estatales realizan contrataciones</h2>
+		            <p class="abstract-body">Antes de la creación del Grupo Aeroportuario de la Ciudad de México el Gobierno Federal realizó convenios a través de Aeropuertos y Servicos Auxiliares (ASA) y la Comisión Nacional del Agua (CONAGUA).</p>
+		          </div>
+		        </div>
+		      </div>
+		      <div class="section info-container slide-3 fp-auto-height">
+		        <div class="info-wrapper">
+		          <div class="info-data">
+		            <p class="top-text">En total se han realizado</p>
+		            <p class="middle-text" id="contracts_total"></p>
+		            <p class="bottom-text">contratos del NAICM</p>
+		          </div>
+		          <div class="info-abstract">
+		            <h2 class="abstract-title"><span id="direct_adjudication">{cant de adjudicaciones directas}</span> adjudicaciones directas</h2>
+		            <p class="abstract-body">El <strong><span id="direct_adjudication_percentage">{porcentaje de adjudicaciones directas sobre el total}</span>%</strong> de los contratos se han adjudicado sin concurso. La ley recomienda que la contratación de obra pública se haga en forma de licitación abierta a todas las empresas.</p>
+		          </div>
+		        </div>
+		      </div>
+		      <div class="section info-container slide-4 fp-auto-height">
+		        <div class="info-wrapper">
+		          <div class="info-data">
+		            <p class="top-text">Los contratos los han ganado</p>
+		            <p class="middle-text"><span id="suppliers_count">{"suppliers_person" y "suppliers_org" sin duplicados}</span> </p>
+		            <p class="bottom-text">empresas en solitario o en consorcio</p>
+		          </div>
+		          <div class="info-abstract">
+		            <h2 class="abstract-title">Los contratos más importantes</h2>
+		            <p class="abstract-body">Hay <strong id="big_amount_contracts">{Número de contratos con un importe superior a 1.000.000.000}</strong> licitaciones y adjudicaciones de más de mil millones de pesos, éstas suponen el <strong><span id="big_amount_percentage">{porcentaje de que representan las suma del contratos de más de mil millones sobre el total de gasto total de NAICM}</span>%</strong> del gasto total del NAICM y lo han ganado <strong id="big_amount_winners">{Número de empresas que han ganado estos contratos}</strong> empresas.</p>
+		          </div>
+		        </div>
+		      </div>
+		      <div class="section info-container slide-5 fp-auto-height">
+		        <div class="info-wrapper">
+		          <div class="info-data">
+		            <p class="top-text">Se han mapeado</p>
+		            <p class="middle-text"><span id="slide_5_count">{slide_5_count}</span></p>
+		            <p class="bottom-text">relaciones empresariales</p>
+		          </div>
+		          <div class="info-abstract">
+		            <h2 class="abstract-title">Desconocemos los propietarios</h2>
+		            <p class="abstract-body">Los contratos del NAICM contienen las empresas pero no los propietarios de éstas ni sus empresas matrices que aparecen en esta investigación.</p>
+		          </div>
+		        </div>
+		      </div>
+		      <div class="section info-container slide-6 fp-auto-height">
+		        <div class="info-wrapper">
+		          <div class="info-abstract">
+		            <h2 class="abstract-title">Investigaciones para la rendición de cuentas</h2>
+		            <p class="abstract-body">La Torre de Control publicará de forma periódica <a href="investigacion.html">investigaciones</a> sobre el proceso de construcción del NAICM.</p>
+		            <p class="abstract-body">Tips, información o comentarios a <a href="mailto:torredecontrol@projectpoder.org">torredecontrol@projectpoder.org</a> y <a href="https://mexicoleaks.mx/enviar-para.php?r=poder" rel="noreferrer noopener" target="_blank" >Méxicoleaks</a></p>
+		          </div>
+		        </div>
+		      </div>
+		    </div>
+		    <div class="visualization-container visualization-mobile">
+		      <div class="section info-container slide-active slide-1 fp-auto-height"></div>
+		      <div class="section info-container slide-2 fp-auto-height">
+		        <div class="info-wrapper">
+		          <div class="info-data">
+		            <p class="top-text">La contratación empezó en</p>
+		            <p class="middle-text">2012</p>
+		            <p class="bottom-text">con los primeros estudios</p>
+		          </div>
+		          <div class="info-abstract">
+		            <h2 class="abstract-title">El Nuevo Aeropuerto Internacional de la Ciudad de México</h2>
+		            <p class="abstract-body">La construcción del NAICM es el proyecto de obra pública estrella del sexenio de Peña Nieto y uno de los que conlleva más gasto de la década.</p>
+		          </div>
+		        </div>
+		      </div>
+		
+		      <div class="section info-container slide-3 fp-auto-height"></div>
+		      <div class="section info-container slide-4 fp-auto-height">
+		        <div class="info-wrapper">
+		          <div class="info-data">
+		            <p class="top-text">Se han contratado</p>
+		            <p class="middle-text">$<span id="contracts_amount"></span> M</p>
+		            <p class="bottom-text">para la realización del megaproyecto</p>
+		          </div>
+		          <div class="info-abstract">
+		            <h2 class="abstract-title little-title">Tres organismos estatales realizan contrataciones</h2>
+		            <p class="abstract-body">Antes de la creación del Grupo Aeroportuario de la Ciudad de México el Gobierno Federal realizó convenios a través de Aeropuertos y Servicos Auxiliares (ASA) y la Comisión Nacional del Agua (CONAGUA).</p>
+		          </div>
+		        </div>
+		      </div>
+		
+		      <div class="section info-container slide-5 fp-auto-height"></div>
+		      <div class="section info-container slide-6 fp-auto-height">
+		        <div class="info-wrapper">
+		          <div class="info-data">
+		            <p class="top-text">En total se han realizado</p>
+		            <p class="middle-text" id="contracts_total"></p>
+		            <p class="bottom-text">contratos del NAICM</p>
+		          </div>
+		          <div class="info-abstract">
+		            <h2 class="abstract-title"><span id="direct_adjudication">{cant de adjudicaciones directas}</span> adjudicaciones directas</h2>
+		            <p class="abstract-body">El <strong><span id="direct_adjudication_percentage">{porcentaje de adjudicaciones directas sobre el total}</span>%</strong> de los contratos se han adjudicado sin concurso. La ley recomienda que la contratación de obra pública se haga en forma de licitación abierta a todas las empresas.</p>
+		          </div>
+		        </div>
+		      </div>
+		
+		      <div class="section info-container slide-7 fp-auto-height"></div>
+		      <div class="section info-container slide-8 fp-auto-height">
+		        <div class="info-wrapper">
+		          <div class="info-data">
+		            <p class="top-text">Los contratos los han ganado</p>
+		            <p class="middle-text"><span id="suppliers_count">{"suppliers_person" y "suppliers_org" sin duplicados}</span> </p>
+		            <p class="bottom-text">empresas en solitario o en consorcio</p>
+		          </div>
+		          <div class="info-abstract">
+		            <h2 class="abstract-title">Los contratos más importantes</h2>
+		            <p class="abstract-body">Hay <strong id="big_amount_contracts">{Número de contratos con un importe superior a 1.000.000.000}</strong> licitaciones y adjudicaciones de más de mil millones de pesos, éstas suponen el <strong><span id="big_amount_percentage">{porcentaje de que representan las suma del contratos de más de mil millones sobre el total de gasto total de NAICM}</span>%</strong> del gasto total del NAICM y lo han ganado <strong id="big_amount_winners">{Número de empresas que han ganado estos contratos}</strong> empresas.</p>
+		          </div>
+		        </div>
+		      </div>
+		
+		      <div class="section info-container slide-9 fp-auto-height"></div>
+		      <div class="section info-container slide-10 fp-auto-height">
+		        <div class="info-wrapper">
+		          <div class="info-data">
+		            <p class="top-text">Se han mapeado</p>
+		            <p class="middle-text"><span id="slide_5_count">{slide_5_count}</span></p>
+		            <p class="bottom-text">relaciones empresariales</p>
+		          </div>
+		          <div class="info-abstract">
+		            <h2 class="abstract-title">Desconocemos los propietarios</h2>
+		            <p class="abstract-body">Los contratos del NAICM contienen las empresas pero no los propietarios de éstas ni sus empresas matrices que aparecen en esta investigación.</p>
+		          </div>
+		        </div>
+		      </div>
+		
+		      <div class="section info-container slide-11 fp-auto-height">
+		        <div class="info-wrapper">
+		          <div class="info-data">
+		            <p class="middle-text middle-text-big"><a href="investigacion.html"><span id="slide_6_count">{slide_6_count}</span></a></p>
+		          </div>
+		          <div class="info-abstract">
+		            <h2 class="abstract-title">Investigaciones para la rendición de cuentas</h2>
+		            <p class="abstract-body">La Torre de Control publicará de forma periódica <a href="investigacion.html">investigaciones</a> sobre el proceso de construcción del NAICM.</p>
+		            <p class="abstract-body">Tips, información o comentarios a <a href="mailto:torredecontrol@projectpoder.org">torredecontrol@projectpoder.org</a> y <a href="https://mexicoleaks.mx/enviar-para.php?r=poder" rel="noreferrer noopener" target="_blank" >Méxicoleaks</a></p>
+		          </div>
+		        </div>
+		      </div>
+		
+		    </div>
+		  </div>
+		  <div class="visualization-down-arrow"></div>
 		<!-- end of body -->
 
 		<!-- footer -->
 		<footer class="site-footer">
-			<div class="site-development">
-				<p class="developed-by"><span class="developed-title">Desarrollado por</span> <a class="organization-link" href="#"><img src="src/images/poder.svg" alt="" class="organization-logo"></a> y <a class="organization-link" href="#"><img src="src/images/wingu.svg" alt="" class="organization-logo"></a></p>
-				<p class="sponsored-by"><span class="sponsored-title">Con el apoyo de</span> <a class="organization-link" href="#"><img src="src/images/hivos.svg" alt="" class="organization-logo"></a></p>
+			<div class="site-development col-sm-12">
+				<p class="sponsor-item developed-by">
+					<span class="developed-title">La Torre de control</span>
+					<a class="sitemap-link" href="/">Visualización</a>
+					<a class="sitemap-link" href="/contratos.html">Contratos</a>
+					<a class="sitemap-link" href="/investigacion.html">Investigaciones</a>
+					<a class="sitemap-link" href="/sobre_el_proyecto.html">Sobre el proyecto</a>
+				</p>
+		
+				<p class="sponsor-item developed-by"><span class="developed-title">Desarrollado por</span>
+					<a class="organization-link" href="#"><img src="src/images/poder.svg" alt="Poder" class="organization-logo"></a>
+					<a class="organization-link" href="#"><img src="src/images/wingu.svg" alt="Wingu" class="organization-logo"></a>
+				</p>
+		
+				<p class="sponsor-item developed-by"><span class="developed-title">Colaboran</span>
+					<a class="organization-link" href="#"><img src="src/images/animal-politico.svg" alt="Animal Político" class="organization-logo logo-animal-politico"></a>
+					<a class="organization-link" href="#"><img src="src/images/serapaz-trazo.svg" alt="Serpaz Trazo" class="organization-logo"></a>
+				</p>
+		
+				<p class="sponsor-item developed-by"><span class="developed-title">Con el apoyo de</span>
+					<a class="organization-link" href="#"><img src="src/images/hivos.svg" alt="Hivos" class="organization-logo logo-hivos"></a>
+				</p>
+				<p class="sponsor-item developed-by"><span class="developed-title">Síguenos en</span>
+					<a class="organization-link" href="https://twitter.com/projectpoder"><img src="src/images/tw.svg" alt="Twitter" class="organization-logo"></a>
+				</p>
 			</div>
 		</footer>
 		<!-- end of footer -->
 	</div>
+	<div class="tooltip"></div>
+
 </body>
 </html>
