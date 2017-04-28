@@ -889,11 +889,10 @@ function setupD3() {
 	            				const nameText = d.name;
 	            				const contractsCount = d.contractsCount || "Desconocido";
 	            				const typeText = d.relationType == "person" ? "persons" : "orgs";
-	            				console.log(d)
 	            				return `
 	            				<p class="title">${nameText}</p>
 	            				<p>Contratos: ${contractsCount}</p>
-	            				<p>Más información en QuiénEsQuién.Wiki:</p>
+	            				<p>Leer la nota:</p>
 	            				<p><a rel="noreferrer noopener" target="_blank" href="https://quienesquien.wiki/${typeText}/${nameText}">https://quienesquien.wiki/${typeText}/${nameText}</a></p>
 								`;
 	            				break;
@@ -903,7 +902,7 @@ function setupD3() {
 	            				const urlText = d.url;
 	            				return `
 	            				<p class="title">${nameText}</p>
-	            				<p>Más información en QuiénEsQuién.Wiki:</p>
+	            				<p>Leer la nota:</p>
 	            				<p><a rel="noreferrer noopener" target="_blank" href="${urlText}">${urlText}</a></p>
 								`;
 	            				break;
